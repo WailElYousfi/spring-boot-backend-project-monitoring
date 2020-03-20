@@ -1,13 +1,16 @@
 package com.example.demo.models;
 
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(	name = "users", 
@@ -21,6 +24,7 @@ import javax.validation.constraints.Size;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@JsonIgnore
 	private Long userId;
 	
 	@NotBlank
@@ -40,6 +44,7 @@ public class User {
 
 	@NotBlank
 	@Size(max = 120)
+	@JsonIgnore
 	private String password;
 	
 	@NotBlank
@@ -54,6 +59,37 @@ public class User {
 	@ManyToOne
     @JoinColumn(name="roleId")
 	private Role role;
+	
+	@OneToMany(mappedBy = "user")
+	@Transient
+	@JsonIgnore
+    private List<Task> tasks;
+
+	@OneToMany(mappedBy = "assignedUser")
+	@Transient
+	@JsonIgnore
+    private List<Incidence> assignedIncidences;
+
+	@OneToMany(mappedBy = "causedUser")
+	@Transient
+	@JsonIgnore
+    private List<Incidence> causedIncidences;
+	
+	@OneToMany(mappedBy = "justificator")
+	@Transient
+	@JsonIgnore
+    private List<Justification> justifications;
+	
+	@OneToMany(mappedBy = "validator")
+	@Transient
+	@JsonIgnore
+    private List<Justification> validations;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(	name = "user_projects", 
+				joinColumns = @JoinColumn(name = "user_id"), 
+				inverseJoinColumns = @JoinColumn(name = "project_id"))
+	private List<Project> projects = new ArrayList<>();
 
 	public User() {
 	}
@@ -148,5 +184,55 @@ public class User {
 	public void setRole(Role role) {
 		this.role = role;
 	}
+
+	public List<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
+	}
+
+	public List<Justification> getJustifications() {
+		return justifications;
+	}
+
+	public void setJustifications(List<Justification> justifications) {
+		this.justifications = justifications;
+	}
+
+	public List<Justification> getValidations() {
+		return validations;
+	}
+
+	public void setValidations(List<Justification> validations) {
+		this.validations = validations;
+	}
+
+	public List<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
+	}
+
+	public List<Incidence> getAssignedIncidences() {
+		return assignedIncidences;
+	}
+
+	public void setAssignedIncidences(List<Incidence> assignedIncidences) {
+		this.assignedIncidences = assignedIncidences;
+	}
+
+	public List<Incidence> getCausedIncidences() {
+		return causedIncidences;
+	}
+
+	public void setCausedIncidences(List<Incidence> causedIncidences) {
+		this.causedIncidences = causedIncidences;
+	}
+	
+	
 	
 }

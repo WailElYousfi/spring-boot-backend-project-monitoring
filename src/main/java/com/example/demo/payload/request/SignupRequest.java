@@ -1,5 +1,6 @@
 package com.example.demo.payload.request;
 
+
 import java.util.Set;
 
 import javax.validation.constraints.*;
@@ -21,6 +22,8 @@ public class SignupRequest {
     private String email;
     
     private String role;
+    
+    private Set<Integer> projectIds;
     
     @NotBlank
 	private String phone;
@@ -82,6 +85,14 @@ public class SignupRequest {
     public void setRole(String role) {
       this.role = role;
     }
+
+	public Set<Integer> getProjectIds() {
+		return projectIds;
+	}
+
+	public void setProjectIds(Set<Integer> projectIds) {
+		this.projectIds = projectIds;
+	}
 
 	public String getPhone() {
 		return phone;

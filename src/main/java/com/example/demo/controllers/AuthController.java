@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,20 +21,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.models.ERole;
+import com.example.demo.models.Project;
 import com.example.demo.models.Role;
 import com.example.demo.models.User;
 import com.example.demo.payload.request.LoginRequest;
 import com.example.demo.payload.request.SignupRequest;
 import com.example.demo.payload.response.JwtResponse;
 import com.example.demo.payload.response.MessageResponse;
-import com.example.demo.repository.RoleRepository;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.dao.ProjectRepository;
+import com.example.demo.dao.RoleRepository;
+import com.example.demo.dao.UserRepository;
 import com.example.demo.security.jwt.JwtUtils;
 import com.example.demo.security.services.UserDetailsImpl;
 
 
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -46,6 +48,9 @@ public class AuthController {
 
 	@Autowired
 	RoleRepository roleRepository;
+	
+	@Autowired
+	ProjectRepository projectRepository;
 
 	@Autowired
 	PasswordEncoder encoder;
@@ -115,58 +120,64 @@ public class AuthController {
 							 signUpRequest.getJiraUsername(),
 							 signUpRequest.getUserCode());
 
-		Set<String> strRoles = new HashSet<>();
-		strRoles.add(signUpRequest.getRole());
-		Set<Role> roles = new HashSet<>();
+		String roleReq = signUpRequest.getRole();
 
-		if (strRoles == null) {
+		if (roleReq == null) {
 			Role junRole = roleRepository.findByName(ERole.ROLE_JUNIOR)
 					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-			roles.add(junRole);
+			user.setRole(junRole);
 		} else {
-			strRoles.forEach(role -> {
-				switch (role) {
+				switch (roleReq) {
 				case "admin":
 					Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(adminRole);
-
+					user.setRole(adminRole);
+					
 					break;
 				case "supervisor":
 					Role supRole = roleRepository.findByName(ERole.ROLE_SUPERVISOR)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(supRole);
+					user.setRole(supRole);
 
 					break;
 				case "tl":
 					Role tlRole = roleRepository.findByName(ERole.ROLE_TEAMLEADER)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(tlRole);
+					user.setRole(tlRole);
 
 					break;
 				case "senior":
 					Role senRole = roleRepository.findByName(ERole.ROLE_SENIOR)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(senRole);
+					user.setRole(senRole);
 
 					break;
 				case "developer":
 					Role devRole = roleRepository.findByName(ERole.ROLE_DEVELOPER)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(devRole);
+					user.setRole(devRole);
 
 					break;
 				default:
 					Role junRole = roleRepository.findByName(ERole.ROLE_JUNIOR)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(junRole);
-				}
-			});
+					user.setRole(junRole);
+				};
+			};
+		
+		List<Project> projects = new ArrayList<Project>();
+		Set<Integer> projectIds = signUpRequest.getProjectIds();
+		if(projectIds != null) {
+			for (Integer id : projectIds) {
+				Project proj = projectRepository.findById(id)
+						.orElseThrow(() -> new RuntimeException("Error: Project is not found."));
+				projects.add(proj);
+			}
+			user.setProjects(projects);		
 		}
-
-		for(Role role : roles)
-			user.setRole(role);
+		
 		userRepository.save(user);
+		
 
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}

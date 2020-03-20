@@ -1,6 +1,5 @@
 package com.example.demo.payload.response;
 
-import java.util.List;
 
 public class JwtResponse {
 	private String token;
@@ -110,7 +109,7 @@ public class JwtResponse {
 
 	public void setUserCode(Long userCode) {
 		this.userCode = userCode;
-	}
+	}	
 	
 	
 }
