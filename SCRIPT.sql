@@ -1,3 +1,114 @@
+INSERT INTO `roles` (`role_id`, `name`) VALUES
+(1, 'ROLE_ADMIN'),
+(2, 'ROLE_SUPERVISOR'),
+(3, 'ROLE_TEAMLEADER'),
+(4, 'ROLE_SENIOR'),
+(5, 'ROLE_DEVELOPER'),
+(6, 'ROLE_JUNIOR');
+
+-- --------------------------------------------------------
+
+
+INSERT INTO `users` (`user_id`, `email`, `firstname`, `jira_username`, `lastname`, `password`, `phone`, `user_code`, `username`, `role_id`) VALUES
+(1, 'admin1@gmail.com', 'wail', 'jira_admin1', 'el yousfi', '$2a$10$kqT8My2gCJn0xNRzMZvkxunz89PdSuDGyZhKsaoE5lYEfm9uRcpvG', '+212697935718', 100, 'admin1', 1),
+(3, 'supervisor1@gmail.com', 'mohamed', 'jira_supervisor1', 'achkour', '$2a$10$l3EHu80DR0ZjL3PVOMg7ieJ7.8WEYzfUthoYsulQRQtLmlfbp.69O', '+212697935118', 101, 'supervisor1', 2),
+(4, 'senior1@gmail.com', 'moad', 'jira_senior1', 'khider', '$2a$10$0Ic8Q43vlI04vNeFzpfRCOIZsNfxMRJBz8G/A0T6irh7wkLNgb5Ui', '+212691475118', 102, 'senior1', 4),
+(5, 'teamleader1@gmail.com', 'hicham', 'jira_teamleader1', 'sbihi', '$2a$10$x4GqPMMH6oHBZ5uNsQUokOb0hHtGV/uPI7l/JdtA82da93TUWml.y', '+212691479918', 103, 'teamleader1', 3),
+(6, 'zakaria.mtougui@gmail.com', 'zakaria', 'Zakaria Mtougui', 'mtougui', '$2a$10$Z739lDeaKHpM7gF3dMdzjOvjPInOqGr0LF7lNytIhrNZaAohqLZv6', '+212611496744', 1732119, 'zakariamtougui', 5),
+(7, 'nafie.boudakkou@gmail.com', 'nafie', 'Nafie Boudakkou', 'boudakkou', '$2a$10$nonaMLJVMajxfNCJHYTZFuuIxsgIFR1rD6BCXaf0Or0ZVuEaM3kOe', '+212611666744', 1517198, 'nafieboudakkou', 6),
+(8, 'najlae.sadrat@gmail.com', 'najlae', 'Najlae Sadrat', 'sadrat', '$2a$10$SVisoEzcOlgeUnPaKnChqeRndxBlilgOHqeNbefhTQwjT3M5psRTe', '+212647011491', 1372179, 'najlaesadrat', 3),
+(9, 'new@gmail.com', 'new', 'jiranew', 'new', '$2a$10$eHhT9vv6jG7N4WgvhvsOReslh5B5a80Q2XfCowkStRZNFY5rkZ1KO', NULL, 999999, 'new', 6),
+(10, 'new2@gmail.com', 'new2', 'jiranew2', 'new2', '$2a$10$qYD/57tljNBHicanrrcnge0lPVJh5YZPl37P9wbFyuq7Sql5hGcHS', NULL, 555555, 'new2', 6),
+(11, 'new3@gmail.com', 'new3', 'jiranew3', 'new3', '$2a$10$mnCXzc/yIdFyx0ZWPmMn2ebZvq2R2PpyiX.umKHhQj1bAbtEgPXMG', NULL, 142514, 'new3', 6),
+(12, 'hamide@gmail.com', 'hamid', 'hamidjira', 'ham', '$2a$10$71efuCQM3s/LD0.DACfeKeORBqOQx/tD6mDasWt7O2dkBc73AKzJu', NULL, 144444, 'hamide', 6),
+(13, 'new4@gmail.com', 'new4', 'jiranew4', 'new4', '$2a$10$c4wz/9vEfZ45B6JzKTK14Oxsk8.r.FqVRzbRJR8j5fdxleT0N1Ddi', NULL, 444444, 'new4', 6),
+(14, 'jalal@gmail.com', 'jalal', 'jalaljira', 'jalal', '$2a$10$aA7OvSC4.jsd/CZlfI3nmuxeQcHm/.3c2FTF2FVqibsSjaa23En26', '0632132132', 987000, 'jalal', 5),
+(15, 'karim@gmail.com', 'karim', 'karimjira', 'karim', '$2a$10$erurPc12ClxwnOfpV2Pgze1G0rPw8WznQAzW7.EApQLtqTWjlgMq.', '0698712354', 556644, 'karim', 5),
+(16, 'yousef@gmail.com', 'yousef', 'yousefjira', 'yousef', '$2a$10$OVVCI8OUTn23u1ONUJtc9.l2um751pQ3GIe77GaNMDYb6PUEzPO7y', '+212685236911', 99991, 'yousef', 6),
+(17, 'amin@gmail.com', 'amin', 'aminjira', 'amin', '$2a$10$coOaSyJ8AgTQBy2U38pL0OobiPoTTpAUwayCu0YtdFvOgSDOY/uk.', '0654126555', 987987, 'amin', 6),
+(18, 'taha@gmail.com', 'taha', 'tahajira', 'taha', '$2a$10$.lP7aaLy9pPl8RQYrTc8dOCpkrUpkf0gGvS4OJpE4QCkjJM8P9T6u', '0632112366', 1471470, 'taha', 6),
+(19, 'walid@gmail.com', 'walid', 'walidjira', 'walid', '$2a$10$El15cYbFFN.XlWt72yEZN.D3JdkJ0UC9vtNeZ59/LpJITMgzLeSIu', '0654111444', 199998, 'walid', 6),
+(20, 'dd@dd.com', 'dddd', 'ddjira', 'ddd', '$2a$10$suDwhYyhFWMHnKPgAESi8uwjfNHhHzO2nLJAu3C51aetex1.bNj.y', '0655555555', 191991, 'ddd', 6),
+(21, 'qqq@qq', 'qqq', 'qqq', 'qqq', '$2a$10$cZ4LRNYOsH8ryra9RlgcJObt4r9P9StVs9CqrQOgI6B0I6EOAd0hu', '0255555555', 5551110, 'qqq', 6),
+(22, 'pppp@ppp', 'ppp', 'ppp', 'ppp', '$2a$10$OCyEgIvjeGAuEVgWJMPXQO6gdoca/yYtMVo1jT5VXovlkofF1b6l.', '0222222221', 777333, 'ppp', 6),
+(23, 'ooo@oooo.com', 'ooo', 'ooo', 'ooo', '$2a$10$A0S34yhBeKRr/6fa0d9Qd.X2lLmbs28PxruuuNFDF4sp8M.3/nYBq', '0666666666', 55446633, 'ooo', 6),
+(24, 'kkk@kkk.com', 'kkk', 'kkk', 'kkk', '$2a$10$7KRcpSQSaZix3iOv3RcBieyattF4EpWJhZdWyMNQDM/7XXLzy0ANK', '0665565656', 141235, 'kkk', 6),
+(25, 'ccc@ccc', 'ccc', 'ccc', 'ccc', '$2a$10$CS/aVaoFUb28QZQBEMJ3RePgUyV3tX8r6gLx0ZWR2swivzBaEi2UC', '0655555555', 5541369, 'ccc', 6),
+(26, 'upd4@gmail.com', 'upd4', 'upd4', 'upd4', '$2a$10$gw3KdV5mab1oIK16XfvEb.Y.dQhTPNEoBt25WH3KdlLMcXOikmru2', '0614141414', 66666, 'upd4', 5),
+(27, 'fff@fff', 'fff', 'fff', 'fff', '$2a$10$nvJpiDA7pM2jBwNmB7IoS./okoJdFXm.DTidftlhQO8tHGk/E0Q.i', '0655256566', 2140032, 'fff', 5),
+(28, 'uuu@uuu', 'uuu', 'uuu', 'uuu', '$2a$10$t6Z0QgDsSW8937wAXfERBuQRi3zanGzAI4zwwJNg/4pjHGOT8tJnm', '0555555555', 1400225, 'uuu', 6),
+(29, 'rrr@rrr', 'rrr', 'rrr', 'rrr', '$2a$10$Q04.xzSd/Rvjw1OoTUxbeuMQn3zNn2lEKvRbHNzPIRTBnuRr8kh1m', '0655555555', 250112, 'rrr', 5);
+
+-- --------------------------------------------------------
+
+INSERT INTO `types` (`type_id`, `description`, `type_name`) VALUES
+(1, 'description 1', 'Tarea cargable'),
+(2, 'description 2', 'Tarea no cargable'),
+(3, 'description 3', 'Incidencia externa'),
+(4, 'description 4', 'Incidencia interna'),
+(5, 'description 5', 'Cambio de alcance');
+
+-- --------------------------------------------------------
+
+INSERT INTO `features` (`feature_id`, `description`, `feature_name`, `parent_feature_id`) VALUES
+(2, 'Permission pour la gestion globale des utilisateurs', 'Gestion des utilisateurs', NULL),
+(3, 'Permission pour ajouter un nouvel utilisateur', 'ajouter un utilisateur', 2),
+(4, 'Permission pour modifier un ancien utilisateur', 'Modifier un utilisateur', 2),
+(5, 'Permission pour la gestion globale des projets', 'Gestion des projets', NULL),
+(6, 'Permission pour la gestion globale des roles', 'Gestion des roles', NULL);
+
+-- --------------------------------------------------------
+
+
+INSERT INTO `projects` (`project_id`, `description`, `is_closed`, `project_name`) VALUES
+(1, 'desc1', b'0', 'project1'),
+(2, 'desc2', b'0', 'project2'),
+(4, 'SAS Description', b'0', 'ECOFISAS - EcoFI-SAS (Mantenimiento de los sistemas económico financieros...');
+
+-- --------------------------------------------------------
+
+
+INSERT INTO `user_projects` (`user_id`, `project_id`) VALUES
+(3, 1),
+(3, 2),
+(4, 1),
+(5, 1),
+(8, 4),
+(7, 4),
+(6, 4),
+(9, 1),
+(9, 2),
+(10, 1),
+(11, 2),
+(12, 1),
+(13, 1),
+(14, 1),
+(15, 1),
+(15, 2),
+(16, 1),
+(16, 2),
+(17, 1),
+(18, 1),
+(18, 2),
+(19, 1),
+(19, 2),
+(20, 1),
+(20, 2),
+(21, 1),
+(22, 1),
+(22, 2),
+(23, 1),
+(23, 2),
+(25, 1),
+(25, 2),
+(27, 2),
+(28, 1),
+(28, 2),
+(29, 1);
+
+
+-- --------------------------------------------------------
+
 INSERT INTO `equivalences` (`equivalence_id`, `column_name`, `fenix_equivalence`, `jira_equivalence`, `file_type_id`, `column_order`) VALUES
 (4, 'key', NULL, 'Key', 4, NULL),
 (5, 'summary', 'Nombre Incidencia', 'Summary', 4, 2),
@@ -69,14 +180,13 @@ INSERT INTO `equivalences` (`equivalence_id`, `column_name`, `fenix_equivalence`
 
 
 
-INSERT INTO `features` (`feature_id`, `description`, `feature_name`, `parent_feature_id`) VALUES
-(2, 'Permission pour la gestion globale des utilisateurs', 'Gestion des utilisateurs', NULL),
-(3, 'Permission pour ajouter un nouvel utilisateur', 'ajouter un utilisateur', 2),
-(4, 'Permission pour modifier un ancien utilisateur', 'Modifier un utilisateur', 2),
-(5, 'Permission pour la gestion globale des projets', 'Gestion des projets', NULL),
-(6, 'Permission pour la gestion globale des roles', 'Gestion des roles', NULL);
+
+INSERT INTO `tasks` (`task_id`, `comment`, `date`, `description`, `fix_version`, `task_key`, `original_estimate`, `remaining_estimate`, `task_status`, `task_type`, `time_spent`, `title`, `file_type_id`, `project_id`, `user_id`) VALUES
+(28, 'Preparación de datos para crear MUS', '2020-03-05', 'Crear el manual del usuario', '30.0.0', 'ECOFISAS-7814', '4h', '2h', 'In Progress', 'Desarrollo', '2h', 'ECOFISAS-7810> G03-T03 - Manual de usuario', 1, 4, 8),
+(29, 'continuar con las pruebas', '2020-03-05', 'Revisar y probar el desarrollo hecho', '30.0.0', 'ECOFISAS-8361', '4h', '2h', 'In Progress', 'Desarrollo', '2h', 'ECOFISAS-7810> G03-T02-Revisión y pruebas del analista', 1, 4, 8);
 
 -- --------------------------------------------------------
+
 
 
 INSERT INTO `incidences` (`incidence_id`, `comment`, `created`, `date`, `description`, `incidence_type`, `jira_sas`, `incidence_key`, `linked_issues`, `original_estimate`, `planned_end`, `resolved`, `task_status`, `summary`, `time_spent`, `updated`, `assigned_user_id`, `caused_user_id`, `file_type_id`, `project_id`) VALUES
@@ -92,118 +202,3 @@ INSERT INTO `incidences` (`incidence_id`, `comment`, `created`, `date`, `descrip
 (10, NULL, NULL, '2020-03-16 12:17:53', '', 'Construcción', 'SIGLO-3264', 'ECOFISAS-9394', 'ECOFISAS-9358, ECOFISAS-9435', '0.0', NULL, '2020-01-23 17:03:00', 'Resolved', 'ECOFISAS-9059 INC_INT_02 No se muestran los nuevos campos observaciones por proveedor y recordatorio', '7200.0', '2020-02-11 17:39:00', 6, 6, 4, 4),
 (11, NULL, NULL, '2020-03-16 12:17:53', 'Columna generación pedido de pantalla Consulta de Recuentos RFID se muestra valores incorrectos, debe mostrar valores Sí o No \nCódigo mensaje no muestra ningún valor \nen la exportación de excel se muestra correctamente el valor de la columna generación pedido y no se muestra el valor de la columna código mensaje \n\nDatos de pruebas en Nube 1 \nPlataforma Sevila Almacen _[DS] ALMACEN DISTRITO A.P. SEVILLA \nfechas 21/012020 hasta 23/01/2020 \n\nResponsable ==> Nafie \n', 'Construcción', 'SIGLO-2937', 'ECOFISAS-9538', 'ECOFISAS-9537, ECOFISAS-9552', '0.0', NULL, '2020-02-03 17:26:00', 'Resolved', 'ECOFISAS-9110 INC_INT_28 - se muestran valores incorrectos en las columnas generación pedido y código mensaje de pantalla Consulta de Recuentos RFID', '7200.0', '2020-02-03 18:29:00', 7, 7, 4, 4),
 (12, NULL, NULL, '2020-03-16 12:17:53', 'No se muestra el aviso que debe haber un unico articulo en pantalla Consulta de Recuentos RFID cuando seleccionar el check de datos historicos y no hay GC \n\nResponsable ==> Nafie \n', 'Construcción', 'SIGLO-2937', 'ECOFISAS-9537', 'ECOFISAS-9536, ECOFISAS-9538', '0.0', NULL, '2020-02-05 01:05:00', 'Resolved', 'ECOFISAS-9110 INC_INT_27 - No se muestra el aviso que debe haber un unico articulo en pantalla Consulta de Recuentos RFID', '600.0', '2020-02-05 01:05:00', 7, 7, 4, 4);
-
--- --------------------------------------------------------
-
-
-
-INSERT INTO `projects` (`project_id`, `description`, `is_closed`, `project_name`) VALUES
-(1, 'desc1', b'0', 'project1'),
-(2, 'desc2', b'0', 'project2'),
-(4, 'SAS Description', b'0', 'ECOFISAS - EcoFI-SAS (Mantenimiento de los sistemas económico financieros...');
-
--- --------------------------------------------------------
-
-
-
-INSERT INTO `roles` (`role_id`, `name`) VALUES
-(1, 'ROLE_ADMIN'),
-(2, 'ROLE_SUPERVISOR'),
-(3, 'ROLE_TEAMLEADER'),
-(4, 'ROLE_SENIOR'),
-(5, 'ROLE_DEVELOPER'),
-(6, 'ROLE_JUNIOR');
-
--- --------------------------------------------------------
-
-
-INSERT INTO `tasks` (`task_id`, `comment`, `date`, `description`, `fix_version`, `task_key`, `original_estimate`, `remaining_estimate`, `task_status`, `task_type`, `time_spent`, `title`, `file_type_id`, `project_id`, `user_id`) VALUES
-(28, 'Preparación de datos para crear MUS', '2020-03-05', 'Crear el manual del usuario', '30.0.0', 'ECOFISAS-7814', '4h', '2h', 'In Progress', 'Desarrollo', '2h', 'ECOFISAS-7810> G03-T03 - Manual de usuario', 1, 4, 8),
-(29, 'continuar con las pruebas', '2020-03-05', 'Revisar y probar el desarrollo hecho', '30.0.0', 'ECOFISAS-8361', '4h', '2h', 'In Progress', 'Desarrollo', '2h', 'ECOFISAS-7810> G03-T02-Revisión y pruebas del analista', 1, 4, 8);
-
--- --------------------------------------------------------
-
-
-INSERT INTO `types` (`type_id`, `description`, `type_name`) VALUES
-(1, 'description 1', 'Tarea cargable'),
-(2, 'description 2', 'Tarea no cargable'),
-(3, 'description 3', 'Incidencia externa'),
-(4, 'description 4', 'Incidencia interna'),
-(5, 'description 5', 'Cambio de alcance');
-
--- --------------------------------------------------------
-
-
-
-INSERT INTO `users` (`user_id`, `email`, `firstname`, `jira_username`, `lastname`, `password`, `phone`, `user_code`, `username`, `role_id`) VALUES
-(1, 'admin1@gmail.com', 'wail', 'jira_admin1', 'el yousfi', '$2a$10$kqT8My2gCJn0xNRzMZvkxunz89PdSuDGyZhKsaoE5lYEfm9uRcpvG', '+212697935718', 100, 'admin1', 1),
-(3, 'supervisor1@gmail.com', 'mohamed', 'jira_supervisor1', 'achkour', '$2a$10$l3EHu80DR0ZjL3PVOMg7ieJ7.8WEYzfUthoYsulQRQtLmlfbp.69O', '+212697935118', 101, 'supervisor1', 2),
-(4, 'senior1@gmail.com', 'moad', 'jira_senior1', 'khider', '$2a$10$0Ic8Q43vlI04vNeFzpfRCOIZsNfxMRJBz8G/A0T6irh7wkLNgb5Ui', '+212691475118', 102, 'senior1', 4),
-(5, 'teamleader1@gmail.com', 'hicham', 'jira_teamleader1', 'sbihi', '$2a$10$x4GqPMMH6oHBZ5uNsQUokOb0hHtGV/uPI7l/JdtA82da93TUWml.y', '+212691479918', 103, 'teamleader1', 3),
-(6, 'zakaria.mtougui@gmail.com', 'zakaria', 'Zakaria Mtougui', 'mtougui', '$2a$10$Z739lDeaKHpM7gF3dMdzjOvjPInOqGr0LF7lNytIhrNZaAohqLZv6', '+212611496744', 1732119, 'zakariamtougui', 5),
-(7, 'nafie.boudakkou@gmail.com', 'nafie', 'Nafie Boudakkou', 'boudakkou', '$2a$10$nonaMLJVMajxfNCJHYTZFuuIxsgIFR1rD6BCXaf0Or0ZVuEaM3kOe', '+212611666744', 1517198, 'nafieboudakkou', 6),
-(8, 'najlae.sadrat@gmail.com', 'najlae', 'Najlae Sadrat', 'sadrat', '$2a$10$SVisoEzcOlgeUnPaKnChqeRndxBlilgOHqeNbefhTQwjT3M5psRTe', '+212647011491', 1372179, 'najlaesadrat', 3),
-(9, 'new@gmail.com', 'new', 'jiranew', 'new', '$2a$10$eHhT9vv6jG7N4WgvhvsOReslh5B5a80Q2XfCowkStRZNFY5rkZ1KO', NULL, 999999, 'new', 6),
-(10, 'new2@gmail.com', 'new2', 'jiranew2', 'new2', '$2a$10$qYD/57tljNBHicanrrcnge0lPVJh5YZPl37P9wbFyuq7Sql5hGcHS', NULL, 555555, 'new2', 6),
-(11, 'new3@gmail.com', 'new3', 'jiranew3', 'new3', '$2a$10$mnCXzc/yIdFyx0ZWPmMn2ebZvq2R2PpyiX.umKHhQj1bAbtEgPXMG', NULL, 142514, 'new3', 6),
-(12, 'hamide@gmail.com', 'hamid', 'hamidjira', 'ham', '$2a$10$71efuCQM3s/LD0.DACfeKeORBqOQx/tD6mDasWt7O2dkBc73AKzJu', NULL, 144444, 'hamide', 6),
-(13, 'new4@gmail.com', 'new4', 'jiranew4', 'new4', '$2a$10$c4wz/9vEfZ45B6JzKTK14Oxsk8.r.FqVRzbRJR8j5fdxleT0N1Ddi', NULL, 444444, 'new4', 6),
-(14, 'jalal@gmail.com', 'jalal', 'jalaljira', 'jalal', '$2a$10$aA7OvSC4.jsd/CZlfI3nmuxeQcHm/.3c2FTF2FVqibsSjaa23En26', '0632132132', 987000, 'jalal', 5),
-(15, 'karim@gmail.com', 'karim', 'karimjira', 'karim', '$2a$10$erurPc12ClxwnOfpV2Pgze1G0rPw8WznQAzW7.EApQLtqTWjlgMq.', '0698712354', 556644, 'karim', 5),
-(16, 'yousef@gmail.com', 'yousef', 'yousefjira', 'yousef', '$2a$10$OVVCI8OUTn23u1ONUJtc9.l2um751pQ3GIe77GaNMDYb6PUEzPO7y', '+212685236911', 99991, 'yousef', 6),
-(17, 'amin@gmail.com', 'amin', 'aminjira', 'amin', '$2a$10$coOaSyJ8AgTQBy2U38pL0OobiPoTTpAUwayCu0YtdFvOgSDOY/uk.', '0654126555', 987987, 'amin', 6),
-(18, 'taha@gmail.com', 'taha', 'tahajira', 'taha', '$2a$10$.lP7aaLy9pPl8RQYrTc8dOCpkrUpkf0gGvS4OJpE4QCkjJM8P9T6u', '0632112366', 1471470, 'taha', 6),
-(19, 'walid@gmail.com', 'walid', 'walidjira', 'walid', '$2a$10$El15cYbFFN.XlWt72yEZN.D3JdkJ0UC9vtNeZ59/LpJITMgzLeSIu', '0654111444', 199998, 'walid', 6),
-(20, 'dd@dd.com', 'dddd', 'ddjira', 'ddd', '$2a$10$suDwhYyhFWMHnKPgAESi8uwjfNHhHzO2nLJAu3C51aetex1.bNj.y', '0655555555', 191991, 'ddd', 6),
-(21, 'qqq@qq', 'qqq', 'qqq', 'qqq', '$2a$10$cZ4LRNYOsH8ryra9RlgcJObt4r9P9StVs9CqrQOgI6B0I6EOAd0hu', '0255555555', 5551110, 'qqq', 6),
-(22, 'pppp@ppp', 'ppp', 'ppp', 'ppp', '$2a$10$OCyEgIvjeGAuEVgWJMPXQO6gdoca/yYtMVo1jT5VXovlkofF1b6l.', '0222222221', 777333, 'ppp', 6),
-(23, 'ooo@oooo.com', 'ooo', 'ooo', 'ooo', '$2a$10$A0S34yhBeKRr/6fa0d9Qd.X2lLmbs28PxruuuNFDF4sp8M.3/nYBq', '0666666666', 55446633, 'ooo', 6),
-(24, 'kkk@kkk.com', 'kkk', 'kkk', 'kkk', '$2a$10$7KRcpSQSaZix3iOv3RcBieyattF4EpWJhZdWyMNQDM/7XXLzy0ANK', '0665565656', 141235, 'kkk', 6),
-(25, 'ccc@ccc', 'ccc', 'ccc', 'ccc', '$2a$10$CS/aVaoFUb28QZQBEMJ3RePgUyV3tX8r6gLx0ZWR2swivzBaEi2UC', '0655555555', 5541369, 'ccc', 6),
-(26, 'upd4@gmail.com', 'upd4', 'upd4', 'upd4', '$2a$10$gw3KdV5mab1oIK16XfvEb.Y.dQhTPNEoBt25WH3KdlLMcXOikmru2', '0614141414', 66666, 'upd4', 5),
-(27, 'fff@fff', 'fff', 'fff', 'fff', '$2a$10$nvJpiDA7pM2jBwNmB7IoS./okoJdFXm.DTidftlhQO8tHGk/E0Q.i', '0655256566', 2140032, 'fff', 5),
-(28, 'uuu@uuu', 'uuu', 'uuu', 'uuu', '$2a$10$t6Z0QgDsSW8937wAXfERBuQRi3zanGzAI4zwwJNg/4pjHGOT8tJnm', '0555555555', 1400225, 'uuu', 6),
-(29, 'rrr@rrr', 'rrr', 'rrr', 'rrr', '$2a$10$Q04.xzSd/Rvjw1OoTUxbeuMQn3zNn2lEKvRbHNzPIRTBnuRr8kh1m', '0655555555', 250112, 'rrr', 5);
-
--- --------------------------------------------------------
-
-
-
-INSERT INTO `user_projects` (`user_id`, `project_id`) VALUES
-(3, 1),
-(3, 2),
-(4, 1),
-(5, 1),
-(8, 4),
-(7, 4),
-(6, 4),
-(9, 1),
-(9, 2),
-(10, 1),
-(11, 2),
-(12, 1),
-(13, 1),
-(14, 1),
-(15, 1),
-(15, 2),
-(16, 1),
-(16, 2),
-(17, 1),
-(18, 1),
-(18, 2),
-(19, 1),
-(19, 2),
-(20, 1),
-(20, 2),
-(21, 1),
-(22, 1),
-(22, 2),
-(23, 1),
-(23, 2),
-(25, 1),
-(25, 2),
-(27, 2),
-(28, 1),
-(28, 2),
-(29, 1);
-
