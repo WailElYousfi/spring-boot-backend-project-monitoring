@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 
+
 @Entity
 @Table(name = "equivalences")
 public class Equivalence {

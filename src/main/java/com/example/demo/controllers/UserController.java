@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.models.User;
@@ -46,9 +47,9 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUserByUsername(signUpRequest.getUsername()));
     }
 
-    @PutMapping("/users/{id}")
-    public ResponseEntity <User> updateUser(@PathVariable Long id, @Valid @RequestBody SignupRequest signUpRequest) {
-        return ResponseEntity.ok().body(this.userService.updateUser(signUpRequest, id));
+    @PutMapping("/roles/{roleId}/users/{userId}")
+    public ResponseEntity <User> updateUser(@Valid @RequestBody User user, @PathVariable Integer roleId, @PathVariable Long userId,  @RequestParam List<Integer> projectIds) {
+    	return ResponseEntity.ok().body(this.userService.updateUser(user, roleId, userId, projectIds));
     }
 
     @DeleteMapping("/users/{id}")

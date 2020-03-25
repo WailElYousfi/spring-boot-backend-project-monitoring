@@ -21,17 +21,15 @@ public class Type {
 	@NotBlank
 	private String description;
 	
-	@OneToMany(mappedBy = "fileType")
-	@Transient
+	@OneToMany(mappedBy = "fileType", fetch = FetchType.LAZY)
 	@JsonIgnore
     private List<Task> tasks;
 
-	@OneToMany(mappedBy = "fileType")
-	@Transient
+	@OneToMany(mappedBy = "fileType", fetch = FetchType.LAZY)
 	@JsonIgnore
     private List<Incidence> incidences;
 	
-	@OneToMany(mappedBy = "fileType")
+	@OneToMany(mappedBy = "fileType", fetch = FetchType.LAZY)
 	@JsonIgnore
     private List<Equivalence> colonnes;
 	

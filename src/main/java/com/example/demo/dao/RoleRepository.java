@@ -13,6 +13,6 @@ import com.example.demo.models.Role;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Integer> {
 	Optional<Role> findByName(ERole name);
-	Optional<Role> findByName(String name);
+//	Optional<Role> findByName(String name);
 	
 }

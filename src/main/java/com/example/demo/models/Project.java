@@ -23,23 +23,16 @@ public class Project {
 	
 	private Boolean isClosed;
 	
-	@OneToMany(mappedBy = "project")
-	@Transient
-	@JsonIgnore
+	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     private List<Task> tasks;
 
-	@OneToMany(mappedBy = "project")
-	@Transient
-	@JsonIgnore
+	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     private List<Incidence> incidences;
 	
-	@OneToMany(mappedBy = "project")
-	@Transient
-	@JsonIgnore
+	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     private List<Justification> justifications;
 	
-	@ManyToMany(mappedBy = "projects")
-	@Transient
+	@ManyToMany(mappedBy = "projects", fetch = FetchType.LAZY)
 	@JsonIgnore
     private List<User> users;
 	

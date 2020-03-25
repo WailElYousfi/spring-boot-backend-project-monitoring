@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	@JsonIgnore
 	private Long userId;
 	
 	@NotBlank
@@ -42,7 +41,6 @@ public class User {
 	@Email
 	private String email;
 
-	@NotBlank
 	@Size(max = 120)
 	@JsonIgnore
 	private String password;
@@ -60,28 +58,23 @@ public class User {
     @JoinColumn(name="roleId")
 	private Role role;
 	
-	@OneToMany(mappedBy = "user")
-	@Transient
+	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
 	@JsonIgnore
     private List<Task> tasks;
 
-	@OneToMany(mappedBy = "assignedUser")
-	@Transient
+	@OneToMany(mappedBy = "assignedUser", fetch = FetchType.LAZY)
 	@JsonIgnore
     private List<Incidence> assignedIncidences;
 
-	@OneToMany(mappedBy = "causedUser")
-	@Transient
+	@OneToMany(mappedBy = "causedUser", fetch = FetchType.LAZY)
 	@JsonIgnore
     private List<Incidence> causedIncidences;
 	
-	@OneToMany(mappedBy = "justificator")
-	@Transient
+	@OneToMany(mappedBy = "justificator", fetch = FetchType.LAZY)
 	@JsonIgnore
     private List<Justification> justifications;
 	
-	@OneToMany(mappedBy = "validator")
-	@Transient
+	@OneToMany(mappedBy = "validator", fetch = FetchType.LAZY)
 	@JsonIgnore
     private List<Justification> validations;
 	

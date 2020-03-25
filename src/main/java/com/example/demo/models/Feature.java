@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 @Entity
 @Table(name = "features")
 public class Feature {
@@ -25,10 +26,12 @@ public class Feature {
     @JoinColumn(name="parentFeatureId")
 	private Feature parentFeature;
 	
-	@ManyToMany(mappedBy = "features")
-	@Transient
+	@ManyToMany(mappedBy = "features", fetch = FetchType.LAZY)
 	@JsonIgnore
     private List<Role> roles;
+
+	public Feature() {
+	}
 
 	public Feature(String featureName, String description, Feature parentFeature) {
 		this.featureName = featureName;

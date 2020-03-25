@@ -18,8 +18,7 @@ public class Role {
 	@Column(length = 20)
 	private ERole name;
 	
-	@OneToMany(mappedBy = "role")
-	@Transient
+	@OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
 	@JsonIgnore
     private List<User> users;
 	
@@ -27,8 +26,8 @@ public class Role {
 	@JoinTable(	name = "role_features", 
 				joinColumns = @JoinColumn(name = "role_id"), 
 				inverseJoinColumns = @JoinColumn(name = "feature_id"))
-	@JsonIgnore
 	private List<Feature> features = new ArrayList<>();
+	
 	
 	public Role() {
 	}

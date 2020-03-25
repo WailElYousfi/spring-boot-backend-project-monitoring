@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "incidences")
 public class Incidence {
@@ -64,6 +66,7 @@ public class Incidence {
 	
 	@ManyToOne
     @JoinColumn(name="projectId")
+	@JsonIgnore
 	private Project project;
 	
 	public Incidence() {

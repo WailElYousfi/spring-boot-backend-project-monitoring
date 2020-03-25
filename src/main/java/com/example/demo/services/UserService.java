@@ -11,9 +11,7 @@ import java.util.Optional;
 import com.example.demo.models.Project;
 import com.example.demo.models.Role;
 import com.example.demo.models.User;
-import com.example.demo.payload.request.SignupRequest;
 import com.example.demo.Exceptions.ResourceNotFoundException;
-import com.example.demo.dao.ProjectRepository;
 import com.example.demo.dao.RoleRepository;
 import com.example.demo.dao.UserRepository;
 
@@ -26,8 +24,9 @@ public class UserService {
     @Autowired
     RoleRepository roleRepository;
     
+    
     @Autowired
-    ProjectRepository projectRepository;
+    ProjectService projectService;
 
 	@Autowired
 	PasswordEncoder encoder;
@@ -36,31 +35,27 @@ public class UserService {
         return repository.save(user);
     }*/
 
-    public User updateUser(SignupRequest userRequest, Long userId) {
+    public User updateUser(User user, Integer roleId, Long userId, List<Integer> projectIds) {
         Optional <User> userDb = this.repository.findById(userId);
-        Integer roleId = Integer.parseInt(userRequest.getRole());
         Optional <Role> role = this.roleRepository.findById(roleId);
         
-        List<Project> newProjects = new ArrayList<Project>();
+        List<Project> projects = new ArrayList<Project>();
         
-        for (Integer pr : userRequest.getProjectIds()) {
-            Optional <Project> project = this.projectRepository.findById(pr);
-            if(project.isPresent())
-            	newProjects.add(project.get());
+        for (Integer projectId : projectIds) {
+            Project project = this.projectService.getProjectById(projectId);
+            projects.add(project);
         }
         if (userDb.isPresent()) {
             User userUpdate = userDb.get();
-            userUpdate.setUserId(userId);
-            userUpdate.setEmail(userRequest.getEmail());
-            userUpdate.setFirstname(userRequest.getFirstname());
-            userUpdate.setLastname(userRequest.getLastname());
-            userUpdate.setJiraUsername(userRequest.getJiraUsername());
-            userUpdate.setPassword(userDb.get().getPassword());
-            userUpdate.setPhone(userRequest.getPhone());         
+            userUpdate.setEmail(user.getEmail());
+            userUpdate.setFirstname(user.getFirstname());
+            userUpdate.setLastname(user.getLastname());
+            userUpdate.setJiraUsername(user.getJiraUsername());
+            userUpdate.setPhone(user.getPhone());         
             userUpdate.setRole(role.get());
-            userUpdate.setUserCode(userRequest.getUserCode());
-            userUpdate.setUsername(userRequest.getUsername());
-            userUpdate.setProjects(newProjects);
+            userUpdate.setUserCode(user.getUserCode());
+            userUpdate.setUsername(user.getUsername());
+            userUpdate.setProjects(projects);
             
             repository.save(userUpdate);            
             return userUpdate;

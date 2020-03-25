@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "justifications")
 public class Justification {
@@ -44,6 +46,7 @@ public class Justification {
 	
 	@ManyToOne
     @JoinColumn(name="projectId")
+	@JsonIgnore
 	private Project project;
 	
 	public Justification() {
