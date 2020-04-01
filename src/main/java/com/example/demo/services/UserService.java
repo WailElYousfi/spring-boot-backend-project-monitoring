@@ -100,6 +100,16 @@ public class UserService {
         }
     }
     
+    public User getUserByJiraUsernameOrNull(String jiraUsername) {
+        Optional <User> userDb = this.repository.findByJiraUsername(jiraUsername);
+
+        if (userDb.isPresent()) {
+            return userDb.get();
+        } else {
+            return null;
+        }
+    }
+    
 
     public void deleteUser(Long userId) {
         Optional <User> userDb = this.repository.findById(userId);

@@ -58,7 +58,7 @@ public class User {
     @JoinColumn(name="roleId")
 	private Role role;
 	
-	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "assignedUser",fetch = FetchType.LAZY)
 	@JsonIgnore
     private List<Task> tasks;
 

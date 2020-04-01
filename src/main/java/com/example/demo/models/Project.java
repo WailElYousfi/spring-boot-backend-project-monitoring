@@ -24,9 +24,13 @@ public class Project {
 	private Boolean isClosed;
 	
 	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+	//
+	@JsonIgnore
     private List<Task> tasks;
 
 	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+	//
+	@JsonIgnore
     private List<Incidence> incidences;
 	
 	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY)

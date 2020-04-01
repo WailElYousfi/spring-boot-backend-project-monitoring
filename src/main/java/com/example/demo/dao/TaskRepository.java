@@ -17,10 +17,13 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 
 	Boolean existsByKey(String key);
 	
-	@Query("select t from Task t where t.key = ?1 and t.title = ?2")
+	@Query("select t from Task t where t.key = ?1 and t.summary = ?2")
 	Optional<Task> findByKeyAndTitle(String key, String title);
 	
 	
 	@Query("select t from Task t where t.date >= ?1 and t.date <= ?2")
-	Optional< List<Task> > findByDate(Date startDate, Date endDate);
+	Optional< List<Task> > findByDates(Date startDate, Date endDate);
+	
+	@Query("select t from Task t where t.date >= ?1 and t.date <= ?2 and t.idOt = ?3")
+	Optional< List<Task> > findByDatesAndIdOt(Date startDate, Date endDate, Integer idOt);
 }

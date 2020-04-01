@@ -8,6 +8,8 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,10 +40,14 @@ public class ExcelStructureService {
 	@Autowired
 	TypeService typeService;
 	
-	public void createFont(Font headerFont) {
+	public void createFont(Font headerFont, String color) {
 		headerFont.setBold(true);
         headerFont.setFontHeightInPoints((short) 12);
-        headerFont.setColor(IndexedColors.WHITE.getIndex());
+        if(color=="white")
+        	headerFont.setColor(IndexedColors.WHITE.getIndex());
+        else
+        	headerFont.setColor(IndexedColors.BLACK.getIndex());
+
 	}
 	
 	public void setCellStyle(CellStyle cellStyle, String color, Font headerFont) {
@@ -66,6 +72,26 @@ public class ExcelStructureService {
         		cell.setCellStyle(headerCellStyleGreen);	 
         	}
         }	
+	}
+	
+	public void setHeader(HashMap<Integer, String> columnsName, Row headerRow, int start, int end, CellStyle cellStyle1, CellStyle cellstyle2) {
+		for(int i = 0; i < columnsName.size(); i++) {
+    		Cell cell = headerRow.createCell(i);
+        	if(i >= start && i <= end) {
+        		cell.setCellValue(columnsName.get(i));
+        		cell.setCellStyle(cellStyle1);	   
+        	}else {
+        		cell.setCellValue(columnsName.get(i));
+        		cell.setCellStyle(cellstyle2);	 
+        	}
+        }	
+	}
+	
+	public void setMergedCells(Sheet sheet, int start, int end, Row row, CellStyle cellStyle, String content) {
+		sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(),row.getRowNum(),start,end));
+        Cell mergedCell = row.createCell(start);
+        mergedCell.setCellValue(content);
+		mergedCell.setCellStyle(cellStyle);
 	}
 	
 	public void setHeader2(HashMap<Integer, String> columnsName, Row header2, CellStyle headerCellStyle, CellStyle headerCellStyleGreen) {

@@ -66,7 +66,7 @@ public class Incidence {
 	
 	@ManyToOne
     @JoinColumn(name="projectId")
-	@JsonIgnore
+//	@JsonIgnore
 	private Project project;
 	
 	public Incidence() {

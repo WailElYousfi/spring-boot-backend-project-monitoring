@@ -19,34 +19,36 @@ public class Task {
 	private String key;
 	
 	@NotBlank
-	private String title;
+	private String summary;
 	
-	@NotBlank
-	private String description;
+	//@NotBlank
+	//private String description;
 	
-	@NotBlank
-	private String fixVersion;
+	//@NotBlank
+	//private String fixVersion;
 	
-	@NotBlank
 	private String originalEstimate;
 	
-	@NotBlank
 	private String remainingEstimate;
 	
-	@NotBlank
 	@Column(name="task_status")
 	private String status;
 	
-	@NotBlank
 	private String timeSpent;
 	
-	@NotBlank
 	private String comment;
 	
-	@NotBlank
 	private String taskType;
 	
 	private Date date;
+	
+	private Date created;
+	
+	private Date updated;
+	
+	private Date resolved;
+	
+	private Integer idOt;
 	
 	@ManyToOne
     @JoinColumn(name="fileTypeId")
@@ -54,7 +56,7 @@ public class Task {
 	
 	@ManyToOne
     @JoinColumn(name="userId")
-	private User user;
+	private User assignedUser;
 	
 	@ManyToOne
     @JoinColumn(name="projectId")
@@ -64,14 +66,11 @@ public class Task {
 		
 	}
 
-	public Task(String key, String title, String description, String fixVersion,
-			String originalEstimate, String remainingEstimate, String status,
-			String timeSpent, String comment, String taskType, Date date,
-			Type fileType, User user, Project project) {
+	public Task(String key, String summary, String originalEstimate,String remainingEstimate, String status, String timeSpent,
+			String comment, String taskType, Date date, Date created, Date updated, Date resolved,
+			Integer idOt, Type fileType, User assignedUser, Project project) {
 		this.key = key;
-		this.title = title;
-		this.description = description;
-		this.fixVersion = fixVersion;
+		this.summary = summary;
 		this.originalEstimate = originalEstimate;
 		this.remainingEstimate = remainingEstimate;
 		this.status = status;
@@ -79,8 +78,12 @@ public class Task {
 		this.comment = comment;
 		this.taskType = taskType;
 		this.date = date;
+		this.created = created;
+		this.updated = updated;
+		this.resolved = resolved;
+		this.idOt = idOt;
 		this.fileType = fileType;
-		this.user = user;
+		this.assignedUser = assignedUser;
 		this.project = project;
 	}
 
@@ -100,28 +103,12 @@ public class Task {
 		this.key = key;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getSummary() {
+		return summary;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getFixVersion() {
-		return fixVersion;
-	}
-
-	public void setFixVersion(String fixVersion) {
-		this.fixVersion = fixVersion;
+	public void setSummary(String summary) {
+		this.summary = summary;
 	}
 
 	public String getOriginalEstimate() {
@@ -180,6 +167,38 @@ public class Task {
 		this.date = date;
 	}
 
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	public Date getResolved() {
+		return resolved;
+	}
+
+	public void setResolved(Date resolved) {
+		this.resolved = resolved;
+	}
+
+	public Integer getIdOt() {
+		return idOt;
+	}
+
+	public void setIdOt(Integer idOt) {
+		this.idOt = idOt;
+	}
+
 	public Type getFileType() {
 		return fileType;
 	}
@@ -188,12 +207,12 @@ public class Task {
 		this.fileType = fileType;
 	}
 
-	public User getUser() {
-		return user;
+	public User getAssignedUser() {
+		return assignedUser;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setAssignedUser(User assignedUser) {
+		this.assignedUser = assignedUser;
 	}
 
 	public Project getProject() {
@@ -203,5 +222,7 @@ public class Task {
 	public void setProject(Project project) {
 		this.project = project;
 	}
+
+	
 	
 }

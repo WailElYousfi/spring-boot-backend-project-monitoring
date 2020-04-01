@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,24 +24,26 @@ public class TaskService {
     }
 
     public Task updateTask(Task task) {
-        Optional <Task> taskDb = this.repository.findByKeyAndTitle(task.getKey(), task.getTitle());
+        Optional <Task> taskDb = this.repository.findByKeyAndTitle(task.getKey(), task.getSummary());
 
         if (taskDb.isPresent()) {
             Task taskUpdate = taskDb.get();
             taskUpdate.setProject(task.getProject());
             taskUpdate.setKey(task.getKey());
-            taskUpdate.setTitle(task.getTitle());
-            taskUpdate.setDescription(task.getDescription());
-            taskUpdate.setFixVersion(task.getFixVersion());
+            taskUpdate.setSummary(task.getSummary());
+            taskUpdate.setCreated(task.getCreated());
+            taskUpdate.setUpdated(task.getUpdated());
+            taskUpdate.setResolved(task.getResolved());
             taskUpdate.setOriginalEstimate(task.getOriginalEstimate());
             taskUpdate.setRemainingEstimate(task.getRemainingEstimate());
 			taskUpdate.setStatus(task.getStatus());
 			taskUpdate.setTimeSpent(task.getTimeSpent());
 			taskUpdate.setTaskType(task.getTaskType());
 		//	taskUpdate.setDate(task.getDate());
-			taskUpdate.setUser(task.getUser());
+			taskUpdate.setAssignedUser(task.getAssignedUser());
 			taskUpdate.setComment(task.getComment());
 			taskUpdate.setFileType(task.getFileType());
+			taskUpdate.setIdOt(task.getIdOt());
             repository.save(taskUpdate);            
             return taskUpdate;
         } else {
@@ -76,6 +79,25 @@ public class TaskService {
         }
     }
     
+    public List<Task> getTaskByDates(Date startDate, Date endDate) {
+        Optional < List<Task> > taskDb = this.repository.findByDates(startDate, endDate);
+
+        if (taskDb.isPresent()) {
+            return taskDb.get();
+        } else {
+            throw new ResourceNotFoundException("Record not found");
+        }
+    }
+    
+    public List<Task> getTaskByDatesAndIdOt(Date startDate, Date endDate, Integer idOt) {
+        Optional < List<Task> > taskDb = this.repository.findByDatesAndIdOt(startDate, endDate, idOt);
+
+        if (taskDb.isPresent()) {
+            return taskDb.get();
+        } else {
+            throw new ResourceNotFoundException("Record not found");
+        }
+    }
 
     public void deleteTask(Integer taskId) {
         Optional <Task> taskDb = this.repository.findById(taskId);

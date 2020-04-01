@@ -1,6 +1,8 @@
 package com.example.demo.services;
 
+import java.text.DecimalFormat;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,13 @@ public class test {
 	static UserRepository rep ;
 	
 	public static void main(String[] args) {
-
-		Optional<User> user = rep.findByUsername("new");
-		if(user.isPresent())
-			System.out.println(user.get().getFirstname());
+		/*long u = 5000;
+		double d = ((double)u)/3600;
+		DecimalFormat df = new DecimalFormat("0.0");
+		System.out.printf(df.format(d));	*/
+		String s = "1,2";
+		float f = Float.parseFloat(s.replace(",", "."));
+		System.out.println(f);
 	}
 
 }

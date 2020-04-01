@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.IncidenceFilterDto;
+import com.example.demo.dto.taskFilterDto;
 import com.example.demo.models.Incidence;
 import com.example.demo.models.Task;
 import com.example.demo.services.FileService;
@@ -35,11 +36,16 @@ public class FileController {
 	@Autowired
 	FileService fileService;
 
-	///////////////// tareas //////////////
+	///////////////// tareas ////////////// getDataRequerimientoFile
 	
 	@PostMapping("/tasks/data")
-	public ResponseEntity < List<Task> > getDataTaskFile(@RequestParam("file") MultipartFile file) throws Exception{
-		return ResponseEntity.ok().body(fileService.getDataTaskFile(file));
+	public ResponseEntity < List<Task> > getDataTaskFile(@RequestParam("file") MultipartFile file, @RequestParam("idOt") Integer idOt) throws Exception{
+		return ResponseEntity.ok().body(fileService.getDataTaskFile(file, idOt));
+	}
+	
+	@PostMapping("/requerimiento/data")
+	public ResponseEntity < List<Task> > getDataRequerimientoFile(@RequestParam("file") MultipartFile file, @RequestParam("idOt") Integer idOt) throws Exception{
+		return ResponseEntity.ok().body(fileService.getDataRequerimientoFile(file, idOt));
 	}
 	
 	@PostMapping("/tasks/upload")
@@ -47,13 +53,14 @@ public class FileController {
 		return ResponseEntity.ok().body(fileService.uploadTasks(tasks));
 	}
 	
-	@GetMapping("/tasks/generate")
-	public ResponseEntity < String > generateTasksFile(@RequestParam(value="startDate", required=true) String startDate,
-											  @RequestParam(value="endDate", required=true) String endDate,
-											  @RequestParam(value="ot", required=true) long ot) throws Exception{
-		Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
-		Date date2=new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
-		return ResponseEntity.ok().body(fileService.generateTasksFile(date1, date2, ot));
+	@RequestMapping(value = "/tasks/generate", method = RequestMethod.POST, consumes="application/json")
+	public ResponseEntity < String > generateTasksFile(@RequestBody taskFilterDto filter) throws Exception{
+		return ResponseEntity.ok().body(fileService.generateTasksFile(filter));
+	}
+	
+	@RequestMapping(value = "/requerimiento/generate", method = RequestMethod.POST, consumes="application/json")
+	public ResponseEntity < String > generateRequerimientoFile(@RequestBody taskFilterDto filter) throws Exception{
+		return ResponseEntity.ok().body(fileService.generateRequerimientoFile(filter));
 	}
 	
 	//////////// incidencias ////////////
