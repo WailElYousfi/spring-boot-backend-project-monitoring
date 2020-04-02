@@ -1,10 +1,15 @@
 package com.example.demo.services;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.example.demo.models.Incidence;
 import com.example.demo.Exceptions.ResourceNotFoundException;
@@ -80,6 +85,24 @@ public class IncidenceService {
             throw new ResourceNotFoundException("Record not found");
         }
     }
+    
+    public List<Incidence> getIncidencesByDates(Date startDate, Date endDate){
+    	Optional < List<Incidence> > incidences = this.repository.findByDate(startDate, endDate);
+    	if (incidences.isPresent()) {
+            return incidences.get();
+        } else {
+            throw new ResourceNotFoundException("Record not found");
+        }
+    }
+    
+	public List<String> getUsernamesOfIncidencesByDates(Date startDate, Date endDate){
+		List<Incidence> incidences = getIncidencesByDates(startDate, endDate);
+		Set<String> usernames = new HashSet<String>(); //without duplicates
+		for (Incidence incidence : incidences)
+			usernames.add(incidence.getCausedUser().getJiraUsername());
+		return (List<String>) usernames;
+		
+	}
     
 
     public void deleteIncidence(Integer incidenceId) {

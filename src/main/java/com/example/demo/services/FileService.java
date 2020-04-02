@@ -2,7 +2,10 @@ package com.example.demo.services;
 
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,6 +23,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
@@ -29,6 +36,8 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +82,31 @@ public class FileService {
 	TypeService typeService;
 	
 	@Autowired
-	ExcelStructureService excelStructureService;
+	ExcelService excelService;
+	
+	
+	public String secondsToHoursOrNull(Cell cell) {
+		if(cell.toString().isEmpty()) {
+			double originalEstimateInHours = ((double) cell.getNumericCellValue()) / 3600;
+			DecimalFormat df = new DecimalFormat("0.0");
+			return df.format(originalEstimateInHours);
+		}
+		return null;
+	}
+	
+	public Date getDateFromCellOrNull(Cell cell) {
+		try {
+			if(cell.toString().isEmpty())
+				return null;
+			if(cell.getCellTypeEnum()== CellType.STRING) {
+				Date date=new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(cell.toString());
+				return date;
+			}else 
+				return cell.getDateCellValue();
+		}catch(Exception e) {
+			throw new IllegalArgumentException("Invalid cell format");
+		}
+	}
 	
 	
 	public List<Task> getDataTaskFile(MultipartFile file, Integer idOt) throws Exception {	
@@ -162,30 +195,41 @@ public class FileService {
     }
 	
 	
+	
+	
 	public List<Incidence> getDataIncidenceFile(MultipartFile file) throws Exception {	
 		Path tempDir = Files.createTempDirectory("");
 		File tempFile = tempDir.resolve(file.getOriginalFilename()).toFile();
-		file.transferTo(tempFile);
-		XSSFWorkbook workbook = new XSSFWorkbook(tempFile); 
-		XSSFSheet sheet = workbook.getSheetAt(0); 
-        Row row;
-        
+		file.transferTo(tempFile);	
+		FileInputStream in = new FileInputStream(tempFile);
+		Workbook workbook;
+		Sheet sheet;
+		if(tempFile.getName().endsWith(".xls")) {
+			 workbook = new HSSFWorkbook(in);
+			 sheet = workbook.getSheetAt(0);
+		}else if(tempFile.getName().endsWith(".xlsx")) {
+			workbook = new XSSFWorkbook(in);
+			sheet = workbook.getSheetAt(0);
+		}else {
+			in.close();
+			throw new IllegalArgumentException("Invalid extension");
+		}	
+		
+        Row row;       
 		List<Incidence> incidenceList = new ArrayList<Incidence>();
 		Type incidenciaInternaType = typeService.getTypeByName("Incidencia interna");
 		HashMap<String, Integer> hm = new HashMap<String, Integer>();
-		List<String> originalColumns = new ArrayList<String>();
+		Set<String> originalColumns = new HashSet<String>();
 		List<String> fileColumns = new ArrayList<String>();
 		
 		for (Equivalence colonne : incidenciaInternaType.getColonnes())
 			if(colonne.getJiraEquivalence() != null)
 				originalColumns.add(colonne.getJiraEquivalence());
-		
-		List<String> originalColumnWithoutDuplicates =  originalColumns.stream().distinct().collect(Collectors.toList()); // Remove duplicates
-		
+				
 		for(int j=0; j < sheet.getRow(3).getLastCellNum(); j++)
 			fileColumns.add(sheet.getRow(3).getCell(j).toString());
 		
-		if(!fileColumns.containsAll(originalColumnWithoutDuplicates)) {
+		if(!fileColumns.containsAll(originalColumns)) {
 	        workbook.close();
 			throw new ResourceNotFoundException("Columns not found in this file !!");
 		}
@@ -196,50 +240,30 @@ public class FileService {
 					hm.put(colonne.getColumnName(), j);
 					
 		for(int i=4; i <= sheet.getLastRowNum()-1; i++){        	               	
-            row = (Row) sheet.getRow(i);  //sheet number
+            row = (Row) sheet.getRow(i);
 			Incidence incidence = new Incidence();
 			incidence.setKey(row.getCell(hm.get("key")).toString());
 			incidence.setStatus(row.getCell(hm.get("status")).toString());
-			incidence.setTimeSpent(row.getCell(hm.get("timeSpent")).toString());
-			incidence.setAssignedUser(userService.getUserByJiraUsername(row.getCell(hm.get("assignedUser")).toString()));
-			incidence.setCausedUser(userService.getUserByJiraUsername(row.getCell(hm.get("causedUser")).toString()));
+			incidence.setAssignedUser(userService.getUserByJiraUsernameOrNull(row.getCell(hm.get("assignedUser")).toString())); //return User or NULL
+			incidence.setCausedUser(userService.getUserByJiraUsernameOrNull(row.getCell(hm.get("causedUser")).toString()));
 			incidence.setSummary(row.getCell(hm.get("summary")).toString());
-			incidence.setOriginalEstimate(row.getCell(hm.get("originalEstimate")).toString());
+			incidence.setOriginalEstimate(secondsToHoursOrNull(row.getCell(hm.get("originalEstimate")))); // #,# or null
+			incidence.setTimeSpent(secondsToHoursOrNull(row.getCell(hm.get("timeSpent"))));
 			incidence.setDescription(row.getCell(hm.get("description")).toString());
 			incidence.setLinkedIssues(row.getCell(hm.get("linkedIssues")).toString());
-			incidence.setJiraSas(row.getCell(hm.get("jiraSas")).toString());
-			//incidence.setComment(row.getCell(hm.get("comment")).toString());
-			//if(row.getCell(hm.get("created")).getCellType()== Cell.CELL_TYPE_STRING) {
-			//	Date date1=new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(row.getCell(hm.get("created")).toString());
-			//	incidence.setCreated(date1);
-			//}else 
-			//	incidence.setCreated(row.getCell(hm.get("created")).getDateCellValue());	
-			
+			incidence.setJiraSas(row.getCell(hm.get("jiraSas")).toString());						
 			incidence.setIncidenceType(row.getCell(hm.get("incidenceType")).toString());
-			if(row.getCell(hm.get("updated")).getCellType()== Cell.CELL_TYPE_STRING) {
-				Date date2=new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(row.getCell(3).toString());
-				incidence.setUpdated(date2);
-			}else 
-				incidence.setUpdated(row.getCell(hm.get("updated")).getDateCellValue());	
-			
-			if(row.getCell(hm.get("resolved")).getCellType()== Cell.CELL_TYPE_STRING) {
-				Date date3=new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(row.getCell(8).toString());
-				incidence.setResolved(date3);
-			}else 
-				incidence.setResolved(row.getCell(hm.get("resolved")).getDateCellValue());	
-			
+			incidence.setUpdated(getDateFromCellOrNull(row.getCell(hm.get("updated"))));	//return date or null
+			incidence.setResolved(getDateFromCellOrNull(row.getCell(hm.get("resolved"))));					
 			incidence.setProject(projectService.getProjectByName(row.getCell(hm.get("project")).toString()));
-			
+			incidence.setDate(new Date());
 			if(row.getCell(hm.get("summary")).toString().contains("INC_INT"))
 				incidence.setFileType(typeService.getTypeByName("Incidencia interna"));
-			else
+			else if(row.getCell(hm.get("summary")).toString().contains("INC_EXT"))
 				incidence.setFileType(typeService.getTypeByName("Incidencia externa"));
-			
-			incidence.setDate(new Date());
-			
+						
 			incidenceList.add(incidence);
         }
-        
         workbook.close();
         return incidenceList;
     }
@@ -270,9 +294,8 @@ public class FileService {
 		        CreationHelper createHelper = workbook.getCreationHelper();
 	
 		        Font headerFont = workbook.createFont();
-		        excelStructureService.createFont(headerFont, "white");		    
 		        CellStyle headerCellStyle = workbook.createCellStyle();
-		        excelStructureService.setCellStyle(headerCellStyle, "green", headerFont);
+		        excelService.setCellStyle(headerCellStyle, "green", headerFont, true, "white");
 	
 		        Row headerRow = sheet.createRow(0);		        
 		        Type taskType = typeService.getTypeByName("Tarea cargable");
@@ -282,7 +305,7 @@ public class FileService {
 					if(colonne.getFenixEquivalence() != null)
 						columnsName.put(colonne.getColumnOrder(), colonne.getFenixEquivalence());		    
 			      
-		        excelStructureService.setHeader(columnsName, headerRow, headerCellStyle, headerCellStyle);
+				excelService.setHeader(columnsName, headerRow, headerCellStyle, headerCellStyle);
 	
 		        CellStyle dateCellStyle = workbook.createCellStyle();
 		        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd/MM/yyyy HH:mm:ss"));
@@ -329,36 +352,20 @@ public class FileService {
 	
 	
 	public String generateIncidencesFile(IncidenceFilterDto filter) throws Exception {
+		excelService.createTemplateIncidenciaFile();
 		Date startDate=new SimpleDateFormat("yyyy-MM-dd").parse(filter.getStartDate());
 		Date endDate=new SimpleDateFormat("yyyy-MM-dd").parse(filter.getEndDate());
 		Optional < List<Incidence> > result = incidenceRepository.findByDate(startDate, endDate);
+		Date date = new Date();
 		if(!result.isPresent()) {
 			throw new ResourceNotFoundException("No incidence is found in these dates !!!");
 		}else {
 			List<Incidence> incidences = result.get();
 			try {
-				//String path = Paths.get("").toAbsolutePath().toString() + "\\src\\main\\resources\\files\\incidences\\";
-				XSSFWorkbook workbook = new XSSFWorkbook();
-				Date date = new Date();
-				String fileName = Long.toString(date.getTime());
-				FileOutputStream out = new FileOutputStream(new File(Paths.get(getClass().getClassLoader().getResource("files/incidences").toURI()).toString() + "/" + fileName +".xls"));
-				Sheet sheet = workbook.createSheet("Sheet1");
-	
+				FileInputStream inputStream = new FileInputStream(new File(Paths.get(getClass().getClassLoader().getResource("files/templates").toURI()).toString() + "/incidenciaTemplate.xls"));
+	            Workbook workbook = WorkbookFactory.create(inputStream);
+		        Sheet sheet = workbook.getSheetAt(0);
 		        CreationHelper createHelper = workbook.getCreationHelper();
-		        Font headerFont = workbook.createFont();
-		        excelStructureService.createFont(headerFont, "white");
-		        CellStyle headerCellStyle = workbook.createCellStyle();		       		        
-		        CellStyle headerCellStyleGreen = workbook.createCellStyle();		       
-		        excelStructureService.setCellStyle(headerCellStyle, "red", headerFont);
-		        excelStructureService.setCellStyle(headerCellStyleGreen, "green", headerFont);
-		        Row rw = sheet.createRow(1);
-		        sheet.addMergedRegion(new CellRangeAddress(1,1,1,7));
-		        Cell mergedCell = rw.createCell(1);
-		        mergedCell.setCellValue("Campos obligatorios para la Creación");		    
-		        CellStyle headerCellStyle2 = workbook.createCellStyle();		       
-		        headerCellStyle2.setAlignment(CellStyle.ALIGN_CENTER);
-		        excelStructureService.setCellStyle(headerCellStyle2, "black", headerFont);
-		        mergedCell.setCellStyle(headerCellStyle2);		        
 
 				Type incidenciaInternaType = typeService.getTypeByName("Incidencia interna");
 				HashMap<Integer, String> columnsName = new HashMap<Integer, String>();
@@ -367,17 +374,15 @@ public class FileService {
 					if(colonne.getFenixEquivalence() != null)
 						columnsName.put(colonne.getColumnOrder(), colonne.getFenixEquivalence());		    
 	
-		        Row headerRow = sheet.createRow(2);
-		        excelStructureService.setHeader(columnsName, headerRow, headerCellStyle, headerCellStyleGreen);        
-		        Row headerRow2 = sheet.createRow(3);
-		        excelStructureService.setHeader2(columnsName, headerRow2, headerCellStyle, headerCellStyleGreen);		  		        	        		 		        		 		        
+		        Row row2 = sheet.getRow(2);
+				excelService.setHeader(columnsName, row2);	
+		        Row row3 = sheet.getRow(3);
 		        List<Row> rows = new ArrayList<Row>();
-		        rows.add(headerRow2);
+		        rows.add(row3);
 		        for (int i = 4; i <= 13; i++)
 		        	rows.add(sheet.createRow(i));
-		        rows.add(headerRow);
-		       
-		        excelStructureService.seedAdditionalCells(rows, columnsName);
+		        rows.add(row2);
+		        excelService.seedAdditionalCells(rows, columnsName);
 		        		       		        
 		        CellStyle dateCellStyle = workbook.createCellStyle(); // Create Cell Style for formatting Date
 		        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd/MM/yyyy"));	        		     
@@ -403,7 +408,7 @@ public class FileService {
 
 			        Calendar c = Calendar.getInstance();
 			    	c.setTime(fechaInicio);
-			    	c.add(Calendar.MONTH, 2);// after 1 day			 
+			    	c.add(Calendar.MONTH, 2);// add 1 month			 
 			    	Date finCliente = new SimpleDateFormat("dd/MM/yyyy").parse(Integer.toString(c.get(Calendar.DAY_OF_MONTH))+"/"+Integer.toString(c.get(Calendar.MONTH))+"/"+Integer.toString(c.get(Calendar.YEAR)));  			    	
 				    Cell CellDate2 = row.createCell(7);
 				    CellDate2.setCellValue(finCliente);
@@ -431,38 +436,40 @@ public class FileService {
 		        for(int i = 0; i < columnsName.size()+10; i++) { // Resize all columns to fit the content size
 		            sheet.autoSizeColumn(i);
 		        }
-		        workbook.write(out);
-		        out.close();
-		        workbook.close();	
-			return fileName;
-			}catch(Exception e) {
-				throw new ResourceNotFoundException(e.getMessage());
+		        inputStream.close();		    
+	            FileOutputStream outputStream = new FileOutputStream(new File(Paths.get(getClass().getClassLoader().getResource("files/incidences").toURI()).toString() + "/incidencia_" + date.getTime()+ ".xls"));
+	            workbook.write(outputStream);
+	            workbook.close();
+	            outputStream.close();
+			} catch (IOException | EncryptedDocumentException| InvalidFormatException ex) {
+				ex.printStackTrace();
 			}
 		}
+		return Long.toString(date.getTime());
 	}
 	
-	public List<String> getUsernames(Date startDate, Date endDate){
-		Optional < List<Incidence> > result = incidenceRepository.findByDate(startDate, endDate);
-		List<String> usernames = new ArrayList<String>();
-		if(!result.isPresent()) {
-			throw new ResourceNotFoundException("No incidence is found in these dates !!!");
-		}else {
-			List<Incidence> incidences = result.get();
-			for (Incidence incidence : incidences)
-				usernames.add(incidence.getCausedUser().getJiraUsername());
-			return usernames.stream().distinct().collect(Collectors.toList()); // Remove duplicates
-		}
-	}
 	
 	
 	public List<Task> getDataRequerimientoFile(MultipartFile file, Integer idOt) throws Exception {	
+
 		Path tempDir = Files.createTempDirectory("");
 		File tempFile = tempDir.resolve(file.getOriginalFilename()).toFile();
-		file.transferTo(tempFile);		
-		XSSFWorkbook workbook = new XSSFWorkbook(tempFile); 
-		XSSFSheet sheet = workbook.getSheetAt(0); 
-        Row row;
-        
+		file.transferTo(tempFile);	
+		FileInputStream in = new FileInputStream(tempFile);
+		Workbook workbook;
+		Sheet sheet;
+		if(tempFile.getName().endsWith(".xls")) {
+			 workbook = new HSSFWorkbook(in);
+			 sheet = workbook.getSheetAt(0);
+		}else if(tempFile.getName().endsWith(".xlsx")) {
+			workbook = new XSSFWorkbook(in);
+			sheet = workbook.getSheetAt(0);
+		}else {
+			in.close();
+			throw new IllegalArgumentException("Invalid extension");
+		}	
+	       
+		Row row;        
         Type requerimientoType = typeService.getTypeByName("Requerimiento");
 		HashMap<String, Integer> hm = new HashMap<String, Integer>();
 		Set<String> originalColumns = new HashSet<String>();
@@ -494,52 +501,21 @@ public class FileService {
 			task.setProject(projectService.getProjectById(4));
 			task.setKey(row.getCell(hm.get("key")).toString());
 			task.setSummary(row.getCell(hm.get("summary")).toString());
-			
-			String originalEstimate = null;
-			if(!row.getCell(hm.get("originalEstimate")).toString().isEmpty()) {
-				double originalEstimateInHours = ((double) row.getCell(hm.get("originalEstimate")).getNumericCellValue()) / 3600;
-				DecimalFormat df = new DecimalFormat("0.0");
-				originalEstimate = df.format(originalEstimateInHours);
-			}
-			String remainingEstimate = null;
-			if(!row.getCell(hm.get("remainingEstimate")).toString().isEmpty()) {
-				double remainingEstimateInHours = ((double) row.getCell(hm.get("remainingEstimate")).getNumericCellValue()) / 3600;
-				DecimalFormat df = new DecimalFormat("0.0");
-				remainingEstimate = df.format(remainingEstimateInHours);
-			}
-			String timeSpent = null;
-			if(!row.getCell(hm.get("timeSpent")).toString().isEmpty()) {
-				double timeSpentInHours = ((double) row.getCell(hm.get("timeSpent")).getNumericCellValue()) / 3600;
-				DecimalFormat df = new DecimalFormat("0.0");
-				timeSpent = df.format(timeSpentInHours);
-			}
-			
-			task.setOriginalEstimate(originalEstimate);
-			task.setRemainingEstimate(remainingEstimate);
+			task.setOriginalEstimate(secondsToHoursOrNull(row.getCell(hm.get("originalEstimate")))); // #,# or null
+			task.setRemainingEstimate(secondsToHoursOrNull(row.getCell(hm.get("remainingEstimate")))); // #,# or null
+			task.setTimeSpent(secondsToHoursOrNull(row.getCell(hm.get("timeSpent")))); // #,# or null
 			task.setStatus(row.getCell(hm.get("status")).toString());
-			task.setTimeSpent(timeSpent);
 			task.setTaskType(row.getCell(hm.get("taskType")).toString());
 			task.setDate(new Date());
 			task.setAssignedUser(userService.getUserByJiraUsernameOrNull(row.getCell(hm.get("assignedUser")).toString())); //return user or null
 			task.setFileType(requerimientoType);
-			
-			if(row.getCell(hm.get("created"))==null || row.getCell(hm.get("created")).getCellTypeEnum()== CellType.BLANK)
-				task.setCreated(null);
-			else
-				task.setCreated(row.getCell(hm.get("created")).getDateCellValue());
-			
-			if(row.getCell(hm.get("updated"))==null || row.getCell(hm.get("updated")).getCellTypeEnum()== CellType.BLANK)
-				task.setUpdated(null);
-			else
-				task.setUpdated(row.getCell(hm.get("updated")).getDateCellValue());
-			
-			if(row.getCell(hm.get("resolved"))==null || row.getCell(hm.get("resolved")).getCellTypeEnum()== CellType.BLANK)
-				task.setResolved(null);
-			else
-				task.setResolved(row.getCell(hm.get("resolved")).getDateCellValue());
-			
+			task.setCreated(getDateFromCellOrNull(row.getCell(hm.get("created"))));
+			task.setUpdated(getDateFromCellOrNull(row.getCell(hm.get("updated"))));
+			task.setResolved(getDateFromCellOrNull(row.getCell(hm.get("resolved"))));
 			task.setIdOt(idOt);
-			
+
+		/*	if(row.getCell(hm.get("created"))==null || row.getCell(hm.get("created")).getCellTypeEnum()== CellType.BLANK)
+				task.setCreated(null);*/
 			taskList.add(task);
         }
         workbook.close();
@@ -548,82 +524,70 @@ public class FileService {
 	
 	
 	public String generateRequerimientoFile(taskFilterDto filter) throws Exception {
+		excelService.createTemplateRequerimientoFile();
 		Date startDate=new SimpleDateFormat("yyyy-MM-dd").parse(filter.getStartDate());
 		Date endDate=new SimpleDateFormat("yyyy-MM-dd").parse(filter.getEndDate());
 		List<Task> tasks = taskService.getTaskByDatesAndIdOt(startDate, endDate, filter.getIdOt());
-			try {
-				XSSFWorkbook workbook = new XSSFWorkbook();
-				Date date = new Date();
-				String fileName = Long.toString(date.getTime());
-				FileOutputStream out = new FileOutputStream(new File(Paths.get(getClass().getClassLoader().getResource("files/tasks").toURI()).toString() + "/" + fileName +".xls"));
-				Sheet sheet = workbook.createSheet("Sheet1");
-	
-		        CreationHelper createHelper = workbook.getCreationHelper();
-	
-		        Font row0font = workbook.createFont();
-		        excelStructureService.createFont(row0font, "white");		    
-		        CellStyle blackStyle = workbook.createCellStyle();
-		        CellStyle greenStyle = workbook.createCellStyle();
-		        CellStyle redStyle = workbook.createCellStyle();
-		        excelStructureService.setCellStyle(blackStyle, "black", row0font);
-		        excelStructureService.setCellStyle(greenStyle, "green", row0font);
-		        excelStructureService.setCellStyle(redStyle, "red", row0font);
-		        Row row0 = sheet.createRow(0);	 
-		        excelStructureService.setMergedCells(sheet, 1, 4, row0, blackStyle, "Campos obligatorios para la Creación");
-		        excelStructureService.setMergedCells(sheet, 7, 13, row0, greenStyle, "Campos solo lectura");
+		try {
+			FileInputStream inputStream = new FileInputStream(new File(Paths.get(getClass().getClassLoader().getResource("files/templates").toURI()).toString() + "/requerimientoTemplate.xls"));
+            Workbook workbook = WorkbookFactory.create(inputStream);
+	        Sheet sheet = workbook.getSheetAt(0);
+	        Date date = new Date();
+		        			      
+	        Type taskType = typeService.getTypeByName("Requerimiento");
+			HashMap<Integer, String> columnsName = new HashMap<Integer, String>();				
+			for (Equivalence colonne : taskType.getColonnes())
+				if(colonne.getFenixEquivalence() != null)
+					columnsName.put(colonne.getColumnOrder(), colonne.getFenixEquivalence());		    
 			      
-		        Type taskType = typeService.getTypeByName("Requerimiento");
-				HashMap<Integer, String> columnsName = new HashMap<Integer, String>();
-				
-				for (Equivalence colonne : taskType.getColonnes())
-					if(colonne.getFenixEquivalence() != null)
-						columnsName.put(colonne.getColumnOrder(), colonne.getFenixEquivalence());		    
-			      
-				Row row1 = sheet.createRow(1);
-		        excelStructureService.setHeader(columnsName, row1, 1, 4, redStyle, greenStyle);			        
+			Row row1 = sheet.getRow(1);
+			excelService.setHeader(columnsName, row1);			        
+	        
+        	List<String> names = new ArrayList<String>();
+	        for (Task task : tasks)
+	        	names.add(task.getSummary());
+	        java.util.Collections.sort(names); // sort names alphabetically
 		        
-	        	List<String> names = new ArrayList<String>();
-		        for (Task task : tasks)
-		        	names.add(task.getSummary());
-		        java.util.Collections.sort(names); // sort alphabetically?
-		        
-		        int rowNum = 2;
-		        for(Task task: tasks) {		     
-		        	Row row = sheet.createRow(rowNum++);
-			        row.createCell(1).setCellValue(names.indexOf(task.getSummary()) + 1);
-			        row.createCell(2).setCellValue("Codificación / Pruebas Unitarias");
-			        row.createCell(3).setCellValue(task.getSummary());
-			        row.createCell(4).setCellValue("Disponibilidad");
-			        if(task.getAssignedUser() != null)
-			        	row.createCell(5).setCellValue(task.getAssignedUser().getUserCode());
+	        int rowNum = 2;
+	        for(Task task: tasks) {		     
+	        	Row row = sheet.createRow(rowNum++);
+		        row.createCell(1).setCellValue(names.indexOf(task.getSummary()) + 1);
+		        row.createCell(2).setCellValue("Codificación / Pruebas Unitarias");
+		        row.createCell(3).setCellValue(task.getSummary());
+		        row.createCell(4).setCellValue("Disponibilidad");
+		        if(task.getAssignedUser() != null)
+		        	row.createCell(5).setCellValue(task.getAssignedUser().getUserCode());
 			        
-			        String originalEstimate = task.getOriginalEstimate();
-			        CellStyle decimalStyle = workbook.createCellStyle();
-	                DataFormat format = workbook.createDataFormat();
-	                decimalStyle.setDataFormat(format.getFormat("0.0"));
-	                
-			        if(task.getOriginalEstimate() != null) {
-			        	Cell cell6 = row.createCell(6);
-				        cell6.setCellStyle(decimalStyle);
-				        cell6.setCellValue(Float.parseFloat(originalEstimate.replace(",", ".")));
-				        Cell cell10 = row.createCell(10);
-				        cell10.setCellStyle(decimalStyle);
-				        cell10.setCellValue(Float.parseFloat(originalEstimate.replace(",", ".")));				       
-			        }			      
-			        row.createCell(7).setCellValue(task.getIdOt());			        		        	        
-		        }
-	
-		        for(int i = 0; i < columnsName.size(); i++) {
-		            sheet.autoSizeColumn(i);
-		        }
-		        workbook.write(out);
-		        out.close();
-		        workbook.close();		
-			}catch(Exception e) {
-				System.out.println(e);
-			}
+		        String originalEstimate = task.getOriginalEstimate();
+		        CellStyle decimalStyle = workbook.createCellStyle();
+                DataFormat format = workbook.createDataFormat();
+                decimalStyle.setDataFormat(format.getFormat("0.0"));
+                
+		        if(task.getOriginalEstimate() != null) {
+		        	Cell cell6 = row.createCell(6);
+			        cell6.setCellStyle(decimalStyle);
+			        cell6.setCellValue(Float.parseFloat(originalEstimate.replace(",", ".")));
+			        Cell cell10 = row.createCell(10);
+			        cell10.setCellStyle(decimalStyle);
+			        cell10.setCellValue(Float.parseFloat(originalEstimate.replace(",", ".")));				       
+		        }			      
+		        row.createCell(7).setCellValue(task.getIdOt());			        		        	        
+	        }
+
+	        for(int i = 0; i < columnsName.size(); i++) {
+	            sheet.autoSizeColumn(i);
+	        }
+	        inputStream.close();		    
+            FileOutputStream outputStream = new FileOutputStream(new File(Paths.get(getClass().getClassLoader().getResource("files/tasks").toURI()).toString() + "/requerimiento_" + date.getTime()+ ".xls"));
+            workbook.write(outputStream);
+            workbook.close();
+            outputStream.close();
+		} catch (IOException | EncryptedDocumentException| InvalidFormatException ex) {
+			ex.printStackTrace();
+		}
 		return "Tasks file successfully generated";
 	}
+	
 
 	
 }

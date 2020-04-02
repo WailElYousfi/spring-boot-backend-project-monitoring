@@ -1,23 +1,39 @@
 package com.example.demo.services;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.IncidenceRepository;
 import com.example.demo.dao.TaskRepository;
+import com.example.demo.dto.taskFilterDto;
+import com.example.demo.models.Equivalence;
+import com.example.demo.models.Task;
+import com.example.demo.models.Type;
 
 @Service
-public class ExcelStructureService {
+public class ExcelService {
 	
 	@Autowired
 	TaskRepository taskRepository;
@@ -50,10 +66,19 @@ public class ExcelStructureService {
 
 	}
 	
-	public void setCellStyle(CellStyle cellStyle, String color, Font headerFont) {
-		if(color=="red")
+	public void setCellStyle(CellStyle cellStyle, String backgroundColor, Font headerFont, boolean bold, String fontColor) {
+		if(bold == true) {
+		headerFont.setBold(true);
+        headerFont.setFontHeightInPoints((short) 12);
+		}
+        if(fontColor == "white")
+        	headerFont.setColor(IndexedColors.WHITE.getIndex());
+        else
+        	headerFont.setColor(IndexedColors.BLACK.getIndex());
+        
+		if(backgroundColor=="red")
 			cellStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
-		else if(color=="black")
+		else if(backgroundColor=="black")
 			cellStyle.setFillForegroundColor(IndexedColors.BLACK.getIndex());
 		else
 			cellStyle.setFillForegroundColor(IndexedColors.GREEN.getIndex());
@@ -74,20 +99,15 @@ public class ExcelStructureService {
         }	
 	}
 	
-	public void setHeader(HashMap<Integer, String> columnsName, Row headerRow, int start, int end, CellStyle cellStyle1, CellStyle cellstyle2) {
+	public void setHeader(HashMap<Integer, String> columnsName, Row headerRow) {
 		for(int i = 0; i < columnsName.size(); i++) {
-    		Cell cell = headerRow.createCell(i);
-        	if(i >= start && i <= end) {
-        		cell.setCellValue(columnsName.get(i));
-        		cell.setCellStyle(cellStyle1);	   
-        	}else {
-        		cell.setCellValue(columnsName.get(i));
-        		cell.setCellStyle(cellstyle2);	 
-        	}
+    		Cell cell = headerRow.getCell(i);
+        	cell.setCellValue(columnsName.get(i));
         }	
 	}
 	
 	public void setMergedCells(Sheet sheet, int start, int end, Row row, CellStyle cellStyle, String content) {
+		cellStyle.setAlignment(HorizontalAlignment.CENTER);
 		sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(),row.getRowNum(),start,end));
         Cell mergedCell = row.createCell(start);
         mergedCell.setCellValue(content);
@@ -158,5 +178,88 @@ public class ExcelStructureService {
 		row.get(10).createCell(21).setCellValue("PRUEBAS_CRUZADAS");
 	}
 	
+	public void setHeaderStyle(Row headerRow, int start, int end, int startColor, int endColor, CellStyle cellStyle1, CellStyle cellStyle2) {
+		cellStyle1.setAlignment(HorizontalAlignment.CENTER);
+		cellStyle2.setAlignment(HorizontalAlignment.CENTER);
+		for(int i = start; i < end; i++) {
+    		Cell cell = headerRow.createCell(i);
+        	if(i >= startColor && i <= endColor)
+        		cell.setCellStyle(cellStyle1);	   
+        	else
+        		cell.setCellStyle(cellStyle2);	        
+        }	
+	}
+	
+	public void createTemplateIncidenciaFile() throws Exception {
+		File template = new File(Paths.get(test.class.getClassLoader().getResource("files/templates").toURI()).toString() + "/incidenciaTemplate.xls");
+		if(!template.exists()) {
+			try {
+				XSSFWorkbook workbook = new XSSFWorkbook();
+				FileOutputStream out = new FileOutputStream(new File(Paths.get(getClass().getClassLoader().getResource("files/templates").toURI()).toString() + "/incidenciaTemplate.xls"));
+				Sheet sheet = workbook.createSheet("Sheet1");
+		
+				Font font = workbook.createFont();	    
+		        CellStyle blackStyle = workbook.createCellStyle();
+		        CellStyle greenStyle = workbook.createCellStyle();
+		        CellStyle redStyle = workbook.createCellStyle();
+		        setCellStyle(blackStyle, "black", font, true, "white");
+		        setCellStyle(greenStyle, "green", font, true, "white");
+		        setCellStyle(redStyle, "red", font, true, "white");
+		        
+		        Row row1 = sheet.createRow(1);	 
+		        setMergedCells(sheet, 1, 7, row1, blackStyle, "Campos obligatorios para la Creación");
+		        			      		    
+				Row row2 = sheet.createRow(2);
+				Row row3 = sheet.createRow(3);
+		        setHeaderStyle(row2, 0, 20, 1, 7, redStyle, greenStyle);		
+		        setHeaderStyle(row3, 0, 20, 1, 7, redStyle, greenStyle);		
+		        
+		        for(int i = 0; i < 21 ; i++) {
+		            sheet.autoSizeColumn(i);
+		        }
+		        workbook.write(out);
+		        out.close();
+		        workbook.close();		
+			} catch (IOException | EncryptedDocumentException ex) {
+	            ex.printStackTrace();
+	        }
+		}
+	}
+
+	
+	public void createTemplateRequerimientoFile() throws Exception {
+		File template = new File(Paths.get(test.class.getClassLoader().getResource("files/templates").toURI()).toString() + "/RequerimientoTemplate.xls");
+		if(!template.exists()) {
+			try {
+				XSSFWorkbook workbook = new XSSFWorkbook();
+				FileOutputStream out = new FileOutputStream(new File(Paths.get(getClass().getClassLoader().getResource("files/templates").toURI()).toString() + "/RequerimientoTemplate.xls"));
+				Sheet sheet = workbook.createSheet("Sheet1");
+		
+		        Font font = workbook.createFont();	    
+		        CellStyle blackStyle = workbook.createCellStyle();
+		        CellStyle greenStyle = workbook.createCellStyle();
+		        CellStyle redStyle = workbook.createCellStyle();
+		        setCellStyle(blackStyle, "black", font, true, "white");
+		        setCellStyle(greenStyle, "green", font, true, "white");
+		        setCellStyle(redStyle, "red", font, true, "white");
+
+		        Row row0 = sheet.createRow(0);	 
+		        setMergedCells(sheet, 1, 4, row0, blackStyle, "Campos obligatorios para la Creación");
+		        setMergedCells(sheet, 7, 13, row0, greenStyle, "Campos solo lectura");
+		        			      		    
+				Row row1 = sheet.createRow(1);
+		        setHeaderStyle(row1, 0, 14, 1, 4, redStyle, greenStyle);			        		        	        
+	
+		        for(int i = 0; i < 14 ; i++) {
+		            sheet.autoSizeColumn(i);
+		        }
+		        workbook.write(out);
+		        out.close();
+		        workbook.close();		
+			} catch (IOException | EncryptedDocumentException ex) {
+	            ex.printStackTrace();
+	        }
+		}
+	}
 	
 }

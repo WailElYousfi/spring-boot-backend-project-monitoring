@@ -26,6 +26,7 @@ import com.example.demo.dto.taskFilterDto;
 import com.example.demo.models.Incidence;
 import com.example.demo.models.Task;
 import com.example.demo.services.FileService;
+import com.example.demo.services.IncidenceService;
 
 
 @RestController
@@ -35,6 +36,9 @@ public class FileController {
 	
 	@Autowired
 	FileService fileService;
+	
+	@Autowired
+	IncidenceService incidenceService;
 
 	///////////////// tareas ////////////// getDataRequerimientoFile
 	
@@ -80,7 +84,7 @@ public class FileController {
 														@RequestParam(value="endDate", required=true) String endDate) throws Exception{
 		Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
 		Date date2=new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
-		return ResponseEntity.ok().body(fileService.getUsernames(date1, date2));
+		return ResponseEntity.ok().body(incidenceService.getUsernamesOfIncidencesByDates(date1, date2));
 	}
 	
 	@RequestMapping(value = "/incidences/generate", method = RequestMethod.POST, consumes="application/json")
