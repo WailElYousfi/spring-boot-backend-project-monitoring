@@ -1,3 +1,4 @@
+
 INSERT INTO `roles` (`role_id`, `name`) VALUES
 (1, 'ROLE_ADMIN'),
 (2, 'ROLE_SUPERVISOR'),
@@ -8,16 +9,15 @@ INSERT INTO `roles` (`role_id`, `name`) VALUES
 
 -- --------------------------------------------------------
 
-
 INSERT INTO `users` (`user_id`, `email`, `firstname`, `jira_username`, `lastname`, `password`, `phone`, `user_code`, `username`, `role_id`) VALUES
 (1, 'admin1@gmail.com', 'wail', 'jira_admin1', 'el yousfi', '$2a$10$kqT8My2gCJn0xNRzMZvkxunz89PdSuDGyZhKsaoE5lYEfm9uRcpvG', '+212697935718', 100, 'admin1', 1),
 (3, 'supervisor1@gmail.com', 'mohamed', 'jira_supervisor1', 'achkour', '$2a$10$l3EHu80DR0ZjL3PVOMg7ieJ7.8WEYzfUthoYsulQRQtLmlfbp.69O', '+212697935118', 101, 'supervisor1', 2),
 (4, 'senior1@gmail.com', 'moad', 'jira_senior1', 'khider', '$2a$10$0Ic8Q43vlI04vNeFzpfRCOIZsNfxMRJBz8G/A0T6irh7wkLNgb5Ui', '+212691475118', 102, 'senior1', 4),
 (5, 'teamleader1@gmail.com', 'hicham', 'jira_teamleader1', 'sbihi', '$2a$10$x4GqPMMH6oHBZ5uNsQUokOb0hHtGV/uPI7l/JdtA82da93TUWml.y', '+212691479918', 103, 'teamleader1', 3),
-(6, 'zakaria.mtougui@gmail.com', 'zakaria', 'Zakaria Mtougui', 'mtougui', '$2a$10$Z739lDeaKHpM7gF3dMdzjOvjPInOqGr0LF7lNytIhrNZaAohqLZv6', '+212611496744', 1732119, 'zakariamtougui', 5),
-(7, 'nafie.boudakkou@gmail.com', 'nafie', 'Nafie Boudakkou', 'boudakkou', '$2a$10$nonaMLJVMajxfNCJHYTZFuuIxsgIFR1rD6BCXaf0Or0ZVuEaM3kOe', '+212611666744', 1517198, 'nafieboudakkou', 6),
-(8, 'najlae.sadrat@gmail.com', 'najlae', 'Najlae Sadrat', 'sadrat', '$2a$10$SVisoEzcOlgeUnPaKnChqeRndxBlilgOHqeNbefhTQwjT3M5psRTe', '+212647011491', 1372179, 'najlaesadrat', 3),
-(9, 'new@gmail.com', 'new', 'jiranew', 'new', '$2a$10$eHhT9vv6jG7N4WgvhvsOReslh5B5a80Q2XfCowkStRZNFY5rkZ1KO', NULL, 999999, 'new', 6),
+(6, 'zakaria.mtougui@gmail.com', 'zakaria', 'Zakaria Mtougui', 'mtougui', '$2a$10$Z739lDeaKHpM7gF3dMdzjOvjPInOqGr0LF7lNytIhrNZaAohqLZv6', '+212611496744', 159541, 'zakariamtougui', 5),
+(7, 'nafie.boudakkou@gmail.com', 'nafie', 'Nafie Boudakkou', 'boudakkou', '$2a$10$nonaMLJVMajxfNCJHYTZFuuIxsgIFR1rD6BCXaf0Or0ZVuEaM3kOe', '+212611666744', 177355, 'nafieboudakkou', 6),
+(8, 'najlae.sadrat@gmail.com', 'najlae', 'Najlae Sadrat', 'sadrat', '$2a$10$SVisoEzcOlgeUnPaKnChqeRndxBlilgOHqeNbefhTQwjT3M5psRTe', '+212647011491', 148515, 'najlaesadrat', 3),
+(9, 'souhaila.benomar@gmail.com', 'souhaila', 'Souhaila Benomar', 'Benomar', '$2a$10$eHhT9vv6jG7N4WgvhvsOReslh5B5a80Q2XfCowkStRZNFY5rkZ1KO', '+212632121144', 184831, 'souhailabenomar', 6),
 (10, 'new2@gmail.com', 'new2', 'jiranew2', 'new2', '$2a$10$qYD/57tljNBHicanrrcnge0lPVJh5YZPl37P9wbFyuq7Sql5hGcHS', NULL, 555555, 'new2', 6),
 (11, 'new3@gmail.com', 'new3', 'jiranew3', 'new3', '$2a$10$mnCXzc/yIdFyx0ZWPmMn2ebZvq2R2PpyiX.umKHhQj1bAbtEgPXMG', NULL, 142514, 'new3', 6),
 (12, 'hamide@gmail.com', 'hamid', 'hamidjira', 'ham', '$2a$10$71efuCQM3s/LD0.DACfeKeORBqOQx/tD6mDasWt7O2dkBc73AKzJu', NULL, 144444, 'hamide', 6),
@@ -41,14 +41,21 @@ INSERT INTO `users` (`user_id`, `email`, `firstname`, `jira_username`, `lastname
 
 -- --------------------------------------------------------
 
+
+
 INSERT INTO `types` (`type_id`, `description`, `type_name`) VALUES
 (1, 'description 1', 'Tarea cargable'),
 (2, 'description 2', 'Tarea no cargable'),
-(3, 'description 3', 'Incidencia externa'),
-(4, 'description 4', 'Incidencia interna'),
-(5, 'description 5', 'Cambio de alcance');
+(3, 'Description incidencia externa', 'Incidencia externa'),
+(4, 'Description incidencia interna', 'Incidencia interna'),
+(5, 'description Cambio de alcance', 'Cambio de alcance'),
+(6, 'Description Acc', 'Acc'),
+(7, 'Description Requerimiento', 'Requerimiento'),
+(8, 'Description Riesgo', 'Riesgo');
 
 -- --------------------------------------------------------
+
+
 
 INSERT INTO `features` (`feature_id`, `description`, `feature_name`, `parent_feature_id`) VALUES
 (2, 'Permission pour la gestion globale des utilisateurs', 'Gestion des utilisateurs', NULL),
@@ -107,7 +114,7 @@ INSERT INTO `user_projects` (`user_id`, `project_id`) VALUES
 (29, 1);
 
 
--- --------------------------------------------------------
+-- ----------------------------------------------------------------------------------
 
 INSERT INTO `equivalences` (`equivalence_id`, `column_name`, `fenix_equivalence`, `jira_equivalence`, `file_type_id`, `column_order`) VALUES
 (4, 'key', NULL, 'Key', 4, NULL),
@@ -138,18 +145,18 @@ INSERT INTO `equivalences` (`equivalence_id`, `column_name`, `fenix_equivalence`
 (29, 'convertibleEnMejora', 'Convertible en Mejora', NULL, 4, 18),
 (30, 'comentarioAlDesestimar', 'Comentario al Desestimar', NULL, 4, 19),
 (31, 'tipoIncidencia', 'Tipo Incidencia', NULL, 4, 4),
-(32, 'project', NULL, 'Project', 1, NULL),
+(32, 'created', NULL, 'Created', 1, NULL),
 (33, 'key', NULL, 'Key', 1, NULL),
-(34, 'title', 'Nombre', 'Title', 1, 1),
-(35, 'description', 'Descripción', 'Description', 1, 3),
-(36, 'fixVersion', NULL, 'Fix Version/s', 1, NULL),
+(34, 'title', 'Nombre', 'Summary', 1, 1),
+(35, 'description', 'Descripción', NULL, 1, 3),
+(36, 'updated', NULL, 'Updated', 1, NULL),
 (37, 'originalEstimate', 'Esfuerzo', 'Original Estimate', 1, 11),
 (38, 'remainingEstimate', NULL, 'Remaining Estimate', 1, NULL),
 (39, 'status', NULL, 'Status', 1, NULL),
 (40, 'timeSpent', NULL, 'Time Spent', 1, NULL),
-(41, 'taskType', NULL, 'Tipo Tarea', 1, NULL),
-(42, 'user', 'Responsable', 'Username', 1, 7),
-(43, 'comment', NULL, 'Comment', 1, NULL),
+(41, 'taskType', NULL, 'Tipo incidencia', 1, NULL),
+(42, 'assignedUser', 'Responsable', 'Assignee', 1, 7),
+(43, 'comment', NULL, NULL, 1, NULL),
 (44, NULL, 'ID ACC', NULL, 1, 0),
 (45, NULL, 'Código Petición Cliente', NULL, 1, 2),
 (46, NULL, 'Estado', NULL, 1, 4),
@@ -172,21 +179,32 @@ INSERT INTO `equivalences` (`equivalence_id`, `column_name`, `fenix_equivalence`
 (63, NULL, 'Épica', NULL, 1, 23),
 (64, 'jiraSas', NULL, 'Jira SAS', 4, NULL),
 (65, 'linkedIssues', NULL, 'Linked Issues', 4, NULL),
-(66, 'comment', NULL, NULL, 4, NULL),
+(66, 'resolved', NULL, 'Resolved', 1, NULL),
 (67, 'causedUser', NULL, 'Causante', 4, NULL),
-(68, 'project', NULL, 'Project', 4, NULL);
+(68, 'project', NULL, 'Project', 4, NULL),
+(90, NULL, 'ID Tarea', NULL, 7, 0),
+(91, NULL, 'Orden', NULL, 7, 1),
+(92, 'taskType', 'Tipo Tarea', 'Tipo incidencia', 7, 2),
+(93, 'summary', 'Nombre', 'Summary', 7, 3),
+(94, NULL, 'Tipo Planificación', NULL, 7, 4),
+(95, 'assignedUser', 'Responsable', 'Assignee', 7, 5),
+(96, 'originalEstimate', 'Estimado', 'Original Estimate', 7, 6),
+(97, NULL, 'Id OT', NULL, 7, 7),
+(98, NULL, 'Comienzo', NULL, 7, 8),
+(99, NULL, 'Fin', NULL, 7, 9),
+(100, NULL, 'Planificado', NULL, 7, 10),
+(101, NULL, 'Incurrido', NULL, 7, 11),
+(102, NULL, 'ETC', NULL, 7, 12),
+(103, NULL, 'ETC Manual', NULL, 7, 13),
+(104, 'key', NULL, 'Key', 7, NULL),
+(105, 'status', NULL, 'Status', 7, NULL),
+(106, 'created', NULL, 'Created', 7, NULL),
+(107, 'updated', NULL, 'Updated', 7, NULL),
+(108, 'remainingEstimate', NULL, 'Remaining Estimate', 7, NULL),
+(109, 'timeSpent', NULL, 'Time Spent', 7, NULL),
+(110, 'resolved', NULL, 'Resolved', 7, NULL);
 
 -- --------------------------------------------------------
-
-
-
-
-INSERT INTO `tasks` (`task_id`, `comment`, `date`, `description`, `fix_version`, `task_key`, `original_estimate`, `remaining_estimate`, `task_status`, `task_type`, `time_spent`, `title`, `file_type_id`, `project_id`, `user_id`) VALUES
-(28, 'Preparación de datos para crear MUS', '2020-03-05', 'Crear el manual del usuario', '30.0.0', 'ECOFISAS-7814', '4h', '2h', 'In Progress', 'Desarrollo', '2h', 'ECOFISAS-7810> G03-T03 - Manual de usuario', 1, 4, 8),
-(29, 'continuar con las pruebas', '2020-03-05', 'Revisar y probar el desarrollo hecho', '30.0.0', 'ECOFISAS-8361', '4h', '2h', 'In Progress', 'Desarrollo', '2h', 'ECOFISAS-7810> G03-T02-Revisión y pruebas del analista', 1, 4, 8);
-
--- --------------------------------------------------------
-
 
 
 INSERT INTO `incidences` (`incidence_id`, `comment`, `created`, `date`, `description`, `incidence_type`, `jira_sas`, `incidence_key`, `linked_issues`, `original_estimate`, `planned_end`, `resolved`, `task_status`, `summary`, `time_spent`, `updated`, `assigned_user_id`, `caused_user_id`, `file_type_id`, `project_id`) VALUES
@@ -202,3 +220,41 @@ INSERT INTO `incidences` (`incidence_id`, `comment`, `created`, `date`, `descrip
 (10, NULL, NULL, '2020-03-16 12:17:53', '', 'Construcción', 'SIGLO-3264', 'ECOFISAS-9394', 'ECOFISAS-9358, ECOFISAS-9435', '0.0', NULL, '2020-01-23 17:03:00', 'Resolved', 'ECOFISAS-9059 INC_INT_02 No se muestran los nuevos campos observaciones por proveedor y recordatorio', '7200.0', '2020-02-11 17:39:00', 6, 6, 4, 4),
 (11, NULL, NULL, '2020-03-16 12:17:53', 'Columna generación pedido de pantalla Consulta de Recuentos RFID se muestra valores incorrectos, debe mostrar valores Sí o No \nCódigo mensaje no muestra ningún valor \nen la exportación de excel se muestra correctamente el valor de la columna generación pedido y no se muestra el valor de la columna código mensaje \n\nDatos de pruebas en Nube 1 \nPlataforma Sevila Almacen _[DS] ALMACEN DISTRITO A.P. SEVILLA \nfechas 21/012020 hasta 23/01/2020 \n\nResponsable ==> Nafie \n', 'Construcción', 'SIGLO-2937', 'ECOFISAS-9538', 'ECOFISAS-9537, ECOFISAS-9552', '0.0', NULL, '2020-02-03 17:26:00', 'Resolved', 'ECOFISAS-9110 INC_INT_28 - se muestran valores incorrectos en las columnas generación pedido y código mensaje de pantalla Consulta de Recuentos RFID', '7200.0', '2020-02-03 18:29:00', 7, 7, 4, 4),
 (12, NULL, NULL, '2020-03-16 12:17:53', 'No se muestra el aviso que debe haber un unico articulo en pantalla Consulta de Recuentos RFID cuando seleccionar el check de datos historicos y no hay GC \n\nResponsable ==> Nafie \n', 'Construcción', 'SIGLO-2937', 'ECOFISAS-9537', 'ECOFISAS-9536, ECOFISAS-9538', '0.0', NULL, '2020-02-05 01:05:00', 'Resolved', 'ECOFISAS-9110 INC_INT_27 - No se muestra el aviso que debe haber un unico articulo en pantalla Consulta de Recuentos RFID', '600.0', '2020-02-05 01:05:00', 7, 7, 4, 4);
+
+-- --------------------------------------------------------
+
+--
+
+
+
+--
+
+INSERT INTO `tasks` (`task_id`, `comment`, `created`, `date`, `id_ot`, `task_key`, `original_estimate`, `remaining_estimate`, `resolved`, `task_status`, `summary`, `task_type`, `time_spent`, `updated`, `user_id`, `file_type_id`, `project_id`) VALUES
+(23, NULL, '2020-03-27 01:03:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10491', '2,0', '0,0', '2020-03-27 17:05:00', 'Resolved', 'ECOFISAS-10372 G02-T01- Tarea programada y Notificaciones', 'No es una incidencia', '2,0', '2020-03-27 17:05:00', 7, 7, 4),
+(24, NULL, '2020-03-27 00:58:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10490', '2,0', '2,0', NULL, 'Open', 'ECOFISAS-10372 G01-T07-005 - Configuración de acciones y comprobaciones de las pantallas de MTO', 'No es una incidencia', NULL, '2020-03-29 00:41:00', 7, 7, 4),
+(25, NULL, '2020-03-27 00:57:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10489', '1,0', '1,0', NULL, 'Open', 'ECOFISAS-10372 G01-T07-004 - Configuración de acciones y comprobaciones de las pantallas de MTO', 'No es una incidencia', NULL, '2020-03-29 00:41:00', 7, 7, 4),
+(26, NULL, '2020-03-27 00:23:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10488', '3,0', '3,0', NULL, 'In Progress', 'ECOFISAS-10372 G01-T07-003 - Configuración de acciones y comprobaciones de las pantallas de MTO', 'No es una incidencia', NULL, '2020-03-30 12:02:00', 7, 7, 4),
+(27, NULL, '2020-03-27 00:05:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10487', '2,0', '0,2', NULL, 'In Progress', 'ECOFISAS-10372 G01-T07-002 - Configuración de acciones y comprobaciones de las pantallas de MTO', 'No es una incidencia', '3,8', '2020-03-27 20:40:00', 9, 7, 4),
+(28, NULL, '2020-03-26 22:50:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10485', '1,0', '0,0', '2020-03-27 20:09:00', 'Resolved', 'ECOFISAS-10372 G01-T07-001 - Nuevos servicios y constantes', 'No es una incidencia', '1,0', '2020-03-27 20:09:00', 9, 7, 4),
+(29, NULL, '2020-03-26 22:40:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10484', '0,5', '0,0', '2020-03-27 20:05:00', 'Resolved', 'ECOFISAS-10372 G01-T06 - Creación de los mensajes', 'No es una incidencia', '0,5', '2020-03-27 20:35:00', 9, 7, 4),
+(30, NULL, '2020-03-26 15:02:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10481', '0,0', '0,0', '2020-03-26 22:37:00', 'Resolved', 'ECOFISAS-10372 INC_INT_01 - Varios Errores', 'Construcción', '1,0', '2020-03-26 22:37:00', 9, 7, 4),
+(31, NULL, '2020-03-26 00:19:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10451', '4,0', '3,0', NULL, 'In Progress', 'ECOFISAS-10372 G01-T04 - Configuración de los componentes de pantallas', 'No es una incidencia', '1,0', '2020-03-27 17:15:00', 7, 7, 4),
+(32, NULL, '2020-03-26 00:16:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10450', '2,0', '0,0', '2020-03-27 20:14:00', 'Resolved', 'ECOFISAS-10372 G01-T05 - Creación del nuevo perfil y asignación de permisos', 'No es una incidencia', '2,0', '2020-03-27 20:14:00', 9, 7, 4),
+(33, NULL, '2020-03-26 00:12:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10449', '1,5', '0,0', '2020-03-26 21:35:00', 'Resolved', 'ECOFISAS-10372 G01-T03 - Creacion de los DAO de las nuevas entidades', 'No es una incidencia', '1,5', '2020-03-26 21:35:00', 9, 7, 4),
+(34, NULL, '2020-03-26 00:11:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10448', '1,0', '0,0', '2020-03-26 21:35:00', 'Resolved', 'ECOFISAS-10372 G01-T02 - Cambios sobre los nombres de las pantallas en el menú', 'No es una incidencia', '1,0', '2020-03-26 21:35:00', 9, 7, 4),
+(35, NULL, '2020-03-25 23:59:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10447', '4,0', '0,0', '2020-03-26 21:58:00', 'Resolved', 'ECOFISAS-10372 G01-T01-002 - Creación nuevas tablas, entidades correspondientes y mapeo', 'No es una incidencia', '4,5', '2020-03-26 21:58:00', 9, 7, 4),
+(36, NULL, '2020-03-25 23:51:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10446', '0,5', '0,0', '2020-03-26 21:33:00', 'Resolved', 'ECOFISAS-10372 G01-T00-002 - Lectura del DT y de los requisitos', 'No es una incidencia', '0,5', '2020-03-26 21:33:00', 9, 7, 4),
+(37, NULL, '2020-03-25 23:49:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10445', '0,5', '0,0', '2020-03-26 16:24:00', 'Resolved', 'ECOFISAS-10372 G01-T00-001 - Lectura del DT y de los requisitos', 'No es una incidencia', '0,5', '2020-03-26 16:24:00', 7, 7, 4),
+(38, NULL, '2020-03-23 22:52:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10376', NULL, NULL, NULL, 'Open', 'ECOFISAS-10372 CLONE - Manual de usuario', 'No es una incidencia', NULL, '2020-03-23 22:52:00', NULL, 7, 4),
+(39, NULL, '2020-03-23 22:52:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10375', NULL, NULL, NULL, 'Open', 'ECOFISAS-10372 CLONE - B01-TR03-Validación funcional (Plantilla OTC)', 'No es una incidencia', NULL, '2020-03-23 22:52:00', NULL, 7, 4),
+(40, NULL, '2020-03-23 22:52:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10374', NULL, NULL, NULL, 'Open', 'ECOFISAS-10372 CLONE - B01-TR02-Ejecución plan de pruebas desarrollador', 'No es una incidencia', NULL, '2020-03-23 22:52:00', NULL, 7, 4),
+(41, NULL, '2020-03-23 22:52:00', '2020-03-31 15:39:44', 1396004, 'ECOFISAS-10373', '6,0', '0,0', '2020-03-27 17:08:00', 'Resolved', 'ECOFISAS-10372 G01-T01-001 - Creación nuevas tablas, entidades correspondientes y mapeo', 'No es una incidencia', '6,0', '2020-03-27 17:08:00', 7, 7, 4),
+(42, NULL, '2020-03-23 01:54:00', '2020-03-31 17:24:08', 1377090, 'ECOFISAS-10356', '4,0', '1,0', NULL, 'In Progress', 'ECOFISAS-10348 Tests unitarios', 'No es una incidencia', '7,0', '2020-03-26 00:06:00', 9, 7, 4),
+(43, NULL, '2020-03-23 01:53:00', '2020-03-31 17:24:08', 1377090, 'ECOFISAS-10355', '2,0', '0,0', '2020-03-25 19:08:00', 'Resolved', 'ECOFISAS-10348 G01-T05 - Proceso de comprobación para mostrar el mensaje de aviso', 'No es una incidencia', '2,0', '2020-03-25 19:08:00', 9, 7, 4),
+(44, NULL, '2020-03-23 01:52:00', '2020-03-31 17:24:08', 1377090, 'ECOFISAS-10354', '4,0', '0,0', '2020-03-24 21:09:00', 'Resolved', 'ECOFISAS-10348 G01-T04 - Método de verificación del caso de sustitución de compra menor a expediente', 'No es una incidencia', '4,5', '2020-03-24 21:48:00', 9, 7, 4),
+(45, NULL, '2020-03-23 01:51:00', '2020-03-31 17:24:08', 1377090, 'ECOFISAS-10353', '2,0', '0,0', '2020-03-24 21:03:00', 'Resolved', 'ECOFISAS-10348 G01-T03 - Añadir la nueva restricción en las comprobaciones', 'No es una incidencia', '2,5', '2020-03-24 21:33:00', 9, 7, 4),
+(46, NULL, '2020-03-23 01:38:00', '2020-03-31 17:24:08', 1377090, 'ECOFISAS-10350', '0,5', '0,0', '2020-03-24 20:55:00', 'Resolved', 'ECOFISAS-10348 G01-T02 - Nuevo mensaje de advertencia', 'No es una incidencia', '0,5', '2020-03-24 21:10:00', 9, 7, 4),
+(47, NULL, '2020-03-23 01:38:00', '2020-03-31 17:24:08', 1377090, 'ECOFISAS-10349', '0,5', '0,0', '2020-03-24 20:53:00', 'Resolved', 'ECOFISAS-10348 G01-T01 - Lectura de los requisitos', 'No es una incidencia', '0,5', '2020-03-25 08:34:00', 9, 7, 4);
+
+-- --------------------------------------------------------
+

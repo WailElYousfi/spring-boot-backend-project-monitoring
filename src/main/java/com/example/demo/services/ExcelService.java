@@ -191,11 +191,11 @@ public class ExcelService {
 	}
 	
 	public void createTemplateIncidenciaFile() throws Exception {
-		File template = new File(Paths.get(test.class.getClassLoader().getResource("files/templates").toURI()).toString() + "/incidenciaTemplate.xls");
+		File template = new File(System.getProperty("user.dir")+"/src/main/resources/files/templates".toString() + "/incidenciaTemplate.xls");
 		if(!template.exists()) {
 			try {
 				XSSFWorkbook workbook = new XSSFWorkbook();
-				FileOutputStream out = new FileOutputStream(new File(Paths.get(getClass().getClassLoader().getResource("files/templates").toURI()).toString() + "/incidenciaTemplate.xls"));
+				FileOutputStream out = new FileOutputStream(new File(System.getProperty("user.dir")+"/src/main/resources/files/templates".toString() + "/incidenciaTemplate.xls"));
 				Sheet sheet = workbook.createSheet("Sheet1");
 		
 				Font font = workbook.createFont();	    
@@ -228,11 +228,11 @@ public class ExcelService {
 
 	
 	public void createTemplateRequerimientoFile() throws Exception {
-		File template = new File(Paths.get(test.class.getClassLoader().getResource("files/templates").toURI()).toString() + "/RequerimientoTemplate.xls");
+		File template = new File(System.getProperty("user.dir")+"/src/main/resources/files/templates".toString() + "/requerimientoTemplate.xls");
 		if(!template.exists()) {
 			try {
 				XSSFWorkbook workbook = new XSSFWorkbook();
-				FileOutputStream out = new FileOutputStream(new File(Paths.get(getClass().getClassLoader().getResource("files/templates").toURI()).toString() + "/RequerimientoTemplate.xls"));
+				FileOutputStream out = new FileOutputStream(new File(System.getProperty("user.dir")+"/src/main/resources/files/templates".toString() + "/requerimientoTemplate.xls"));
 				Sheet sheet = workbook.createSheet("Sheet1");
 		
 		        Font font = workbook.createFont();	    

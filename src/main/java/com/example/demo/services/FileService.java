@@ -362,7 +362,7 @@ public class FileService {
 		}else {
 			List<Incidence> incidences = result.get();
 			try {
-				FileInputStream inputStream = new FileInputStream(new File(Paths.get(getClass().getClassLoader().getResource("files/templates").toURI()).toString() + "/incidenciaTemplate.xls"));
+				FileInputStream inputStream = new FileInputStream(new File(System.getProperty("user.dir")+"/src/main/resources/files/templates".toString() + "/incidenciaTemplate.xls"));
 	            Workbook workbook = WorkbookFactory.create(inputStream);
 		        Sheet sheet = workbook.getSheetAt(0);
 		        CreationHelper createHelper = workbook.getCreationHelper();
@@ -437,7 +437,7 @@ public class FileService {
 		            sheet.autoSizeColumn(i);
 		        }
 		        inputStream.close();		    
-	            FileOutputStream outputStream = new FileOutputStream(new File(Paths.get(getClass().getClassLoader().getResource("files/incidences").toURI()).toString() + "/incidencia_" + date.getTime()+ ".xls"));
+	            FileOutputStream outputStream = new FileOutputStream(new File(System.getProperty("user.dir")+"/src/main/resources/files/incidencias".toString() + "/incidencia_" + date.getTime()+ ".xls"));
 	            workbook.write(outputStream);
 	            workbook.close();
 	            outputStream.close();
@@ -529,7 +529,7 @@ public class FileService {
 		Date endDate=new SimpleDateFormat("yyyy-MM-dd").parse(filter.getEndDate());
 		List<Task> tasks = taskService.getTaskByDatesAndIdOt(startDate, endDate, filter.getIdOt());
 		try {
-			FileInputStream inputStream = new FileInputStream(new File(Paths.get(getClass().getClassLoader().getResource("files/templates").toURI()).toString() + "/requerimientoTemplate.xls"));
+			FileInputStream inputStream = new FileInputStream(new File(System.getProperty("user.dir")+"/src/main/resources/files/templates".toString() + "/requerimientoTemplate.xls"));
             Workbook workbook = WorkbookFactory.create(inputStream);
 	        Sheet sheet = workbook.getSheetAt(0);
 	        Date date = new Date();
@@ -578,14 +578,14 @@ public class FileService {
 	            sheet.autoSizeColumn(i);
 	        }
 	        inputStream.close();		    
-            FileOutputStream outputStream = new FileOutputStream(new File(Paths.get(getClass().getClassLoader().getResource("files/tasks").toURI()).toString() + "/requerimiento_" + date.getTime()+ ".xls"));
+            FileOutputStream outputStream = new FileOutputStream(new File(System.getProperty("user.dir")+"/src/main/resources/files/requerimientos".toString() + "/requerimiento_" + date.getTime()+ ".xls"));
             workbook.write(outputStream);
             workbook.close();
             outputStream.close();
 		} catch (IOException | EncryptedDocumentException| InvalidFormatException ex) {
 			ex.printStackTrace();
 		}
-		return "Tasks file successfully generated";
+		return "Requerimiento file successfully generated";
 	}
 	
 
