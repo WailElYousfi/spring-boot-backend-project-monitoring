@@ -95,12 +95,12 @@ public class IncidenceService {
         }
     }
     
-	public List<String> getUsernamesOfIncidencesByDates(Date startDate, Date endDate){
+	public List<String> getUsernamesOfIncidencesByDates(Date startDate, Date endDate){		
 		List<Incidence> incidences = getIncidencesByDates(startDate, endDate);
 		Set<String> usernames = new HashSet<String>(); //without duplicates
 		for (Incidence incidence : incidences)
 			usernames.add(incidence.getCausedUser().getJiraUsername());
-		return (List<String>) usernames;
+		return usernames.stream().distinct().collect(Collectors.toList()); // Remove duplicates
 		
 	}
     

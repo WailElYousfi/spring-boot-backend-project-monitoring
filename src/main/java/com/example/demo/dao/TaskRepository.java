@@ -26,4 +26,7 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 	
 	@Query("select t from Task t where t.date >= ?1 and t.date <= ?2 and t.idOt = ?3")
 	Optional< List<Task> > findByDatesAndIdOt(Date startDate, Date endDate, Integer idOt);
+
+	@Query("select t from Task t where t.date >= ?1 and t.date <= ?2 and t.summary like %?3%")
+	Optional<List<Task>> findByDatesAndSummary(Date startDate, Date endDate, String summary);
 }

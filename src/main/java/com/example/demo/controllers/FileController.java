@@ -48,11 +48,12 @@ public class FileController {
 	}
 	
 	@PostMapping("/requerimiento/data")
-	public ResponseEntity < List<Task> > getDataRequerimientoFile(@RequestParam("file") MultipartFile file, @RequestParam("idOt") Integer idOt) throws Exception{
-		return ResponseEntity.ok().body(fileService.getDataRequerimientoFile(file, idOt));
+	public ResponseEntity < List<Task> > getDataRequerimientoFile(@RequestParam("file") MultipartFile file) throws Exception{
+//		Integer idOt= 1396004;
+		return ResponseEntity.ok().body(fileService.getDataRequerimientoFile(file));
 	}
 	
-	@PostMapping("/tasks/upload")
+	@PostMapping("/requerimiento/upload")
 	public ResponseEntity < String > uploadTasks(@RequestBody List<Task> tasks) throws Exception{
 		return ResponseEntity.ok().body(fileService.uploadTasks(tasks));
 	}
@@ -99,7 +100,8 @@ public class FileController {
 	}
 	
 	private byte[] contentOf(String fileName) throws Exception {
-		return Files.readAllBytes( Paths.get(getClass().getClassLoader().getResource("files/incidences/" + fileName).toURI()));
+		
+		return Files.readAllBytes( Paths.get(System.getProperty("user.dir")+"/src/main/resources/files/incidencias/" + fileName));
 	}
 	
 }
