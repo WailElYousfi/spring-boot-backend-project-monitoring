@@ -98,6 +98,19 @@ public class TaskService {
             throw new ResourceNotFoundException("Record not found");
         }
     }
+    
+    public List<Task> getTaskByDatesAndSummary(Date startDate, Date endDate, String summary) {
+        Optional < List<Task> > taskDb = this.repository.findByDates(startDate, endDate);       
+        if (taskDb.isPresent()) {
+        	for (Task task : taskDb.get()) {
+    			if(!task.getSummary().contains(summary))
+    				taskDb.get().remove(task);
+    		}
+            return taskDb.get();
+        } else {
+            throw new ResourceNotFoundException("Record not found");
+        }
+    }
 
     public void deleteTask(Integer taskId) {
         Optional <Task> taskDb = this.repository.findById(taskId);

@@ -212,7 +212,7 @@ public class FileService {
 			sheet = workbook.getSheetAt(0);
 		}else {
 			in.close();
-			throw new IllegalArgumentException("Invalid extension");
+			throw new IllegalArgumentException("Invalid extension ! You have to select '.xls' or '.xlsx' file");
 		}	
 		
         Row row;       
@@ -220,6 +220,7 @@ public class FileService {
 		Type incidenciaInternaType = typeService.getTypeByName("Incidencia interna");
 		HashMap<String, Integer> hm = new HashMap<String, Integer>();
 		Set<String> originalColumns = new HashSet<String>();
+		Set<String> missignElements = new HashSet<String>();
 		List<String> fileColumns = new ArrayList<String>();
 		
 		for (Equivalence colonne : incidenciaInternaType.getColonnes())
@@ -230,8 +231,11 @@ public class FileService {
 			fileColumns.add(sheet.getRow(3).getCell(j).toString());
 		
 		if(!fileColumns.containsAll(originalColumns)) {
-	        workbook.close();
-			throw new ResourceNotFoundException("Columns not found in this file !!");
+			missignElements = originalColumns;
+			missignElements.removeAll(fileColumns);
+			String delim = ", ";
+			workbook.close();
+			throw new ResourceNotFoundException("( " + String.join(delim, missignElements) +" ) not found in this file !!");
 		}
 		
 		for(int j=0; j < sheet.getRow(3).getLastCellNum(); j++)
@@ -283,7 +287,7 @@ public class FileService {
 	public String generateTasksFile(taskFilterDto filter) throws Exception {
 		Date startDate=new SimpleDateFormat("yyyy-MM-dd").parse(filter.getStartDate());
 		Date endDate=new SimpleDateFormat("yyyy-MM-dd").parse(filter.getEndDate());
-		List<Task> tasks = taskService.getTaskByDatesAndIdOt(startDate, endDate, filter.getIdOt());
+		List<Task> tasks = taskService.getTaskByDatesAndIdOt(startDate, endDate, 11111);
 			try {
 				XSSFWorkbook workbook = new XSSFWorkbook();
 				Date date = new Date();
@@ -445,12 +449,12 @@ public class FileService {
 				ex.printStackTrace();
 			}
 		}
-		return Long.toString(date.getTime());
+		return "incidencia_" + date.getTime();
 	}
 	
 	
 	
-	public List<Task> getDataRequerimientoFile(MultipartFile file, Integer idOt) throws Exception {	
+	public List<Task> getDataRequerimientoFile(MultipartFile file) throws Exception {	
 
 		Path tempDir = Files.createTempDirectory("");
 		File tempFile = tempDir.resolve(file.getOriginalFilename()).toFile();
@@ -466,7 +470,7 @@ public class FileService {
 			sheet = workbook.getSheetAt(0);
 		}else {
 			in.close();
-			throw new IllegalArgumentException("Invalid extension");
+			throw new IllegalArgumentException("Invalid extension ! You have to select 'xls' or 'xlsx' file");
 		}	
 	       
 		Row row;        
@@ -474,6 +478,7 @@ public class FileService {
 		HashMap<String, Integer> hm = new HashMap<String, Integer>();
 		Set<String> originalColumns = new HashSet<String>();
 		List<String> fileColumns = new ArrayList<String>();
+		Set<String> missignElements =  new HashSet<String>();
 		
 		for (Equivalence colonne : requerimientoType.getColonnes())
 			if(colonne.getJiraEquivalence() != null)
@@ -484,7 +489,10 @@ public class FileService {
 		
 		if(!fileColumns.containsAll(originalColumns)) {
 	        workbook.close();
-			throw new ResourceNotFoundException("Columns not found in this file !!");
+			missignElements = originalColumns;
+			missignElements.removeAll(fileColumns);
+			String delim = ", ";
+			throw new ResourceNotFoundException("( " + String.join(delim, missignElements) +" ) not found in this file !!");
 		}
 		
 		for(int j=0; j < sheet.getRow(3).getLastCellNum(); j++)
@@ -512,7 +520,6 @@ public class FileService {
 			task.setCreated(getDateFromCellOrNull(row.getCell(hm.get("created"))));
 			task.setUpdated(getDateFromCellOrNull(row.getCell(hm.get("updated"))));
 			task.setResolved(getDateFromCellOrNull(row.getCell(hm.get("resolved"))));
-			task.setIdOt(idOt);
 
 		/*	if(row.getCell(hm.get("created"))==null || row.getCell(hm.get("created")).getCellTypeEnum()== CellType.BLANK)
 				task.setCreated(null);*/
@@ -527,7 +534,7 @@ public class FileService {
 		excelService.createTemplateRequerimientoFile();
 		Date startDate=new SimpleDateFormat("yyyy-MM-dd").parse(filter.getStartDate());
 		Date endDate=new SimpleDateFormat("yyyy-MM-dd").parse(filter.getEndDate());
-		List<Task> tasks = taskService.getTaskByDatesAndIdOt(startDate, endDate, filter.getIdOt());
+		List<Task> tasks = taskService.getTaskByDatesAndSummary(startDate, endDate, filter.getSummary());
 		try {
 			FileInputStream inputStream = new FileInputStream(new File(System.getProperty("user.dir")+"/src/main/resources/files/templates".toString() + "/requerimientoTemplate.xls"));
             Workbook workbook = WorkbookFactory.create(inputStream);
@@ -571,7 +578,7 @@ public class FileService {
 			        cell10.setCellStyle(decimalStyle);
 			        cell10.setCellValue(Float.parseFloat(originalEstimate.replace(",", ".")));				       
 		        }			      
-		        row.createCell(7).setCellValue(task.getIdOt());			        		        	        
+		        row.createCell(7).setCellValue(filter.getIdOt());			        		        	        
 	        }
 
 	        for(int i = 0; i < columnsName.size(); i++) {

@@ -7,14 +7,17 @@ public class taskFilterDto {
 	
 	private String endDate;
 	
+	private String summary;
+	
 	private Integer idOt;
 
 	public taskFilterDto() {	
 	}
 
-	public taskFilterDto(String startDate, String endDate, Integer idOt) {
+	public taskFilterDto(String startDate, String endDate, String summary, Integer idOt) {
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.summary = summary;
 		this.idOt = idOt;
 	}
 
@@ -32,6 +35,14 @@ public class taskFilterDto {
 
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
 	}
 
 	public Integer getIdOt() {
