@@ -25,29 +25,11 @@ public class RoleService {
         return repository.save(role);
     }
 
-    public Role updateRole(Role role) {
-        Role roleDb = getRoleById(role.getRoleId());
-        Role roleUpdate = roleDb;
-        roleUpdate.setName(role.getName());
-        roleUpdate.setFeatures(role.getFeatures());
-        return repository.save(roleUpdate);
-    }
     
     public List <Role> getAllRoles() {
         return this.repository.findAll();
     }
     
-    public Role updateFeatures(Integer roleId, List<Integer> featureIds) {
-        Role roleDb = getRoleById(roleId);
-        List<Feature> features = new ArrayList<Feature>();      
-        for (Integer featureId : featureIds) {
-            Feature feature = this.featureService.getFeatureById(featureId);
-            features.add(feature);
-        }     
-        Role roleUpdate = roleDb;
-        roleUpdate.setFeatures(features);
-        return repository.save(roleUpdate);
-    }
 
     public Role getRoleById(Integer roleId) {
         Optional <Role> roleDb = this.repository.findById(roleId);

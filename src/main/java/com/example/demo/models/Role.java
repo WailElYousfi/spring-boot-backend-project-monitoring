@@ -1,7 +1,10 @@
 package com.example.demo.models;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.*;
 
@@ -22,18 +25,17 @@ public class Role {
 	@JsonIgnore
     private List<User> users;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(	name = "role_features", 
-				joinColumns = @JoinColumn(name = "role_id"), 
-				inverseJoinColumns = @JoinColumn(name = "feature_id"))
-	private List<Feature> features = new ArrayList<>();
+	@OneToMany(mappedBy = "primaryKey.role", cascade = CascadeType.ALL)
+    private Set<RoleFeature> roleFeatures = new HashSet<RoleFeature>();
 	
 	
 	public Role() {
 	}
 	
-	public Role(ERole name) {
+	public Role(ERole name, RoleFeature... roleFeatures) {
 		this.name = name;
+		for(RoleFeature roleFeature : roleFeatures) roleFeature.setRole(this);
+        this.roleFeatures = Stream.of(roleFeatures).collect(Collectors.toSet());
 	}
 
 	public Integer getRoleId() {
@@ -60,12 +62,12 @@ public class Role {
 		this.users = users;
 	}
 
-	public List<Feature> getFeatures() {
-		return features;
+	public Set<RoleFeature> getRoleFeatures() {
+		return roleFeatures;
 	}
 
-	public void setFeatures(List<Feature> features) {
-		this.features = features;
+	public void setRoleFeatures(Set<RoleFeature> roleFeatures) {
+		this.roleFeatures = roleFeatures;
 	}
 
 }

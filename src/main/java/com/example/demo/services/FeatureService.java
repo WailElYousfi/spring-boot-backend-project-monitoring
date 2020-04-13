@@ -23,10 +23,8 @@ public class FeatureService {
     public Feature updateFeature(Feature feature) {
         Feature featureDb = getFeatureById(feature.getFeatureId());
         Feature featureUpdate = featureDb;
-        featureUpdate.setDescription(feature.getDescription());
+        featureUpdate.setUrl(feature.getUrl());
         featureUpdate.setFeatureName(feature.getFeatureName());
-        featureUpdate.setParentFeature(feature.getParentFeature());
-        featureUpdate.setRoles(feature.getRoles());                       
         return repository.save(featureUpdate);
     }
     

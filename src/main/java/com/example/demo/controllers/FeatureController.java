@@ -37,9 +37,7 @@ public class FeatureController {
     }
 
     @PostMapping("/features")
-    public ResponseEntity <Feature> createFeature(@RequestBody Feature feature, @RequestParam(required=false) Integer parentFeatureId) {
-    	if(parentFeatureId != null)
-    		feature.setParentFeature(featureService.getFeatureById(parentFeatureId));
+    public ResponseEntity <Feature> createFeature(@RequestBody Feature feature) {
         return ResponseEntity.ok().body(this.featureService.createFeature(feature));
     }
 

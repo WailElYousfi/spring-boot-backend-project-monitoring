@@ -1,7 +1,9 @@
 package com.example.demo.models;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -19,24 +21,18 @@ public class Feature {
 	@NotBlank
 	private String featureName;
 	
-	@NotBlank
-	private String description;
+	private String url;
 	
-	@ManyToOne
-    @JoinColumn(name="parentFeatureId")
-	private Feature parentFeature;
-	
-	@ManyToMany(mappedBy = "features", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "primaryKey.feature", cascade = CascadeType.ALL)
 	@JsonIgnore
-    private List<Role> roles;
+    private Set<RoleFeature> roleFeatures = new HashSet<>();
 
 	public Feature() {
 	}
 
-	public Feature(String featureName, String description, Feature parentFeature) {
+	public Feature(String featureName, String url) {
 		this.featureName = featureName;
-		this.description = description;
-		this.parentFeature = parentFeature;
+		this.url = url;
 	}
 
 	public Integer getFeatureId() {
@@ -55,28 +51,20 @@ public class Feature {
 		this.featureName = featureName;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
-	public Feature getParentFeature() {
-		return parentFeature;
+	public Set<RoleFeature> getRoleFeatures() {
+		return roleFeatures;
 	}
 
-	public void setParentFeature(Feature parentFeature) {
-		this.parentFeature = parentFeature;
-	}
-
-	public List<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+	public void setRoleFeatures(Set<RoleFeature> roleFeatures) {
+		this.roleFeatures = roleFeatures;
 	}
 	
 }

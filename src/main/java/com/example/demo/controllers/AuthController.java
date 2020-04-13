@@ -27,12 +27,14 @@ import com.example.demo.models.User;
 import com.example.demo.payload.request.LoginRequest;
 import com.example.demo.payload.request.SignupRequest;
 import com.example.demo.payload.response.JwtResponse;
+import com.example.demo.payload.response.LoginResponse;
 import com.example.demo.payload.response.MessageResponse;
 import com.example.demo.dao.ProjectRepository;
 import com.example.demo.dao.RoleRepository;
 import com.example.demo.dao.UserRepository;
 import com.example.demo.security.jwt.JwtUtils;
 import com.example.demo.security.services.UserDetailsImpl;
+import com.example.demo.services.UserService;
 
 
 
@@ -54,6 +56,9 @@ public class AuthController {
 
 	@Autowired
 	PasswordEncoder encoder;
+	
+	@Autowired
+	UserService userService;
 
 	@Autowired
 	JwtUtils jwtUtils;
@@ -71,7 +76,12 @@ public class AuthController {
 		List<String> roles = userDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
+		
+		User user = userService.getUserById(userDetails.getUserId());
+		
+		return ResponseEntity.ok(new LoginResponse(user, jwt));
 
+/*
 		return ResponseEntity.ok(new JwtResponse(jwt, 
 												 userDetails.getUserId(), 
 												 userDetails.getFirstname(),
@@ -81,7 +91,7 @@ public class AuthController {
 												 userDetails.getJiraUsername(),
 												 userDetails.getPhone(),
 												 userDetails.getUserCode(),
-												 roles.get(0)));
+												 roles.get(0)));	*/
 	}
 
 	@PostMapping("/signup")
