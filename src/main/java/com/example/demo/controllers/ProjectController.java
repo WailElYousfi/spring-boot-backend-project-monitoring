@@ -39,7 +39,7 @@ public class ProjectController {
         return ResponseEntity.ok().body(this.projectService.createProject(project));
     }
 
-    @PutMapping("/projects/{id}")
+    @PostMapping("/projects/{id}")
     public ResponseEntity <Project> updateProject(@PathVariable Integer id, @RequestBody Project project) {
         project.setProjectId(id);
         return ResponseEntity.ok().body(this.projectService.updateProject(project));

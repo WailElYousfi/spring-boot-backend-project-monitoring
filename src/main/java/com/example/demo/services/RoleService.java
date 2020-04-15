@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import com.example.demo.models.Feature;
+import com.example.demo.models.Project;
 import com.example.demo.models.Role;
 import com.example.demo.Exceptions.ResourceNotFoundException;
 import com.example.demo.dao.RoleRepository;
@@ -23,6 +24,19 @@ public class RoleService {
      
     public Role createRole(Role role) {
         return repository.save(role);
+    }
+    
+    public Role updateRole(Role role) {
+        Optional <Role> roleDb = this.repository.findById(role.getRoleId());
+
+        if (roleDb.isPresent()) {
+            Role roleUpdate = roleDb.get();
+            roleUpdate.setRoleFeatures(role.getRoleFeatures());
+            repository.save(roleUpdate);            
+            return roleUpdate;
+        } else {
+        	return repository.save(role);
+        }
     }
 
     

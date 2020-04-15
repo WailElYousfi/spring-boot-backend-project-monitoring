@@ -5,21 +5,21 @@ import java.util.Map;
 
 public class FeaturesDto {
 	
-	public Map<Integer, Integer> featuresAndAccesslevels;
+	public Map<String, Integer> featuresAndAccesslevels;
 	
 	public FeaturesDto() {
 		
 	}
 
-	public FeaturesDto(Map<Integer, Integer> featuresAndAccesslevels) {
+	public FeaturesDto(Map<String, Integer> featuresAndAccesslevels) {
 		this.featuresAndAccesslevels = featuresAndAccesslevels;
 	}
 
-	public Map<Integer, Integer> getFeaturesAndAccesslevels() {
+	public Map<String, Integer> getFeaturesAndAccesslevels() {
 		return featuresAndAccesslevels;
 	}
 
-	public void setFeaturesAndAccesslevels(Map<Integer, Integer> featuresAndAccesslevels) {
+	public void setFeaturesAndAccesslevels(Map<String, Integer> featuresAndAccesslevels) {
 		this.featuresAndAccesslevels = featuresAndAccesslevels;
 	}
 	

@@ -42,6 +42,15 @@ public class FeatureService {
         }
     }
     
+    public Feature getFeatureByName(String featureName) {
+        Optional <Feature> featureDb = this.repository.findByFeatureName(featureName);
+        if (featureDb.isPresent()) {
+            return featureDb.get();
+        } else {
+            throw new ResourceNotFoundException("feature not found");
+        }
+    }
+    
     public List<Feature> getAllFeaturesByIds(List<Integer> ids){
         List<Feature> featuresDb = this.repository.findAllById(ids);
         return featuresDb;

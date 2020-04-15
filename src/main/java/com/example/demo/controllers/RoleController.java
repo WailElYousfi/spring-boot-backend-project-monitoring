@@ -25,8 +25,10 @@ import com.example.demo.models.Accesslevel;
 import com.example.demo.models.Feature;
 import com.example.demo.models.Role;
 import com.example.demo.models.RoleFeature;
+import com.example.demo.models.RoleFeatureId;
 import com.example.demo.services.AccesslevelService;
 import com.example.demo.services.FeatureService;
+import com.example.demo.services.RoleFeatureService;
 import com.example.demo.services.RoleService;
 
 @RestController
@@ -35,6 +37,9 @@ public class RoleController {
 
     @Autowired
     FeatureService featureService;
+    
+    @Autowired
+    RoleFeatureService roleFeatureService;
     
     @Autowired
     AccesslevelService accesslevelService;
@@ -64,18 +69,24 @@ public class RoleController {
 
     @PostMapping("/roles/{id}/features")
     public ResponseEntity <Role> updateFeatures(@PathVariable Integer id, @RequestBody FeaturesDto features) {
+    	List<Feature> featureList = featureService.getAllFeatures();
+    	roleFeatureService.deleteListRoleFeatures(featureList, id);
+    	
     	Role role = roleService.getRoleById(id);
-    	features.getFeaturesAndAccesslevels().forEach((featureId, accesslevelId) -> {
-    		Feature feature = featureService.getFeatureById(featureId);
-    		Accesslevel accesslevel = accesslevelService.getAccesslevelById(accesslevelId);
-    		RoleFeature roleFeature= new RoleFeature();
-    		roleFeature.setAccessLevel(accesslevel);
-    		roleFeature.setFeature(feature);
-    		roleFeature.setRole(role);
-    		rolefeaturerepository.save(roleFeature);
+    	features.getFeaturesAndAccesslevels().forEach((featureName, accesslevelId) -> {
+    		if(accesslevelId != 0) {
+	    		Feature feature = featureService.getFeatureByName(featureName);
+	    		Accesslevel accesslevel = accesslevelService.getAccesslevelById(accesslevelId);
+	    		RoleFeature roleFeature = new RoleFeature();
+	    		roleFeature.setAccessLevel(accesslevel);
+	    		roleFeature.setFeature(feature);
+	    		roleFeature.setRole(role);
+	    		roleFeatureService.createRoleFeature(roleFeature);
+    		}
     	});
     	
-        return ResponseEntity.ok().body(role);
+    	Role roleUpdate = roleService.getRoleById(id);
+        return ResponseEntity.ok().body(roleUpdate);
     }
 
     /*@DeleteMapping("/features/{id}")

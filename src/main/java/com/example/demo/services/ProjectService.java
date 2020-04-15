@@ -17,6 +17,7 @@ public class ProjectService {
     ProjectRepository repository;
      
     public Project createProject(Project project) {
+    	project.setIsClosed(false);
         return repository.save(project);
     }
 
