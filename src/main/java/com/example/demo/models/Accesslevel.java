@@ -1,9 +1,13 @@
 package com.example.demo.models;
 
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -17,6 +21,14 @@ public class Accesslevel {
 	private Integer levelNumber;
 	
 	private String description;
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+	
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updatedAt;
 	
 	@OneToMany(mappedBy = "accessLevel", fetch = FetchType.LAZY)
 	@JsonIgnore
@@ -52,6 +64,22 @@ public class Accesslevel {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 	public List<RoleFeature> getRolefeatures() {

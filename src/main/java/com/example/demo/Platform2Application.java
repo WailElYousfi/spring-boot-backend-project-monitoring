@@ -12,6 +12,7 @@ public class Platform2Application {
 		new File(System.getProperty("user.dir")+"/src/main/resources/files/templates").mkdir();
 		new File(System.getProperty("user.dir")+"/src/main/resources/files/incidencias").mkdir();
 		new File(System.getProperty("user.dir")+"/src/main/resources/files/requerimientos").mkdir();
+		new File(System.getProperty("user.dir")+"/src/main/resources/files/accs").mkdir();
 		SpringApplication.run(Platform2Application.class, args);
 	}
 

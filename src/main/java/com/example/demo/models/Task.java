@@ -6,6 +6,11 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 
 @Entity
 @Table(name = "tasks")
@@ -18,14 +23,12 @@ public class Task {
 	@Column(name="task_key")
 	private String key;
 	
-	@NotBlank
 	private String summary;
 	
-	//@NotBlank
-	//private String description;
+	@Lob //long text
+	private String description;
 	
-	//@NotBlank
-	//private String fixVersion;
+	private String fixVersion;
 	
 	private String originalEstimate;
 	
@@ -36,6 +39,7 @@ public class Task {
 	
 	private String timeSpent;
 	
+	@Lob //long text
 	private String comment;
 	
 	private String taskType;
@@ -54,7 +58,7 @@ public class Task {
     @JoinColumn(name="fileTypeId")
 	private Type fileType;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="userId")
 	private User assignedUser;
 	
@@ -62,13 +66,21 @@ public class Task {
     @JoinColumn(name="projectId")
 	private Project project;
 	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+	
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updatedAt;
+	
 	public Task() {
 		
 	}
 
 	public Task(String key, String summary, String originalEstimate,String remainingEstimate, String status, String timeSpent,
 			String comment, String taskType, Date date, Date created, Date updated, Date resolved,
-			Integer idOt, Type fileType, User assignedUser, Project project) {
+			Integer idOt, Type fileType, User assignedUser, Project project, String description, String fixVersion) {
 		this.key = key;
 		this.summary = summary;
 		this.originalEstimate = originalEstimate;
@@ -85,6 +97,8 @@ public class Task {
 		this.fileType = fileType;
 		this.assignedUser = assignedUser;
 		this.project = project;
+		this.description = description;
+		this.fixVersion = fixVersion;
 	}
 
 	public Integer getTaskId() {
@@ -223,6 +237,37 @@ public class Task {
 		this.project = project;
 	}
 
-	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getFixVersion() {
+		return fixVersion;
+	}
+
+	public void setFixVersion(String fixVersion) {
+		this.fixVersion = fixVersion;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+		
 	
 }

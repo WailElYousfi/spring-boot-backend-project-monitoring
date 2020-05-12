@@ -22,12 +22,14 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 public class test {
 	
 	public static void main(String[] args)  throws Exception {
-		/*String originalEstimate= null;
-		double originalEstimateInHours = ((double) 5000) / 3600;
+		String originalEstimate= null;
+		float f = Float.parseFloat("0");
+		System.out.println(f);//0.0
+		
 		DecimalFormat df = new DecimalFormat("0.0");
-		originalEstimate = df.format(originalEstimateInHours);
-		System.out.println(originalEstimate);
-		System.out.println(originalEstimateInHours);*/
+		originalEstimate = df.format(f);
+		System.out.println(originalEstimate);//0,0
+//		
 		/*File tempFile = new File(Paths.get(test.class.getClassLoader().getResource("files").toURI()).toString() + "/rwwwwequerimientoFile.xls");
 		boolean exists = tempFile.exists();
 		System.out.println(exists);*/
@@ -37,13 +39,7 @@ public class test {
 		System.out.println(Paths.get(test.class.getClassLoader().getResource("/").toURI()));*/
 //		System.out.println(System.getProperty("user.dir"));
 	
-				Set<String> list = new HashSet<String>();
-				list.add("sss");
-				list.add("ppp");
-				String delim = "-";
-
-				String res = String.join(delim, list);
-				System.out.println(res);
+		
 
 	}
 

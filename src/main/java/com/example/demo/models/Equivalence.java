@@ -1,7 +1,12 @@
 package com.example.demo.models;
 
+import java.util.Date;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 
 
@@ -20,6 +25,14 @@ public class Equivalence {
 	private String fenixEquivalence;
 	
 	private Integer ColumnOrder;
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+	
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updatedAt;
 	
 	@ManyToOne
     @JoinColumn(name="fileTypeId")
@@ -83,6 +96,23 @@ public class Equivalence {
 
 	public void setColumnOrder(Integer ColumnOrder) {
 		this.ColumnOrder = ColumnOrder;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}	
+	
 	
 }

@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 import com.example.demo.models.Task;
+import com.example.demo.models.Type;
 import com.example.demo.Exceptions.ResourceNotFoundException;
 import com.example.demo.dao.TaskRepository;
 
@@ -99,16 +101,22 @@ public class TaskService {
         }
     }
     
-    public List<Task> getTaskByDatesAndSummary(Date startDate, Date endDate, String summary) {
-        Optional < List<Task> > taskDb = this.repository.findByDates(startDate, endDate);       
+    public List<Task> getTaskByDatesAndSummary(Date startDate, Date endDate, String summary, String type) {
+    	Type fileType = typeRepository.getTypeByName(type);
+    	Integer typeId = fileType.getTypeId();
+        Optional < List<Task> > taskDb = this.repository.findByDatesAndType(startDate, endDate, typeId); 
+        List <Task> taskList = new ArrayList<Task>();
         if (taskDb.isPresent()) {
         	for (Task task : taskDb.get()) {
-    			if(!task.getSummary().contains(summary))
-    				taskDb.get().remove(task);
+    			if(task.getSummary().contains(summary))
+    				taskList.add(task);
     		}
-            return taskDb.get();
+        	if(taskList.isEmpty())
+                throw new ResourceNotFoundException("There is no task contains this keyword in summary");
+        	else
+        		return taskList;
         } else {
-            throw new ResourceNotFoundException("Record not found");
+            throw new ResourceNotFoundException("There is no task in these dates");
         }
     }
 

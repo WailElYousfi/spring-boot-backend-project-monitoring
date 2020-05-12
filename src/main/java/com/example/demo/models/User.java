@@ -2,6 +2,7 @@ package com.example.demo.models;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -9,6 +10,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -53,6 +58,16 @@ public class User {
 	
 	@NotNull
 	private Long userCode;
+	
+	private boolean isArchived;
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+	
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updatedAt;
 
 	@ManyToOne
     @JoinColumn(name="roleId")
@@ -87,7 +102,7 @@ public class User {
 	public User() {
 	}
 
-	public User(String firstname, String lastname, String username, String email, String password, String phone, String jiraUsername, Long userCode) {
+	public User(String firstname, String lastname, String username, String email, String password, String phone, String jiraUsername, Long userCode, boolean isArchived) {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.username = username;
@@ -96,6 +111,7 @@ public class User {
 		this.phone = phone;
 		this.jiraUsername = jiraUsername;
 		this.userCode = userCode;
+		this.isArchived = isArchived;
 	}
 
 	public Long getUserId() {
@@ -170,6 +186,14 @@ public class User {
 		this.userCode = userCode;
 	}
 
+	public boolean isArchived() {
+		return isArchived;
+	}
+
+	public void setArchived(boolean isArchived) {
+		this.isArchived = isArchived;
+	}
+
 	public Role getRole() {
 		return role;
 	}
@@ -225,7 +249,22 @@ public class User {
 	public void setCausedIncidences(List<Incidence> causedIncidences) {
 		this.causedIncidences = causedIncidences;
 	}
-	
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 	
 	
 }

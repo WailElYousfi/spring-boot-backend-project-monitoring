@@ -57,4 +57,9 @@ public class UserController {
         this.userService.deleteUser(id);
         return HttpStatus.OK;
     }
+    
+    @GetMapping("/users/{id}/archive")
+    public ResponseEntity <User> archiveUser(@PathVariable Long id) {
+        return ResponseEntity.ok().body(this.userService.archiveUser(id));
+    }
 }

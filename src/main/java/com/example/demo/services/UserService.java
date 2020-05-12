@@ -119,6 +119,11 @@ public class UserService {
         } else {
             throw new ResourceNotFoundException("user not found");
         }
-
     }
+
+	public User archiveUser(Long id) {
+    	User user = getUserById(id);
+    	user.setArchived(true);
+    	return this.repository.save(user);
+	}
 }

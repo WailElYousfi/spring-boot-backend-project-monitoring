@@ -1,8 +1,12 @@
 package com.example.demo.models;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.example.demo.models.RoleFeatureId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,6 +28,14 @@ public class RoleFeature {
 	@ManyToOne
     @JoinColumn(name="accesslevelId")
 	private Accesslevel accessLevel;
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+	
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updatedAt;
 
 
 	public RoleFeatureId getPrimaryKey() {
@@ -60,5 +72,22 @@ public class RoleFeature {
 	public void setAccessLevel(Accesslevel accessLevel) {
 		this.accessLevel = accessLevel;
 	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+	
 	
 }

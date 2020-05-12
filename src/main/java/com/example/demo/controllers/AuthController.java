@@ -128,7 +128,8 @@ public class AuthController {
 							 encoder.encode(signUpRequest.getPassword()),
 							 signUpRequest.getPhone(),
 							 signUpRequest.getJiraUsername(),
-							 signUpRequest.getUserCode());
+							 signUpRequest.getUserCode(),
+							 false);
 
 		String roleReq = signUpRequest.getRole();
 

@@ -6,6 +6,9 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -36,11 +39,19 @@ public class Justification {
 	@Temporal(TemporalType.DATE)
 	private Date endDate;
 	
-	@ManyToOne
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+	
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updatedAt;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="justificatorId")
 	private User justificator;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="validatorId")
 	private User validator;
 	
@@ -145,6 +156,23 @@ public class Justification {
 
 	public void setProject(Project project) {
 		this.project = project;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}	
+	
 	
 }

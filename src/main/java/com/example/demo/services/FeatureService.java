@@ -25,6 +25,8 @@ public class FeatureService {
         Feature featureUpdate = featureDb;
         featureUpdate.setUrl(feature.getUrl());
         featureUpdate.setFeatureName(feature.getFeatureName());
+        featureUpdate.setUrl(feature.getUrl());
+        featureUpdate.setParentTitle(feature.getParentTitle());
         return repository.save(featureUpdate);
     }
     

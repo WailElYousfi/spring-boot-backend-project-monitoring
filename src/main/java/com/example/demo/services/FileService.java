@@ -109,75 +109,82 @@ public class FileService {
 	}
 	
 	
-	public List<Task> getDataTaskFile(MultipartFile file, Integer idOt) throws Exception {	
+	public List<Task> getDataAccFile(MultipartFile file) throws Exception {	
 		Path tempDir = Files.createTempDirectory("");
 		File tempFile = tempDir.resolve(file.getOriginalFilename()).toFile();
-		file.transferTo(tempFile);		
-		XSSFWorkbook workbook = new XSSFWorkbook(tempFile); 
-		XSSFSheet sheet = workbook.getSheetAt(0); 
-        Row row;
-        
-        Type tareaType = typeService.getTypeByName("Tarea cargable");
+		file.transferTo(tempFile);	
+		FileInputStream in = new FileInputStream(tempFile);
+		Workbook workbook;
+		Sheet sheet;
+		if(tempFile.getName().endsWith(".xls")) {
+			 workbook = new HSSFWorkbook(in);
+			 sheet = workbook.getSheetAt(0);
+		}else if(tempFile.getName().endsWith(".xlsx")) {
+			workbook = new XSSFWorkbook(in);
+			sheet = workbook.getSheetAt(0);
+		}else {
+			in.close();
+			throw new IllegalArgumentException("Invalid extension ! You have to select '.xls' or '.xlsx' file");
+		}	
+		
+        Row row;       
+		List<Task> taskList = new ArrayList<Task>();
+		Type accType = typeService.getTypeByName("Acc");
 		HashMap<String, Integer> hm = new HashMap<String, Integer>();
-		//List<String> originalColumns = new ArrayList<String>();
 		Set<String> originalColumns = new HashSet<String>();
+		Set<String> missignElements = new HashSet<String>();
 		List<String> fileColumns = new ArrayList<String>();
 		
-		for (Equivalence colonne : tareaType.getColonnes())
+		for (Equivalence colonne : accType.getColonnes())
 			if(colonne.getJiraEquivalence() != null)
 				originalColumns.add(colonne.getJiraEquivalence());
-		
-	//	List<String> originalColumnWithoutDuplicates =  originalColumns.stream().distinct().collect(Collectors.toList()); // Remove duplicates if exists
-		
-		for(int j=0; j < sheet.getRow(3).getLastCellNum(); j++)
-			fileColumns.add(sheet.getRow(3).getCell(j).toString());	//get file columns
+				
+		for(int j=0; j < sheet.getRow(0).getLastCellNum(); j++)	//row 0
+			fileColumns.add(sheet.getRow(0).getCell(j).toString());
 		
 		if(!fileColumns.containsAll(originalColumns)) {
-	        workbook.close();
-			throw new ResourceNotFoundException("Columns not found in this file !!");
+			missignElements = originalColumns;
+			missignElements.removeAll(fileColumns);
+			String delim = ", ";
+			workbook.close();
+			throw new ResourceNotFoundException("( " + String.join(delim, missignElements) +" ) not found in this file !!");
 		}
 		
-		for(int j=0; j < sheet.getRow(3).getLastCellNum(); j++)
-			for(Equivalence colonne : tareaType.getColonnes())
-				if(sheet.getRow(3).getCell(j).toString().equals(colonne.getJiraEquivalence()))
-					hm.put(colonne.getColumnName(), j);	// pour savoir le contenu de chaque colonne
-		
-		List<Task> taskList = new ArrayList<Task>();
-        for(int i=4; i <= sheet.getLastRowNum()-1 ; i++){  
-        	row = (Row) sheet.getRow(i);
-        	if(row.getCell(0).toString().isEmpty())
-            	break; 
+		for(int j=0; j < sheet.getRow(0).getLastCellNum(); j++)
+			for(Equivalence colonne : accType.getColonnes())
+				if(sheet.getRow(0).getCell(j).toString().equals(colonne.getJiraEquivalence()))
+					hm.put(colonne.getColumnName(), j);
+					
+		for(int i=1; i <= sheet.getLastRowNum()-1; i++){     	//a partir de la 1ere ligne   
+            row = (Row) sheet.getRow(i);
+			if(row.getCell(hm.get("key")).toString().isEmpty())
+				break;
 			Task task = new Task();
-			task.setProject(projectService.getProjectById(4));
 			task.setKey(row.getCell(hm.get("key")).toString());
-			task.setSummary(row.getCell(hm.get("title")).toString());
-			task.setOriginalEstimate(row.getCell(hm.get("originalEstimate")).toString());
-			task.setRemainingEstimate(row.getCell(hm.get("remainingEstimate")).toString());
 			task.setStatus(row.getCell(hm.get("status")).toString());
-			task.setTimeSpent(row.getCell(hm.get("timeSpent")).toString());
+			task.setAssignedUser(userService.getUserByJiraUsernameOrNull(row.getCell(hm.get("assignedUser")).toString())); //return User or NULL
+			task.setSummary(row.getCell(hm.get("summary")).toString());
+			
+			String originalEstimate = StringUtils.chop(row.getCell(hm.get("originalEstimate")).toString()); //remove last character
+			float originalEstimateFloat = Float.parseFloat(originalEstimate);
+			task.setOriginalEstimate(Float.toString(originalEstimateFloat));
+			
+			String timeSpent = StringUtils.chop(row.getCell(hm.get("timeSpent")).toString()); //remove last character
+			float timeSpentFloat = Float.parseFloat(timeSpent);
+			task.setTimeSpent(Float.toString(timeSpentFloat));
+			
+			String remainingEstimate = StringUtils.chop(row.getCell(hm.get("remainingEstimate")).toString()); //remove last character
+			float remainingEstimateFloat = Float.parseFloat(remainingEstimate);
+			task.setRemainingEstimate(Float.toString(remainingEstimateFloat));
+			
+			task.setDescription(row.getCell(hm.get("description")).toString());
+			task.setProject(projectService.getProjectByName(row.getCell(hm.get("project")).toString()));
+			task.setFixVersion(row.getCell(hm.get("fixVersion")).toString());
 			task.setTaskType(row.getCell(hm.get("taskType")).toString());
 			task.setDate(new Date());
-			task.setAssignedUser(userService.getUserByJiraUsername(row.getCell(hm.get("assignedUser")).toString()));
-//			task.setComment(row.getCell(hm.get("comment")).toString());
-			task.setFileType(typeService.getTypeByName("Tarea cargable"));
-			
-			if(row.getCell(hm.get("created")).getCellType()== Cell.CELL_TYPE_BLANK)
-				task.setCreated(null);
-			else
-				task.setCreated(row.getCell(hm.get("created")).getDateCellValue());
-			
-			if(row.getCell(hm.get("updated")).getCellType()== Cell.CELL_TYPE_BLANK)
-				task.setUpdated(null);
-			else
-				task.setUpdated(row.getCell(hm.get("updated")).getDateCellValue());
-			
-			if(row.getCell(hm.get("resolved"))==null || row.getCell(hm.get("resolved")).getCellType()== Cell.CELL_TYPE_BLANK)
-				task.setResolved(null);
-			else
-				task.setResolved(row.getCell(hm.get("resolved")).getDateCellValue());
-			
-			task.setIdOt(idOt);
-			
+			task.setComment(row.getCell(hm.get("comment")).toString());
+			task.setFileType(typeService.getTypeByName("Acc"));
+						
 			taskList.add(task);
         }
         workbook.close();
@@ -194,8 +201,74 @@ public class FileService {
 		return "There is no task to upload";
     }
 	
-	
-	
+	public String generateAccFile(taskFilterDto filter) throws Exception {
+		excelService.createTemplateAccFile();
+		Date startDate=new SimpleDateFormat("yyyy-MM-dd").parse(filter.getStartDate());
+		Date endDate=new SimpleDateFormat("yyyy-MM-dd").parse(filter.getEndDate());
+		List<Task> tasks = taskService.getTaskByDatesAndSummary(startDate, endDate, filter.getSummary(), "Acc");
+        Date date = new Date();
+		try {
+			FileInputStream inputStream = new FileInputStream(new File(System.getProperty("user.dir")+"/src/main/resources/files/templates".toString() + "/accTemplate.xls"));
+            Workbook workbook = WorkbookFactory.create(inputStream);
+	        Sheet sheet = workbook.getSheetAt(0);
+		    
+	        CreationHelper createHelper = workbook.getCreationHelper();
+	        CellStyle dateCellStyle = workbook.createCellStyle();
+	        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd/MM/yyyy HH:mm:ss"));
+	        
+	        Type taskType = typeService.getTypeByName("Acc");
+			HashMap<Integer, String> columnsName = new HashMap<Integer, String>();				
+			for (Equivalence colonne : taskType.getColonnes())
+				if(colonne.getFenixEquivalence() != null)
+					columnsName.put(colonne.getColumnOrder(), colonne.getFenixEquivalence());		    
+			      
+			Row row0 = sheet.getRow(0);
+			excelService.setHeader(columnsName, row0);			        
+	                	
+	        int rowNum = 1;
+	        for(Task task: tasks) {		     
+	        	Row row = sheet.createRow(rowNum++);
+		        row.createCell(1).setCellValue(task.getSummary());
+		        row.createCell(3).setCellValue(task.getDescription());
+		        row.createCell(4).setCellValue("En Ejecución");
+		        row.createCell(5).setCellValue("Evolutivo(ENP)");
+		        row.createCell(6).setCellValue(filter.getIdOt());
+		        row.createCell(7).setCellValue(task.getAssignedUser().getUserCode());
+		        if(task.getTaskType().equals("Desarrollo") || task.getTaskType().equals("Construcción"))	// il faut verifier cette condition !!!
+		        	row.createCell(8).setCellValue("CODIFICACION");
+		        else
+		        	row.createCell(8).setCellValue("Análisis Técnico");
+		        
+		        row.createCell(9).setCellValue(0);
+		        row.createCell(10).setCellValue("Media");		       
+		            
+		        float originalEstimateFloat = Float.parseFloat(task.getOriginalEstimate());
+		        String st = Float.toString(originalEstimateFloat);
+		        row.createCell(11).setCellValue(st);
+
+		        Date date2 = new Date();
+		        Cell CellDate = row.createCell(13);
+		        CellDate.setCellValue(date2);
+		        CellDate.setCellStyle(dateCellStyle);
+		        Cell CellDate2 = row.createCell(14);
+		        CellDate2.setCellValue(date2);
+		        CellDate2.setCellStyle(dateCellStyle);	        		        	        
+	        }
+
+	        for(int i = 0; i < columnsName.size(); i++) {
+	            sheet.autoSizeColumn(i);
+	        }
+	        inputStream.close();		    
+            FileOutputStream outputStream = new FileOutputStream(new File(System.getProperty("user.dir")+"/src/main/resources/files/accs".toString() + "/acc_" + date.getTime()+ ".xls"));
+            workbook.write(outputStream);
+            workbook.close();
+            outputStream.close();
+		} catch (IOException | EncryptedDocumentException| InvalidFormatException ex) {
+			ex.printStackTrace();
+		}
+		return "acc_" + date.getTime();
+	}
+		
 	
 	public List<Incidence> getDataIncidenceFile(MultipartFile file) throws Exception {	
 		Path tempDir = Files.createTempDirectory("");
@@ -281,78 +354,6 @@ public class FileService {
 		}
 		return "There is no incidence to upload";
     }
-	
-	
-
-	public String generateTasksFile(taskFilterDto filter) throws Exception {
-		Date startDate=new SimpleDateFormat("yyyy-MM-dd").parse(filter.getStartDate());
-		Date endDate=new SimpleDateFormat("yyyy-MM-dd").parse(filter.getEndDate());
-		List<Task> tasks = taskService.getTaskByDatesAndIdOt(startDate, endDate, 11111);
-			try {
-				XSSFWorkbook workbook = new XSSFWorkbook();
-				Date date = new Date();
-				String fileName = Long.toString(date.getTime());
-				FileOutputStream out = new FileOutputStream(new File(Paths.get(getClass().getClassLoader().getResource("files/tasks").toURI()).toString() + "/" + fileName +".xls"));
-				Sheet sheet = workbook.createSheet("Sheet1");
-	
-		        CreationHelper createHelper = workbook.getCreationHelper();
-	
-		        Font headerFont = workbook.createFont();
-		        CellStyle headerCellStyle = workbook.createCellStyle();
-		        excelService.setCellStyle(headerCellStyle, "green", headerFont, true, "white");
-	
-		        Row headerRow = sheet.createRow(0);		        
-		        Type taskType = typeService.getTypeByName("Tarea cargable");
-				HashMap<Integer, String> columnsName = new HashMap<Integer, String>();
-				
-				for (Equivalence colonne : taskType.getColonnes())
-					if(colonne.getFenixEquivalence() != null)
-						columnsName.put(colonne.getColumnOrder(), colonne.getFenixEquivalence());		    
-			      
-				excelService.setHeader(columnsName, headerRow, headerCellStyle, headerCellStyle);
-	
-		        CellStyle dateCellStyle = workbook.createCellStyle();
-		        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd/MM/yyyy HH:mm:ss"));
-		        
-		        int rowNum = 1;
-		        for(Task task: tasks) {		     
-		        	Row row = sheet.createRow(rowNum++);
-			        row.createCell(1).setCellValue(task.getSummary());
-			        //row.createCell(3).setCellValue(task.getDescription());
-			        row.createCell(4).setCellValue("En Ejecución");
-			        row.createCell(5).setCellValue("Evolutivo(ENP)");
-			        row.createCell(6).setCellValue(task.getIdOt());
-			        row.createCell(7).setCellValue(task.getAssignedUser().getUserCode());
-			        row.createCell(8).setCellValue(task.getTaskType());
-			        row.createCell(9).setCellValue(0);
-			        row.createCell(10).setCellValue("Media");
-			            
-			        //String originalEstimateString = StringUtils.chop(task.getOriginalEstimate());
-			        float originalEstimateFloat = Float.parseFloat(task.getOriginalEstimate());
-			        String st = Float.toString(originalEstimateFloat);
-			        row.createCell(11).setCellValue(st);
-	
-			        Date date2 = new Date();
-			        Cell CellDate = row.createCell(13);
-			        CellDate.setCellValue(date2);
-			        CellDate.setCellStyle(dateCellStyle);
-			        Cell CellDate2 = row.createCell(14);
-			        CellDate2.setCellValue(date2);
-			        CellDate2.setCellStyle(dateCellStyle);
-		        	          
-		        }
-	
-		        for(int i = 0; i < columnsName.size(); i++) {
-		            sheet.autoSizeColumn(i);
-		        }
-		        workbook.write(out);
-		        out.close();
-		        workbook.close();		
-			}catch(Exception e) {
-				System.out.println(e);
-			}
-		return "Tasks file successfully generated";
-	}
 	
 	
 	public String generateIncidencesFile(IncidenceFilterDto filter) throws Exception {
@@ -534,12 +535,12 @@ public class FileService {
 		excelService.createTemplateRequerimientoFile();
 		Date startDate=new SimpleDateFormat("yyyy-MM-dd").parse(filter.getStartDate());
 		Date endDate=new SimpleDateFormat("yyyy-MM-dd").parse(filter.getEndDate());
-		List<Task> tasks = taskService.getTaskByDatesAndSummary(startDate, endDate, filter.getSummary());
+		List<Task> tasks = taskService.getTaskByDatesAndSummary(startDate, endDate, filter.getSummary(), "Requerimiento");
+        Date date = new Date();
 		try {
 			FileInputStream inputStream = new FileInputStream(new File(System.getProperty("user.dir")+"/src/main/resources/files/templates".toString() + "/requerimientoTemplate.xls"));
             Workbook workbook = WorkbookFactory.create(inputStream);
 	        Sheet sheet = workbook.getSheetAt(0);
-	        Date date = new Date();
 		        			      
 	        Type taskType = typeService.getTypeByName("Requerimiento");
 			HashMap<Integer, String> columnsName = new HashMap<Integer, String>();				
@@ -592,7 +593,7 @@ public class FileService {
 		} catch (IOException | EncryptedDocumentException| InvalidFormatException ex) {
 			ex.printStackTrace();
 		}
-		return "Requerimiento file successfully generated";
+		return "requerimiento_" + date.getTime();
 	}
 	
 

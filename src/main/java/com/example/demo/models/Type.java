@@ -1,10 +1,14 @@
 package com.example.demo.models;
 
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -20,6 +24,14 @@ public class Type {
 	
 	@NotBlank
 	private String description;
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+	
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updatedAt;
 	
 	@OneToMany(mappedBy = "fileType", fetch = FetchType.LAZY)
 	@JsonIgnore
@@ -88,6 +100,23 @@ public class Type {
 
 	public void setColonnes(List<Equivalence> colonnes) {
 		this.colonnes = colonnes;
-	}	
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+	
 	
 }

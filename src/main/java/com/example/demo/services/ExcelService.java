@@ -262,4 +262,30 @@ public class ExcelService {
 		}
 	}
 	
+	public void createTemplateAccFile() throws Exception {
+		File template = new File(System.getProperty("user.dir")+"/src/main/resources/files/templates".toString() + "/accTemplate.xls");
+		if(!template.exists()) {
+			try {
+				XSSFWorkbook workbook = new XSSFWorkbook();
+				FileOutputStream out = new FileOutputStream(new File(System.getProperty("user.dir")+"/src/main/resources/files/templates".toString() + "/accTemplate.xls"));
+				Sheet sheet = workbook.createSheet("Sheet1");
+		        Font font = workbook.createFont();	    
+		        CellStyle greenStyle = workbook.createCellStyle();
+		        setCellStyle(greenStyle, "green", font, true, "white");
+
+		        Row row0 = sheet.createRow(0);	 		       		        			      		    
+		        setHeaderStyle(row0, 0, 24, 0, 24, greenStyle, greenStyle);			        		        	        
+	
+		        for(int i = 0; i < 25 ; i++) {
+		            sheet.autoSizeColumn(i);
+		        }
+		        workbook.write(out);
+		        out.close();
+		        workbook.close();		
+			} catch (IOException | EncryptedDocumentException ex) {
+	            ex.printStackTrace();
+	        }
+		}
+	}
+	
 }

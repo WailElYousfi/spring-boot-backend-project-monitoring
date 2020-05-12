@@ -5,7 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -39,13 +41,34 @@ public class FileController {
 	
 	@Autowired
 	IncidenceService incidenceService;
-
-	///////////////// tareas ////////////// getDataRequerimientoFile
 	
-	@PostMapping("/tasks/data")
-	public ResponseEntity < List<Task> > getDataTaskFile(@RequestParam("file") MultipartFile file, @RequestParam("idOt") Integer idOt) throws Exception{
-		return ResponseEntity.ok().body(fileService.getDataTaskFile(file, idOt));
+	///////////////////////////////////// ACC ////////////////////////////////////////////
+	
+	@PostMapping("/acc/data")
+	public ResponseEntity < List<Task> > getDataTaskFile(@RequestParam("file") MultipartFile file) throws Exception{
+		return ResponseEntity.ok().body(fileService.getDataAccFile(file));
 	}
+	
+	@PostMapping("/acc/upload")
+	public ResponseEntity < String > uploadTasksAcc(@RequestBody List<Task> tasks) throws Exception{
+		return ResponseEntity.ok().body(fileService.uploadTasks(tasks));
+	}
+	
+	@RequestMapping(value = "/acc/generate", method = RequestMethod.POST, consumes="application/json")
+	public ResponseEntity < Map<String, String> > generateAccFile(@RequestBody taskFilterDto filter) throws Exception{
+		Map<String, String> response = new HashMap<String, String>();
+		response.put("body", fileService.generateAccFile(filter));
+		return ResponseEntity.ok().body(response);
+	}
+	
+	@GetMapping("/acc/download")
+	public void downloadAccFile(String fileName, HttpServletResponse res) throws Exception {
+		res.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+		res.getOutputStream().write(contentOf(fileName, "accs"));
+	}
+
+	////////////////////////////////////// Requerimiento ///////////////////////////////////
+	
 	
 	@PostMapping("/requerimiento/data")
 	public ResponseEntity < List<Task> > getDataRequerimientoFile(@RequestParam("file") MultipartFile file) throws Exception{
@@ -58,17 +81,21 @@ public class FileController {
 		return ResponseEntity.ok().body(fileService.uploadTasks(tasks));
 	}
 	
-	@RequestMapping(value = "/tasks/generate", method = RequestMethod.POST, consumes="application/json")
-	public ResponseEntity < String > generateTasksFile(@RequestBody taskFilterDto filter) throws Exception{
-		return ResponseEntity.ok().body(fileService.generateTasksFile(filter));
-	}
 	
 	@RequestMapping(value = "/requerimiento/generate", method = RequestMethod.POST, consumes="application/json")
-	public ResponseEntity < String > generateRequerimientoFile(@RequestBody taskFilterDto filter) throws Exception{
-		return ResponseEntity.ok().body(fileService.generateRequerimientoFile(filter));
+	public ResponseEntity < Map<String, String> > generateRequerimientoFile(@RequestBody taskFilterDto filter) throws Exception{
+		Map<String, String> response = new HashMap<String, String>();
+		response.put("body", fileService.generateRequerimientoFile(filter));
+		return ResponseEntity.ok().body(response);
 	}
 	
-	//////////// incidencias ////////////
+	@GetMapping("/requerimiento/download")
+	public void downloadRequerimientoFile(String fileName, HttpServletResponse res) throws Exception {
+		res.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+		res.getOutputStream().write(contentOf(fileName, "requerimientos"));
+	}
+	
+	////////////////////////// incidencias /////////////////////////////////
 	
 	@PostMapping("/incidences/data")
 	public ResponseEntity < List<Incidence> > getDataIncidenceFile(@RequestParam("file") MultipartFile file) throws Exception{
@@ -89,19 +116,23 @@ public class FileController {
 	}
 	
 	@RequestMapping(value = "/incidences/generate", method = RequestMethod.POST, consumes="application/json")
-	public ResponseEntity < String > generateIncidencesFile(@RequestBody IncidenceFilterDto filter) throws Exception{
-		return ResponseEntity.ok().body(fileService.generateIncidencesFile(filter));
+	public ResponseEntity < Map<String, String> > generateIncidencesFile(@RequestBody IncidenceFilterDto filter) throws Exception{
+		Map<String, String> response = new HashMap<String, String>();
+		response.put("body", fileService.generateIncidencesFile(filter));
+		return ResponseEntity.ok().body(response);
 	}
 	
 	@GetMapping("/incidences/download")
-	public void downloadFile(String fileName, HttpServletResponse res) throws Exception {
+	public void downloadIncidenciaFile(String fileName, HttpServletResponse res) throws Exception {
 		res.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-		res.getOutputStream().write(contentOf(fileName));
+		res.getOutputStream().write(contentOf(fileName, "incidencias"));
 	}
 	
-	private byte[] contentOf(String fileName) throws Exception {
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	private byte[] contentOf(String fileName, String type) throws Exception {
 		
-		return Files.readAllBytes( Paths.get(System.getProperty("user.dir")+"/src/main/resources/files/incidencias/" + fileName));
+		return Files.readAllBytes( Paths.get(System.getProperty("user.dir")+"/src/main/resources/files/"+type+"/" + fileName));
 	}
 	
 }
