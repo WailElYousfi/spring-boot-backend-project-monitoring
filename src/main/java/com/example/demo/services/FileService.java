@@ -86,7 +86,7 @@ public class FileService {
 	
 	
 	public String secondsToHoursOrNull(Cell cell) {
-		if(cell.toString().isEmpty()) {
+		if(!cell.toString().isEmpty()) {
 			double originalEstimateInHours = ((double) cell.getNumericCellValue()) / 3600;
 			DecimalFormat df = new DecimalFormat("0.0");
 			return df.format(originalEstimateInHours);

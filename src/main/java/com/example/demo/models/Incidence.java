@@ -67,11 +67,11 @@ public class Incidence {
     @JoinColumn(name="fileTypeId")
 	private Type fileType;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="assignedUserId")
 	private User assignedUser;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="causedUserId")
 	private User causedUser;
 	

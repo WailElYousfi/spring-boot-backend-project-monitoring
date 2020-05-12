@@ -58,7 +58,7 @@ public class Task {
     @JoinColumn(name="fileTypeId")
 	private Type fileType;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="userId")
 	private User assignedUser;
 	
