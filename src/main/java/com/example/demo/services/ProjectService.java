@@ -65,6 +65,9 @@ public class ProjectService {
         }
     }
     
+    public Integer countProjects() {
+    	return repository.countProjects(false);
+    }
 
     public void deleteProject(Integer projectId) {
         Optional <Project> projectDb = this.repository.findById(projectId);

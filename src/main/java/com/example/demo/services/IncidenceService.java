@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.example.demo.models.Incidence;
+import com.example.demo.models.Task;
 import com.example.demo.Exceptions.ResourceNotFoundException;
 import com.example.demo.dao.IncidenceRepository;
 
@@ -94,6 +95,31 @@ public class IncidenceService {
             throw new ResourceNotFoundException("Record not found");
         }
     }
+    
+    public List<Incidence> getIncidencesByUserIdOrProjectIdAndStatusAndDatesAndType(Long userId, Integer projectId, String status, int month, String typeName) {
+    	Optional< List<Incidence> > incidencesDb; 
+    	if(userId == null)
+    		incidencesDb = this.repository.findByProjectIdAndStatusAndDatesAndType(projectId, status, month, typeName);
+    	else
+    		incidencesDb = this.repository.findByUserIdAndStatusAndDatesAndType(userId, status, month, typeName);
+
+        if (incidencesDb.isPresent()) {
+            return incidencesDb.get();
+        } else {
+            return null;
+        }
+    }
+    
+    public Integer getCountOfIncidencesByUserIdOrProjectIdAndStatusAndDatesAndType(Long userId, Integer projectId, String status, int month, String typeName) {
+    	Integer count = 0;
+    	if(userId == null)
+    		count = this.repository.countIncidencesByProjectIdAndStatusAndDatesAndType(projectId, status, month, typeName);
+    	else
+    		count = this.repository.countIncidencesByUserIdAndStatusAndDatesAndType(userId, status, month, typeName);
+    	
+    	return count;
+    }
+    
     
 	public List<String> getUsernamesOfIncidencesByDates(Date startDate, Date endDate){		
 		List<Incidence> incidences = getIncidencesByDates(startDate, endDate);

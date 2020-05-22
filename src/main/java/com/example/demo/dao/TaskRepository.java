@@ -24,6 +24,18 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 	@Query("select t from Task t where t.date >= ?1 and t.date <= ?2")
 	Optional< List<Task> > findByDates(Date startDate, Date endDate);
 	
+	@Query("select t from Task t where t.assignedUser.userId = ?1 and t.status = ?2")
+	Optional< List<Task> > findByUserIdAndStatus(Long userId, String status);
+	
+	@Query("select t from Task t where t.assignedUser.userId = ?1 and t.status = ?2 and EXTRACT(MONTH FROM t.resolved) = ?3")
+	Optional< List<Task> > findByUserIdAndStatusAndDates(Long userId, String status, int month);
+	
+	@Query("select t from Task t where t.project.projectId = ?1 and t.status = ?2 and EXTRACT(MONTH FROM t.resolved) = ?3")
+	Optional< List<Task> > findByProjectIdAndStatusAndDates(Integer projectId, String status, int month);
+	
+	@Query("select t from Task t where t.project.projectId = ?1 and t.status = ?2")
+	Optional< List<Task> > findByProjectIdAndStatus(Integer projectId, String status);
+	
 	@Query("select t from Task t where t.date >= ?1 and t.date <= ?2 and t.fileType.typeId = ?3")
 	Optional< List<Task> > findByDatesAndType(Date startDate, Date endDate, Integer type);
 	

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,14 +23,23 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 public class test {
 	
 	public static void main(String[] args)  throws Exception {
-		String originalEstimate= null;
-		float f = Float.parseFloat("0");
-		System.out.println(f);//0.0
+		
+	/*	String ok= "5.0";
+		Float ts = 0.0f;
+		System.out.println(ok.replace(",", "."));
+		
+		
+		String originalEstimate= "1,0";
+		Float f = 3.0f;
+		Float ff = 7.8f;
+		Float r = f/ff;
+	//	f = Float.parseFloat(originalEstimate.replace(",", "."));
+		System.out.println(r*100);
 		
 		DecimalFormat df = new DecimalFormat("0.0");
 		originalEstimate = df.format(f);
-		System.out.println(originalEstimate);//0,0
-//		
+		System.out.println(originalEstimate);//0,0*/
+
 		/*File tempFile = new File(Paths.get(test.class.getClassLoader().getResource("files").toURI()).toString() + "/rwwwwequerimientoFile.xls");
 		boolean exists = tempFile.exists();
 		System.out.println(exists);*/
@@ -40,6 +50,10 @@ public class test {
 //		System.out.println(System.getProperty("user.dir"));
 	
 		
+    	LocalDate now = LocalDate.now();
+    	LocalDate earlier = now.minusMonths(0);
+    	System.out.println(now.getMonthValue());
+    	System.out.println(earlier.getMonthValue());
 
 	}
 

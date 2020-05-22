@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
+import com.example.demo.models.ERole;
 import com.example.demo.models.Project;
 import com.example.demo.models.Role;
 import com.example.demo.models.User;
@@ -119,6 +120,14 @@ public class UserService {
         } else {
             throw new ResourceNotFoundException("user not found");
         }
+    }
+    
+    public Integer countUsers() {
+    	return repository.countUsers(false);
+    }
+    
+    public Integer countUsersByRole(ERole name) {
+    	return repository.countUsersByRole(false, name);
     }
 
 	public User archiveUser(Long id) {

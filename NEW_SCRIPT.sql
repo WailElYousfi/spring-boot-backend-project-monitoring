@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 12, 2020 at 05:23 PM
+-- Generation Time: May 22, 2020 at 02:31 AM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.14
 
@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `features` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`feature_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `features`
@@ -187,7 +187,7 @@ INSERT INTO `features` (`feature_id`, `feature_name`, `url`, `title`, `parent_ti
 (3, 'Project management', 'projects', 'Projects', NULL, NULL, NULL),
 (4, 'Output file management', 'files/export', 'Export file', 'Files', NULL, NULL),
 (5, 'Permission management', 'permissions', 'Permissions', NULL, NULL, NULL),
-(6, 'Dashboard', 'dashboard', 'Dashboard', NULL, NULL, NULL);
+(6, 'Dashboard', 'home', 'Dashboard', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -231,18 +231,18 @@ CREATE TABLE IF NOT EXISTS `incidences` (
 --
 
 INSERT INTO `incidences` (`incidence_id`, `comment`, `created`, `date`, `description`, `incidence_type`, `jira_sas`, `incidence_key`, `linked_issues`, `original_estimate`, `planned_end`, `resolved`, `task_status`, `summary`, `time_spent`, `updated`, `assigned_user_id`, `caused_user_id`, `file_type_id`, `project_id`, `created_at`, `updated_at`) VALUES
-(25, NULL, NULL, '2020-05-12 16:04:24', '', 'Construcción', 'SIGLO-3170', 'ECOFISAS-9565', '', '0,0', NULL, '2020-01-30 18:54:00', 'Resolved', 'ECOFISAS-8381 INC_EXT_02 - Resolución SONAR', NULL, '2020-01-30 18:54:00', 7, 7, 3, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
+(25, NULL, NULL, '2020-05-12 16:04:24', '', 'Construcción', 'SIGLO-3170', 'ECOFISAS-9565', '', '0,0', NULL, '2020-03-20 00:00:00', 'Resolved', 'ECOFISAS-8381 INC_EXT_02 - Resolución SONAR', NULL, '2020-01-30 18:54:00', 7, 7, 3, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
 (26, NULL, NULL, '2020-05-12 16:04:24', 'Los errores detectados son los siguientes (algunos por el tema del SQLPlus que ya hemos comentado): \n• 001_NUEVA_TABLA_ALM_SISTEMAMENSAJE.sql ? Falla el create table por tener líneas vacías. La creación de la primary key falla porque el nombre ya se está usando en otra tabla. \n• 004_CREAR_NUEVO_PARAMETRO_EN_ORG_PARAMETRO.sql ? Fallo en el insert por incluir línea vacía. \n• 005_NUEVA_TABLA_ALM_HISTMENCARRUSELEP.sql ?Fallo en el create table por incluir líneas vacías. También falla porque los nombres de las foreing key ya se estaban usando en otro objeto (en concreto en un script previo). \n• 006_NUEVA_TABLA_ALM_HISTMENCARRUSELEPLINEA.sql ? Se llamaba inicialmente 006_NUEVA_TABLA_ALM_HISTMENCARRUSELEPLINEA .sql, es decir con un espacio en blanco. Se ha renombrado porque daba error al ejecutarse. También fallaba por las líneas vacías. La foreign key fallaba porque en el script 005 no se había creado primary key- \n• 007_NUEVA_TABLA_ALM_HISTMENCARRUSELEPERROR.sql ? Se ha renombrado igual que el punto anterior. También fallaba por líneas vacías en el create table. \n• 009_INSERT_ORG_TAREA.sql ? No se habían cerrado las comillas. \n• 010_PROCEDURE_PASOHISTORICOMENCARRUSELEP.sql ? Faltaba al final del procedure la barra / para indicar que ha finalizado la sentencia. Se ha eliminado la ejecución posterior del procedure “EXEC PASOHISTORICOMENCARRUSELEP;”. Lo he hablado con David y me ha comentado que no debería ejecutarse el procedure al lanzar el script. \n\nTiempo estimado : 0.5h ( se necesita solo subir los archivos corregidos por Borja) \n', 'Construcción', 'SIGLO-2937', 'ECOFISAS-9531', 'ECOFISAS-9507', '0,0', NULL, '2020-01-29 12:54:00', 'Resolved', 'ECOFISAS-9110 INC_INT_31 - Errores en scripts', '0,1', '2020-02-24 16:28:00', 7, 7, 4, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
-(27, NULL, NULL, '2020-05-12 16:04:24', 'Se han detectado errores en los scripts y se procede a su corrección: \n\nDO: \n- 001: El formato debe se ANSI, jamás debe ser utf-8 o no funcionará en SQLPLUS \n- 007: El script estaba mal a la hora de añadir las columnas de la tabla \nUNDO: \n- 003: La \"/\" estaba mal colocada, encima del END del script \n- 007: Faltaba realizar el drop de la secuencia', 'Construcción', 'SIGLO-2937', 'ECOFISAS-9554', '', '0,0', NULL, '2020-01-30 17:14:00', 'Resolved', 'ECOFISAS-9110 INC_INT_32- Errores en los scripts de la tarea.', NULL, '2020-01-31 12:42:00', 7, 7, 4, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
+(27, NULL, NULL, '2020-05-12 16:04:24', 'Se han detectado errores en los scripts y se procede a su corrección: \n\nDO: \n- 001: El formato debe se ANSI, jamás debe ser utf-8 o no funcionará en SQLPLUS \n- 007: El script estaba mal a la hora de añadir las columnas de la tabla \nUNDO: \n- 003: La \"/\" estaba mal colocada, encima del END del script \n- 007: Faltaba realizar el drop de la secuencia', 'Construcción', 'SIGLO-2937', 'ECOFISAS-9554', '', '0,0', NULL, '2020-03-20 17:14:00', 'Resolved', 'ECOFISAS-9110 INC_EXT_32- Errores en los scripts de la tarea.', NULL, '2020-01-31 12:42:00', 7, 7, 3, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
 (28, NULL, NULL, '2020-05-12 16:04:24', 'Cuando haber un registro en tabla ALM_MENMOVSTOCK con el motivo de error \"Las existencias que indica son superiores a las que hay en SIGLO\", en la busqueda de pantalla Consulta de Recuentos RFID se muestra el error NPE \n\n\n', 'No es una incidencia', 'SIGLO-2937', 'ECOFISAS-9553', 'ECOFISAS-9552', '0,0', NULL, '2020-02-03 17:11:00', 'Resolved', 'ECOFISAS-9110 INC_INT_30 - NPE cuando buscar registros con incidencias', NULL, '2020-02-03 17:11:00', 7, 7, 4, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
-(29, NULL, NULL, '2020-05-12 16:04:24', 'No se genera el mensaje de devolución cuando se ejecuta una OT con destino físico a una ubicación de una zona integrada. \nPaso. \nSe registra la solicitud de devolución ORIGEN ADC destino AC ubicación carrusel. \nSe edita la OT y se le incluye la ubicación destino.8RLQP \nSe revisa la tabla de select * FROM siglo.ALM_MENCARRUSELEP cmsj order by fechaenvio desc ; y no ha generado mensaje de devolución. \nSe revisa la OT y esta ejecutada correctamente. \n\n\n\n', 'Construcción', 'SIGLO-2949', 'ECOFISAS-9698', 'ECOFISAS-9625', '0,0', NULL, '2020-02-10 17:20:00', 'Resolved', 'ECOFISAS-7609 INC_EXT_22- No genera mensaje de orden de trabajo de devolución.', '5,0', '2020-02-11 08:52:00', 6, 6, 3, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
+(29, NULL, NULL, '2020-05-12 16:04:24', 'No se genera el mensaje de devolución cuando se ejecuta una OT con destino físico a una ubicación de una zona integrada. \nPaso. \nSe registra la solicitud de devolución ORIGEN ADC destino AC ubicación carrusel. \nSe edita la OT y se le incluye la ubicación destino.8RLQP \nSe revisa la tabla de select * FROM siglo.ALM_MENCARRUSELEP cmsj order by fechaenvio desc ; y no ha generado mensaje de devolución. \nSe revisa la OT y esta ejecutada correctamente. \n\n\n\n', 'Construcción', 'SIGLO-2949', 'ECOFISAS-9698', 'ECOFISAS-9625', '0,0', NULL, '2020-02-10 17:20:00', 'Resolved', 'ECOFISAS-7609 INC_EXT_22- No genera mensaje de orden de trabajo de devolución.', '8,0', '2020-02-11 08:52:00', 6, 6, 3, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
 (30, NULL, NULL, '2020-05-12 16:04:24', 'No se cumple el requisito. \n005-FEF-3965-01-04-01 \nSi el genérico de centro incluido en la OT de devolución, pertenece a una ubicación física de un carrusel integrado, deberá crearse la OT con la línea cumplimentada con la ubicación física automáticamente, para que el gestor no tenga que completar la ubicación. \nDevolución 1479036 (todas las solicitudes se han creado con fecha de 06/02/2020). \nGC E67698 --> L-LOGISONE006 \n\n\n', 'Análisis', 'SIGLO-2949', 'ECOFISAS-9696', 'ECOFISAS-9625', '0,0', NULL, '2020-02-10 17:22:00', 'Resolved', 'ECOFISAS-7609 INC_EXT_21- No asocia automáticamente la ubicación a la OT de devolución', '2,5', '2020-02-11 09:03:00', 6, 6, 3, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
-(31, NULL, NULL, '2020-05-12 16:04:24', 'Estimación 2h', 'Construcción', 'SIGLO-3250', 'ECOFISAS-9225', 'ECOFISAS-9258', '0,0', NULL, '2020-01-10 10:45:00', 'Resolved', 'ECOFISAS-8933 INC_INT_06 - No se tiene en cuenta el destino para los criterios de búsqueda', '2,0', '2020-01-30 14:43:00', 7, 7, 4, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
-(32, NULL, NULL, '2020-05-12 16:04:24', 'Se detecta un error al acceder a los detalles de la solicitud de devolución. \nPara reproducirlo: Acceder Gestión de Solicitudes de Devolución --> Consultar OT 1479033 y luego pulsar en el botón detalle. \n\"com.hp.geos.almacen.modelo.objetosNegocio.implementacion.SolicitudDevolucionImpl\" \n', 'Construcción', 'SIGLO-2949', 'ECOFISAS-9692', 'ECOFISAS-9625', '0,0', NULL, '2020-02-07 15:35:00', 'Resolved', 'ECOFISAS-7609 INC_EXT_18- Error al acceder al detalle de una solicitud de devolución', '0,5', '2020-02-07 15:36:00', 6, 6, 3, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
+(31, NULL, NULL, '2020-05-12 16:04:24', 'Estimación 2h', 'Construcción', 'SIGLO-3250', 'ECOFISAS-9225', 'ECOFISAS-9258', '0,0', NULL, '2020-02-10 10:45:00', 'Resolved', 'ECOFISAS-8933 INC_INT_06 - No se tiene en cuenta el destino para los criterios de búsqueda', '2,0', '2020-01-30 14:43:00', 7, 6, 4, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
+(32, NULL, NULL, '2020-05-12 16:04:24', 'Se detecta un error al acceder a los detalles de la solicitud de devolución. \nPara reproducirlo: Acceder Gestión de Solicitudes de Devolución --> Consultar OT 1479033 y luego pulsar en el botón detalle. \n\"com.hp.geos.almacen.modelo.objetosNegocio.implementacion.SolicitudDevolucionImpl\" \n', 'Construcción', 'SIGLO-2949', 'ECOFISAS-9692', 'ECOFISAS-9625', '0,0', NULL, '2020-03-07 15:35:00', 'Resolved', 'ECOFISAS-7609 INC_EXT_18- Error al acceder al detalle de una solicitud de devolución', '0,5', '2020-02-07 15:36:00', 6, 6, 3, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
 (33, NULL, NULL, '2020-05-12 16:04:24', '', 'Construcción', 'SIGLO-3264', 'ECOFISAS-9435', 'ECOFISAS-9394, ECOFISAS-9858', '0,0', NULL, '2020-01-27 08:51:00', 'Resolved', 'ECOFISAS-9059 INC_INT_03 No se ejecuta la tarea de generación de pedidos externos en segundo plano', '16,0', '2020-02-20 22:59:00', 6, 6, 4, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
 (34, NULL, NULL, '2020-05-12 16:04:24', '', 'Construcción', 'SIGLO-3264', 'ECOFISAS-9394', 'ECOFISAS-9358, ECOFISAS-9435', '0,0', NULL, '2020-01-23 17:03:00', 'Resolved', 'ECOFISAS-9059 INC_INT_02 No se muestran los nuevos campos observaciones por proveedor y recordatorio', '2,0', '2020-02-11 17:39:00', 6, 6, 4, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
 (35, NULL, NULL, '2020-05-12 16:04:24', 'Columna generación pedido de pantalla Consulta de Recuentos RFID se muestra valores incorrectos, debe mostrar valores Sí o No \nCódigo mensaje no muestra ningún valor \nen la exportación de excel se muestra correctamente el valor de la columna generación pedido y no se muestra el valor de la columna código mensaje \n\nDatos de pruebas en Nube 1 \nPlataforma Sevila Almacen _[DS] ALMACEN DISTRITO A.P. SEVILLA \nfechas 21/012020 hasta 23/01/2020 \n\nResponsable ==> Nafie \n', 'Construcción', 'SIGLO-2937', 'ECOFISAS-9538', 'ECOFISAS-9537, ECOFISAS-9552', '0,0', NULL, '2020-02-03 17:26:00', 'Resolved', 'ECOFISAS-9110 INC_INT_28 - se muestran valores incorrectos en las columnas generación pedido y código mensaje de pantalla Consulta de Recuentos RFID', '2,0', '2020-02-03 18:29:00', 7, 7, 4, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36'),
-(36, NULL, NULL, '2020-05-12 16:04:24', 'No se muestra el aviso que debe haber un unico articulo en pantalla Consulta de Recuentos RFID cuando seleccionar el check de datos historicos y no hay GC \n\nResponsable ==> Nafie \n', 'Construcción', 'SIGLO-2937', 'ECOFISAS-9537', 'ECOFISAS-9536, ECOFISAS-9538', '0,0', NULL, '2020-02-05 01:05:00', 'Resolved', 'ECOFISAS-9110 INC_INT_27 - No se muestra el aviso que debe haber un unico articulo en pantalla Consulta de Recuentos RFID', '0,2', '2020-02-05 01:05:00', 7, 7, 4, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36');
+(36, NULL, NULL, '2020-05-12 16:04:24', 'No se muestra el aviso que debe haber un unico articulo en pantalla Consulta de Recuentos RFID cuando seleccionar el check de datos historicos y no hay GC \n\nResponsable ==> Nafie \n', 'Construcción', 'SIGLO-2937', 'ECOFISAS-9537', 'ECOFISAS-9536, ECOFISAS-9538', '0,0', NULL, '2020-05-05 01:05:00', 'Resolved', 'ECOFISAS-9110 INC_INT_27 - No se muestra el aviso que debe haber un unico articulo en pantalla Consulta de Recuentos RFID', '3,5', '2020-02-05 01:05:00', 7, 6, 4, 4, '2020-05-12 16:04:36', '2020-05-12 16:04:36');
 
 -- --------------------------------------------------------
 
@@ -347,12 +347,18 @@ CREATE TABLE IF NOT EXISTS `role_features` (
 --
 
 INSERT INTO `role_features` (`role_id`, `feature_id`, `accesslevel_id`, `created_at`, `updated_at`) VALUES
-(3, 1, 4, NULL, NULL),
-(1, 2, 4, NULL, NULL),
-(1, 3, 4, NULL, NULL),
-(3, 3, 1, NULL, NULL),
-(3, 4, 4, NULL, NULL),
-(1, 5, 4, NULL, NULL);
+(3, 1, 4, '2020-05-14 18:09:37', '2020-05-14 18:09:37'),
+(1, 2, 4, '2020-05-14 18:09:27', '2020-05-14 18:09:27'),
+(1, 3, 4, '2020-05-14 18:09:27', '2020-05-14 18:09:27'),
+(3, 3, 1, '2020-05-14 18:09:37', '2020-05-14 18:09:37'),
+(3, 4, 4, '2020-05-14 18:09:37', '2020-05-14 18:09:37'),
+(1, 5, 4, '2020-05-14 18:09:27', '2020-05-14 18:09:27'),
+(1, 6, 4, '2020-05-14 18:09:27', '2020-05-14 18:09:27'),
+(2, 6, 4, '2020-05-16 02:15:13', '2020-05-16 02:15:13'),
+(3, 6, 4, '2020-05-14 18:09:37', '2020-05-14 18:09:37'),
+(4, 6, 4, '2020-05-16 02:15:23', '2020-05-16 02:15:23'),
+(5, 6, 4, '2020-05-16 02:15:31', '2020-05-16 02:15:31'),
+(6, 6, 4, '2020-05-16 02:15:40', '2020-05-16 02:15:40');
 
 -- --------------------------------------------------------
 
@@ -394,12 +400,12 @@ CREATE TABLE IF NOT EXISTS `tasks` (
 --
 
 INSERT INTO `tasks` (`task_id`, `comment`, `created`, `date`, `id_ot`, `task_key`, `original_estimate`, `remaining_estimate`, `resolved`, `task_status`, `summary`, `task_type`, `time_spent`, `updated`, `user_id`, `file_type_id`, `project_id`, `created_at`, `description`, `fix_version`, `updated_at`) VALUES
-(108, NULL, '2020-03-27 01:03:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10491', '2,0', '0,0', '2020-03-27 17:05:00', 'Resolved', 'ECOFISAS-10372 G02-T01- Tarea programada y Notificaciones', 'No es una incidencia', '2,0', '2020-03-27 17:05:00', 7, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
-(109, NULL, '2020-03-27 00:58:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10490', '2,0', '2,0', NULL, 'Open', 'ECOFISAS-10372 G01-T07-005 - Configuración de acciones y comprobaciones de las pantallas de MTO', 'No es una incidencia', NULL, '2020-03-29 00:41:00', 7, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
+(108, NULL, '2020-03-27 01:03:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10491', '2,0', '0,0', '2020-03-27 17:05:00', 'Resolved', 'ECOFISAS-10372 G02-T01- Tarea programada y Notificaciones', 'No es una incidencia', '2,0', '2020-03-27 17:05:00', 6, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
+(109, NULL, '2020-03-27 00:58:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10490', '2,0', '2,0', '2020-02-12 00:00:00', 'Resolved', 'ECOFISAS-10372 G01-T07-005 - Configuración de acciones y comprobaciones de las pantallas de MTO', 'No es una incidencia', '1,0', '2020-03-29 00:41:00', 6, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
 (110, NULL, '2020-03-27 00:57:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10489', '1,0', '1,0', NULL, 'Open', 'ECOFISAS-10372 G01-T07-004 - Configuración de acciones y comprobaciones de las pantallas de MTO', 'No es una incidencia', NULL, '2020-03-29 00:41:00', 7, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
 (111, NULL, '2020-03-27 00:23:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10488', '3,0', '3,0', NULL, 'In Progress', 'ECOFISAS-10372 G01-T07-003 - Configuración de acciones y comprobaciones de las pantallas de MTO', 'No es una incidencia', NULL, '2020-03-30 12:02:00', 7, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
 (112, NULL, '2020-03-27 00:05:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10487', '2,0', '0,2', NULL, 'In Progress', 'ECOFISAS-10372 G01-T07-002 - Configuración de acciones y comprobaciones de las pantallas de MTO', 'No es una incidencia', '3,8', '2020-03-27 20:40:00', 9, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
-(113, NULL, '2020-03-26 22:50:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10485', '1,0', '0,0', '2020-03-27 20:09:00', 'Resolved', 'ECOFISAS-10372 G01-T07-001 - Nuevos servicios y constantes', 'No es una incidencia', '1,0', '2020-03-27 20:09:00', 9, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
+(113, NULL, '2020-03-26 22:50:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10485', '1,0', '0,0', '2020-01-27 20:09:00', 'Resolved', 'ECOFISAS-10372 G01-T07-001 - Nuevos servicios y constantes', 'No es una incidencia', '1,0', '2020-03-27 20:09:00', 6, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
 (114, NULL, '2020-03-26 22:40:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10484', '0,5', '0,0', '2020-03-27 20:05:00', 'Resolved', 'ECOFISAS-10372 G01-T06 - Creación de los mensajes', 'No es una incidencia', '0,5', '2020-03-27 20:35:00', 9, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
 (115, NULL, '2020-03-26 15:02:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10481', '0,0', '0,0', '2020-03-26 22:37:00', 'Resolved', 'ECOFISAS-10372 INC_INT_01 - Varios Errores', 'Construcción', '1,0', '2020-03-26 22:37:00', 9, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
 (116, NULL, '2020-03-26 00:19:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10451', '4,0', '3,0', NULL, 'In Progress', 'ECOFISAS-10372 G01-T04 - Configuración de los componentes de pantallas', 'No es una incidencia', '1,0', '2020-03-27 17:15:00', 7, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
@@ -409,17 +415,17 @@ INSERT INTO `tasks` (`task_id`, `comment`, `created`, `date`, `id_ot`, `task_key
 (120, NULL, '2020-03-25 23:59:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10447', '4,0', '0,0', '2020-03-26 21:58:00', 'Resolved', 'ECOFISAS-10372 G01-T01-002 - Creación nuevas tablas, entidades correspondientes y mapeo', 'No es una incidencia', '4,5', '2020-03-26 21:58:00', 9, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
 (121, NULL, '2020-03-25 23:51:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10446', '0,5', '0,0', '2020-03-26 21:33:00', 'Resolved', 'ECOFISAS-10372 G01-T00-002 - Lectura del DT y de los requisitos', 'No es una incidencia', '0,5', '2020-03-26 21:33:00', 9, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
 (122, NULL, '2020-03-25 23:49:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10445', '0,5', '0,0', '2020-03-26 16:24:00', 'Resolved', 'ECOFISAS-10372 G01-T00-001 - Lectura del DT y de los requisitos', 'No es una incidencia', '0,5', '2020-03-26 16:24:00', 7, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
-(123, NULL, '2020-03-23 22:52:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10376', NULL, NULL, NULL, 'Open', 'ECOFISAS-10372 CLONE - Manual de usuario', 'No es una incidencia', NULL, '2020-03-23 22:52:00', NULL, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
+(123, NULL, '2020-03-23 22:52:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10376', '3,0', '0,0', '2020-05-05 00:00:00', 'Resolved', 'ECOFISAS-10372 CLONE - Manual de usuario', 'No es una incidencia', '2,5', '2020-03-23 22:52:00', 6, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
 (124, NULL, '2020-03-23 22:52:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10375', NULL, NULL, NULL, 'Open', 'ECOFISAS-10372 CLONE - B01-TR03-Validación funcional (Plantilla OTC)', 'No es una incidencia', NULL, '2020-03-23 22:52:00', NULL, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
 (125, NULL, '2020-03-23 22:52:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10374', NULL, NULL, NULL, 'Open', 'ECOFISAS-10372 CLONE - B01-TR02-Ejecución plan de pruebas desarrollador', 'No es una incidencia', NULL, '2020-03-23 22:52:00', NULL, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
 (126, NULL, '2020-03-23 22:52:00', '2020-05-12 15:02:02', NULL, 'ECOFISAS-10373', '6,0', '0,0', '2020-03-27 17:08:00', 'Resolved', 'ECOFISAS-10372 G01-T01-001 - Creación nuevas tablas, entidades correspondientes y mapeo', 'No es una incidencia', '6,0', '2020-03-27 17:08:00', 7, 7, 4, '2020-05-12 15:02:16', NULL, NULL, '2020-05-12 15:02:16'),
 (127, NULL, '2020-03-23 01:54:00', '2020-05-12 15:12:31', NULL, 'ECOFISAS-10356', '4,0', '1,0', NULL, 'In Progress', 'ECOFISAS-10348 Tests unitarios', 'No es una incidencia', '7,0', '2020-03-26 00:06:00', 9, 7, 4, '2020-05-12 15:12:44', NULL, NULL, '2020-05-12 15:12:44'),
 (128, NULL, '2020-03-23 01:53:00', '2020-05-12 15:12:31', NULL, 'ECOFISAS-10355', '2,0', '0,0', '2020-03-25 19:08:00', 'Resolved', 'ECOFISAS-10348 G01-T05 - Proceso de comprobación para mostrar el mensaje de aviso', 'No es una incidencia', '2,0', '2020-03-25 19:08:00', 9, 7, 4, '2020-05-12 15:12:44', NULL, NULL, '2020-05-12 15:12:44'),
-(129, NULL, '2020-03-23 01:52:00', '2020-05-12 15:12:31', NULL, 'ECOFISAS-10354', '4,0', '0,0', '2020-03-24 21:09:00', 'Resolved', 'ECOFISAS-10348 G01-T04 - Método de verificación del caso de sustitución de compra menor a expediente', 'No es una incidencia', '4,5', '2020-03-24 21:48:00', 9, 7, 4, '2020-05-12 15:12:44', NULL, NULL, '2020-05-12 15:12:44'),
-(130, NULL, '2020-03-23 01:51:00', '2020-05-12 15:12:31', NULL, 'ECOFISAS-10353', '2,0', '0,0', '2020-03-24 21:03:00', 'Resolved', 'ECOFISAS-10348 G01-T03 - Añadir la nueva restricción en las comprobaciones', 'No es una incidencia', '2,5', '2020-03-24 21:33:00', 9, 7, 4, '2020-05-12 15:12:44', NULL, NULL, '2020-05-12 15:12:44'),
+(129, NULL, '2020-03-23 01:52:00', '2020-05-12 15:12:31', NULL, 'ECOFISAS-10354', '4,0', '0,0', '2020-01-24 21:09:00', 'Resolved', 'ECOFISAS-10348 G01-T04 - Método de verificación del caso de sustitución de compra menor a expediente', 'No es una incidencia', '4,5', '2020-03-24 21:48:00', 9, 7, 4, '2020-05-12 15:12:44', NULL, NULL, '2020-05-12 15:12:44'),
+(130, NULL, '2020-03-23 01:51:00', '2020-05-12 15:12:31', NULL, 'ECOFISAS-10353', '2,0', '0,0', '2020-01-24 21:03:00', 'Resolved', 'ECOFISAS-10348 G01-T03 - Añadir la nueva restricción en las comprobaciones', 'No es una incidencia', '2,5', '2020-03-24 21:33:00', 9, 7, 4, '2020-05-12 15:12:44', NULL, NULL, '2020-05-12 15:12:44'),
 (131, NULL, '2020-03-23 01:38:00', '2020-05-12 15:12:31', NULL, 'ECOFISAS-10350', '0,5', '0,0', '2020-03-24 20:55:00', 'Resolved', 'ECOFISAS-10348 G01-T02 - Nuevo mensaje de advertencia', 'No es una incidencia', '0,5', '2020-03-24 21:10:00', 9, 7, 4, '2020-05-12 15:12:44', NULL, NULL, '2020-05-12 15:12:44'),
 (132, NULL, '2020-03-23 01:38:00', '2020-05-12 15:12:31', NULL, 'ECOFISAS-10349', '0,5', '0,0', '2020-03-24 20:53:00', 'Resolved', 'ECOFISAS-10348 G01-T01 - Lectura de los requisitos', 'No es una incidencia', '0,5', '2020-03-25 08:34:00', 9, 7, 4, '2020-05-12 15:12:44', NULL, NULL, '2020-05-12 15:12:44'),
-(133, 'Preparación de datos para crear MUS', NULL, '2020-05-12 15:13:02', NULL, 'ECOFISAS-7814', '4.0', '2.0', NULL, 'In Progress', 'ECOFISAS-7810> G03-T03 - Manual de usuario', 'Desarrollo', '2.0', NULL, 8, 6, 4, '2020-05-12 15:13:06', 'Crear el manual del usuario', '30.0.0', '2020-05-12 15:13:06'),
+(133, 'Preparación de datos para crear MUS', NULL, '2020-05-12 15:13:02', NULL, 'ECOFISAS-7814', '4.0', '0.0', '2020-03-24 20:53:00', 'Resolved', 'ECOFISAS-7810> G03-T03 - Manual de usuario', 'Desarrollo', '3.0', NULL, 8, 6, 4, '2020-05-12 15:13:06', 'Crear el manual del usuario', '30.0.0', '2020-05-12 15:13:06'),
 (134, 'continuar con las pruebas', NULL, '2020-05-12 15:13:02', NULL, 'ECOFISAS-8361', '4.0', '2.0', NULL, 'In Progress', 'ECOFISAS-7810> G03-T02-Revisión y pruebas del analista', 'Desarrollo', '2.0', NULL, 8, 6, 4, '2020-05-12 15:13:06', 'Revisar y probar el desarrollo hecho', '30.0.0', '2020-05-12 15:13:06');
 
 -- --------------------------------------------------------
@@ -479,7 +485,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `UK6dotkott2kjsp8vw4d0m25fb7` (`email`),
   UNIQUE KEY `UKcuxvxnlkgcrxgsmbk3x302qch` (`jira_username`),
   KEY `FKp56c1712k691lhsyewcssf40f` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
@@ -493,7 +499,7 @@ INSERT INTO `users` (`user_id`, `email`, `firstname`, `jira_username`, `lastname
 (6, 'zakaria.mtougui@gmail.com', 'zakaria', 'Zakaria Mtougui', 'mtougui', '$2a$10$Z739lDeaKHpM7gF3dMdzjOvjPInOqGr0LF7lNytIhrNZaAohqLZv6', '+212611496744', 159541, 'zakariamtougui', 5, b'0', NULL, NULL),
 (7, 'nafie.boudakkou@gmail.com', 'nafie', 'Nafie Boudakkou', 'boudakkou', '$2a$10$nonaMLJVMajxfNCJHYTZFuuIxsgIFR1rD6BCXaf0Or0ZVuEaM3kOe', '+212611666744', 177355, 'nafieboudakkou', 6, b'0', NULL, NULL),
 (8, 'najlae.sadrat@gmail.com', 'najlae', 'Najlae Sadrat', 'sadrat', '$2a$10$24rFBPXg9AmyGDzU6tHb5eVRIKvaTNt4VUGjK1xs6azRO1QF39ZcO', '+212647011491', 148515, 'najlaesadrat', 3, b'0', NULL, NULL),
-(9, 'souhaila.benomar@gmail.com', 'souhaila', 'Souhaila Benomar', 'Benomar', '$2a$10$eHhT9vv6jG7N4WgvhvsOReslh5B5a80Q2XfCowkStRZNFY5rkZ1KO', '+212632121144', 184831, 'souhailabenomar', 6, b'0', NULL, NULL),
+(9, 'souhaila.benomar@gmail.com', 'souhaila', 'Souhaila Benomar', 'Benomar', '$2a$10$ylfNf.y6ktXCp1PAqd7UieX32CgAg2KjpbbxhSCEa0LOcyhDvyaDS', '+212632121144', 184831, 'souhailabenomar', 6, b'0', NULL, NULL),
 (10, 'new2@gmail.com', 'new2', 'jiranew2', 'new2', '$2a$10$qYD/57tljNBHicanrrcnge0lPVJh5YZPl37P9wbFyuq7Sql5hGcHS', NULL, 555555, 'new2', 6, b'0', NULL, NULL),
 (11, 'new3@gmail.com', 'new3', 'jiranew3', 'new3', '$2a$10$mnCXzc/yIdFyx0ZWPmMn2ebZvq2R2PpyiX.umKHhQj1bAbtEgPXMG', NULL, 142514, 'new3', 6, b'0', NULL, NULL),
 (12, 'hamide@gmail.com', 'hamid', 'hamidjira', 'ham', '$2a$10$71efuCQM3s/LD0.DACfeKeORBqOQx/tD6mDasWt7O2dkBc73AKzJu', NULL, 144444, 'hamide', 6, b'0', NULL, NULL),
@@ -626,7 +632,7 @@ CREATE TABLE IF NOT EXISTS `user_projects` (
 
 INSERT INTO `user_projects` (`user_id`, `project_id`) VALUES
 (3, 1),
-(3, 2),
+(3, 4),
 (4, 1),
 (5, 1),
 (7, 4),

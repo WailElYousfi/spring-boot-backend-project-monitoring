@@ -81,6 +81,50 @@ public class TaskService {
         }
     }
     
+    public List<Task> getTasksByUserIdAndStatus(Long userId, String status) {
+    	Optional < List<Task> > taskDb = this.repository.findByUserIdAndStatus(userId, status);
+
+        if (taskDb.isPresent()) {
+            return taskDb.get();
+        } else {
+            return null;
+        }
+    }
+    
+    public List<Task> getTasksByProjectIdAndStatus(Integer projectId, String status) {
+    	Optional < List<Task> > taskDb = this.repository.findByProjectIdAndStatus(projectId, status);
+
+        if (taskDb.isPresent()) {
+            return taskDb.get();
+        } else {
+            return null;
+        }
+    }
+    
+    public List<Task> getTasksByUserIdAndProjectIdAndStatusAndDates(Long userId, Integer projectId, String status, int month) {
+    	Optional < List<Task> > taskDb;
+    	if(userId == null)
+    		taskDb = this.repository.findByProjectIdAndStatusAndDates(projectId, status, month);
+    	else
+    		taskDb = this.repository.findByUserIdAndStatusAndDates(userId, status, month);
+
+        if (taskDb.isPresent()) {
+            return taskDb.get();
+        } else {
+            return null;
+        }
+    }
+    
+  /*  public List<Task> getTasksByUserIdAndStatusAndDates(Long userId, String status, Date startDate, Date endDate) {
+    	Optional < List<Task> > taskDb = this.repository.findByUserIdAndStatusAndDates(userId, status, startDate, endDate);
+
+        if (taskDb.isPresent()) {
+            return taskDb.get();
+        } else {
+            return null;
+        }
+    }*/
+    
     public List<Task> getTaskByDates(Date startDate, Date endDate) {
         Optional < List<Task> > taskDb = this.repository.findByDates(startDate, endDate);
 
