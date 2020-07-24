@@ -3,6 +3,8 @@ package com.example.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 
 import com.example.demo.models.Type;
@@ -19,6 +21,9 @@ public class TypeService {
         return repository.save(type);
     }
     
+    public List<Type> getAllType(){
+    	return repository.findAll();
+    }
     
     public Type getTypeByName(String typeName) {
 

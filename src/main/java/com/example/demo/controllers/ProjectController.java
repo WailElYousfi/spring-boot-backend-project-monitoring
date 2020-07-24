@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.models.Project;
+import com.example.demo.models.User;
 import com.example.demo.services.ProjectService;
 
 @RestController
@@ -32,6 +33,11 @@ public class ProjectController {
     @GetMapping("/projects/{id}")
     public ResponseEntity <Project> getProjectById(@PathVariable Integer id) {
         return ResponseEntity.ok().body(projectService.getProjectById(id));
+    }
+    
+    @GetMapping("/projects/{id}/users")
+    public ResponseEntity <List<User>> getUsersOfProject(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(projectService.getUsersOfProject(id));
     }
 
     @PostMapping("/projects/all")

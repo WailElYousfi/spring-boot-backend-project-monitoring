@@ -81,6 +81,17 @@ public class TaskService {
         }
     }
     
+    public List<Task> getTasksByUserId(Long userId) {
+
+        Optional <List<Task>> taskDb = this.repository.findByUserId(userId);
+
+        if (taskDb.isPresent()) {
+            return taskDb.get();
+        } else {
+            return null;
+        }
+    }
+    
     public List<Task> getTasksByUserIdAndStatus(Long userId, String status) {
     	Optional < List<Task> > taskDb = this.repository.findByUserIdAndStatus(userId, status);
 

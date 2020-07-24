@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -78,8 +79,8 @@ public class AuthController {
 				.collect(Collectors.toList());
 		
 		User user = userService.getUserById(userDetails.getUserId());
-		
-		return ResponseEntity.ok(new LoginResponse(user, jwt));
+        Date date = new Date();
+		return ResponseEntity.ok(new LoginResponse(user, jwt, date.getTime()+86400000 ));
 
 /*
 		return ResponseEntity.ok(new JwtResponse(jwt, 

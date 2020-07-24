@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import com.example.demo.models.Project;
+import com.example.demo.models.User;
 import com.example.demo.Exceptions.ResourceNotFoundException;
 import com.example.demo.dao.ProjectRepository;
 
@@ -49,6 +50,17 @@ public class ProjectService {
 
         if (projectDb.isPresent()) {
             return projectDb.get();
+        } else {
+            throw new ResourceNotFoundException("project not found");
+        }
+    }
+    
+    public List<User> getUsersOfProject(Integer projectId) {
+
+        Optional <Project> projectDb = this.repository.findById(projectId);
+
+        if (projectDb.isPresent()) {
+            return projectDb.get().getUsers();
         } else {
             throw new ResourceNotFoundException("project not found");
         }
