@@ -24,20 +24,14 @@ public class Justification {
 	@NotBlank
 	private String content;
 	
-	@NotBlank
 	private Boolean isValidated;
 	
-	@NotBlank
-	@Temporal(TemporalType.DATE)
+	private Boolean isArchived;
+	
 	private Date validationDate;
 	
-	@NotBlank
 	@Temporal(TemporalType.DATE)
-	private Date startDate;
-	
-	@NotBlank
-	@Temporal(TemporalType.DATE)
-	private Date endDate;
+	private Date concernedMonth;
 	
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
@@ -64,15 +58,15 @@ public class Justification {
 		
 	}
 
-	public Justification(String subject, String content, Boolean isValidated,
-			Date validationDate, Date startDate, Date endDate, User justificator,
+	public Justification(String subject, String content, Boolean isArchived, Boolean isValidated,
+			Date validationDate, Date concernedMonth, User justificator,
 			User validator, Project project) {
 		this.subject = subject;
 		this.content = content;
 		this.isValidated = isValidated;
+		this.isArchived = isArchived;
 		this.validationDate = validationDate;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		this.concernedMonth = concernedMonth;
 		this.justificator = justificator;
 		this.validator = validator;
 		this.project = project;
@@ -118,20 +112,12 @@ public class Justification {
 		this.validationDate = validationDate;
 	}
 
-	public Date getStartDate() {
-		return startDate;
+	public Date getConcernedMonth() {
+		return concernedMonth;
 	}
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setConcernedMonth(Date concernedMonth) {
+		this.concernedMonth = concernedMonth;
 	}
 
 	public User getJustificator() {
@@ -172,7 +158,16 @@ public class Justification {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public Boolean getIsArchived() {
+		return isArchived;
+	}
+
+	public void setIsArchived(Boolean isArchived) {
+		this.isArchived = isArchived;
 	}	
+	
 	
 	
 }

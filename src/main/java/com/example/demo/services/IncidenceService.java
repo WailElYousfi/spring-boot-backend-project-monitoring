@@ -129,6 +129,14 @@ public class IncidenceService {
 		return usernames.stream().distinct().collect(Collectors.toList()); // Remove duplicates
 		
 	}
+	
+	public List<Incidence> getIncidencesByUserId(Long userId) {
+        Optional <List<Incidence>> incidenceDb = this.repository.findByUserId(userId);
+        if (incidenceDb.isPresent())
+            return incidenceDb.get();
+        else
+            return null;
+    }
     
 
     public void deleteIncidence(Integer incidenceId) {

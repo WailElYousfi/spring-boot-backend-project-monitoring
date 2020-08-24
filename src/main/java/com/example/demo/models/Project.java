@@ -45,6 +45,7 @@ public class Project {
 	@JsonIgnore
     private List<Incidence> incidences;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     private List<Justification> justifications;
 	

@@ -36,4 +36,8 @@ public interface IncidenceRepository extends JpaRepository<Incidence, Integer> {
 	
 	@Query("select count(i) from Incidence i where i.project.projectId = ?1 and i.status = ?2 and EXTRACT(MONTH FROM i.resolved) = ?3  and i.fileType.typeName = ?4")
 	Integer countIncidencesByProjectIdAndStatusAndDatesAndType(Integer projectId, String status, int month, String typeName);
+
+	@Query("select i from Incidence i where i.causedUser.userId = ?1")
+	Optional< List<Incidence> > findByUserId(Long userId);
+	
 }

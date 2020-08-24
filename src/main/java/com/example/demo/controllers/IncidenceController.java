@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.models.Incidence;
+import com.example.demo.models.Task;
 import com.example.demo.services.IncidenceService;
 
 @RestController
@@ -32,4 +33,9 @@ public class IncidenceController {
         return ResponseEntity.ok().body(incicendeService.getIncidenceById(id));
     }
 
+    @GetMapping("/incidences/user/{userId}")
+    public ResponseEntity < List<Incidence> > getAllIncidenceByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok().body(incicendeService.getIncidencesByUserId(userId));
+    }
+    
 }

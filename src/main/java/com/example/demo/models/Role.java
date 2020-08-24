@@ -33,6 +33,10 @@ public class Role {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updatedAt;
 	
+	@ManyToOne
+	@JsonIgnore
+	private Role childRole; 
+	
 	@OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
 	@JsonIgnore
     private List<User> users;
@@ -80,6 +84,14 @@ public class Role {
 
 	public void setRoleFeatures(Set<RoleFeature> roleFeatures) {
 		this.roleFeatures = roleFeatures;
+	}
+
+	public Role getChildRole() {
+		return childRole;
+	}
+
+	public void setChildRole(Role childRole) {
+		this.childRole = childRole;
 	}
 
 	public Date getCreatedAt() {
